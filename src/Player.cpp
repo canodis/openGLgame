@@ -25,19 +25,19 @@ void Player::processInput(GLFWwindow *window, float deltaTime)
 {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-        obj->transform.position.y += speed * deltaTime;
+        velocity.y = speed * deltaTime;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        obj->transform.position.y -= speed * deltaTime;
+        velocity.y = -speed * deltaTime;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-        obj->transform.position.x -= speed * deltaTime;
+        velocity.x = -speed * deltaTime;
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-        obj->transform.position.x += speed * deltaTime;
+        velocity.x = speed * deltaTime;
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     {
