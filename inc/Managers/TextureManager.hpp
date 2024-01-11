@@ -1,5 +1,5 @@
-#ifndef TEXTURE_MANAGER_HPP
-# define TEXTURE_MANAGER_HPP
+#pragma once
+
 
 #include <iostream>
 #include <map>
@@ -13,5 +13,3 @@ public:
 private:
     std::map<std::string, unsigned int> m_textureMap;
 };
-
-#endif

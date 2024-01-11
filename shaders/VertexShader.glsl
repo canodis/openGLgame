@@ -7,10 +7,11 @@ out vec4 vertexColor;
 out vec2 texCoords;
 
 uniform mat4 mtxTransform;
+uniform mat4 viewMatrix;
 
 void main()
 {
-    gl_Position = mtxTransform * vec4(aPos, 0.0f, 1.0);
+    gl_Position = viewMatrix * mtxTransform * vec4(aPos, 0.0f, 1.0);
     vertexColor = aColor;
     texCoords = aTexCoord;
 }

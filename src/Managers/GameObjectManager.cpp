@@ -12,7 +12,7 @@ GameObject *GameObjectManager::Create2dObject(std::string name, const glm::vec4 
     {
         std::vector<Vertex2dObject> vertices;
         std::vector<unsigned int> indices;
-        float length = 1.0f;
+        float length = 1;
         glm::vec2 verticesPos[] = {
             glm::vec2(-length / 2, -length / 2),
             glm::vec2(length / 2, -length / 2),

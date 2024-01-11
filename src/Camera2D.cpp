@@ -1,8 +1,10 @@
 #include "../inc/Camera2D.hpp"
 #include "Scene.hpp"
 
-void Camera2D::Update(GLFWwindow *window)
+void Camera2D::Update(GLFWwindow *window, glm::vec2 playerPos)
 {
+    camPosition.x = playerPos.x;
+    camPosition.y = playerPos.y;
 }
 
 glm::mat4 Camera2D::GetViewMatrix() const
