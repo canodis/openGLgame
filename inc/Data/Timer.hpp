@@ -10,7 +10,9 @@ public:
     Timer();
     void    start();
     double  elapsedSeconds();
+    void    sleepMainThread();
 private:
     HighResClock    m_Start;
     HighResClock    m_End;
+    float           m_MaxFPS;
 };

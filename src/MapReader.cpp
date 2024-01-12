@@ -3,20 +3,22 @@
 #include "Scene.hpp"
 #include <iostream>
 #include <fstream>
+#include <ComponentCreator.hpp>
+#include <BoxCollision2dController.hpp>
 
 MapReader::MapReader(int ac, char **av) {
-    if (ac != 2)
-    {
-        std::cout << "Usage: ./my_rpg map_location" << std::endl;
-        exit(1);
-    }
-    readMap(av[1]);
+    // if (ac != 2)
+    // {
+    //     std::cout << "Usage: ./my_rpg map_location" << std::endl;
+    //     exit(1);
+    // }
+    readMap("./map.txt");
 }
 
 MapReader::~MapReader() {
 }
 
-void    MapReader::readMap(char *location)
+void    MapReader::readMap(const char *location)
 {
     std::ifstream file(location);
 
@@ -54,7 +56,7 @@ void    MapReader::selectMapObject(char c, int x, int y)
             createMapObject(c, x, y, "./textures/background.jpeg");
             break;
         case grass:
-            createMapObject(c, x, y, "./textures/grass.jpeg");
+            createCollidableMapObject(c, x, y, "./textures/grass.jpeg");
             break;
         case stone:
             createMapObject(c, x, y, "./textures/stone.png");
@@ -63,17 +65,32 @@ void    MapReader::selectMapObject(char c, int x, int y)
             createMapObject(c, x, y, "./textures/player.png");
             break;
         default:
-            std::cout << "Error: Unknown map object" << std::endl;
+            std::cout << "Error: Unknown map object : " << c <<  std::endl;
             break;
     }
 }
 
-void    MapReader::createMapObject(char c, int x, int y, std::string textureLocation)
+void    MapReader::createCollidableMapObject(char c, int x, int y, std::string textureLocation)
 {
-    GameObject *gameObject = Scene::getInstance().gameObjectManager->Create2dObject("mapObject", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    GameObject *gameObject = Scene::getInstance().gameObjectManager->Create2dObject("mapObject");
     gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture(textureLocation));
     gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
     gameObject->transform.position = glm::vec3(-((float)x), -((float)y), 0.0f);
+    gameObject->isStatic = true;
+    Scene::getInstance().boxCollision2dController->objects.insert({dis::ivec2(-x, -y), gameObject});
+
+    // gameObject->Update(0.0f);
+    gameObjects.push_back(gameObject);
+}
+
+void    MapReader::createMapObject(char c, int x, int y, std::string textureLocation)
+{
+    GameObject *gameObject = Scene::getInstance().gameObjectManager->Create2dObject("mapObject");
+    gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture(textureLocation));
+    gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
+    gameObject->transform.position = glm::vec3(-((float)x), -((float)y), 0.0f);
+    gameObject->isStatic = true;
+    // gameObject->Update(0.0f);
     gameObjects.push_back(gameObject);
 }
 
@@ -81,6 +98,6 @@ void    MapReader::drawMap(float deltaTime)
 {
     for (auto &object : gameObjects)
     {
-        object->Update(deltaTime);
+       object->update(deltaTime);
     }
 }

@@ -12,6 +12,7 @@ class ShaderProgram;
 class ShaderProgram {
 public:
     ShaderProgram();
+    ShaderProgram(const char *vertexShader, const char *fragmentShader);
     ~ShaderProgram();
 
     void    attachShader(const char *fileName, unsigned int shaderType);

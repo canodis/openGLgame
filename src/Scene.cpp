@@ -20,3 +20,10 @@ void	Scene::init_window(int width, int height)
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 }
+
+void	Scene::init_uniforms()
+{
+	shaderProgram->addUniform("mtxTransform");
+    shaderProgram->addUniform("textureSampler");
+    shaderProgram->addUniform("viewMatrix");
+}

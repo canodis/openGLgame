@@ -3,7 +3,9 @@
 #include "stb_image.h"
 #include <glad.h>
 
-TextureManager::TextureManager() {}
+TextureManager::TextureManager() {
+    missingTexture = loadTexture("textures/missingTexture.jpeg");
+}
 
 unsigned int TextureManager::loadTexture(const std::string filename)
 {

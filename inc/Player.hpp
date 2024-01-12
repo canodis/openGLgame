@@ -10,6 +10,13 @@ public:
     void setGameObject(GameObject *gameObject);
     void processInput(GLFWwindow *window, float deltaTime);
     void Update(float deltaTime);
+    void ResetVelocityX() { obj->velocity.x = 0.0f; }
+
+    glm::vec2 GetPosition() const { return (obj->GetPosition()); }
+    glm::vec2 GetVelocity() const { return (obj->velocity); }
+private:
     GameObject *obj;
     float speed;
+    float jumpSpeed;
+    bool canJump;
 };

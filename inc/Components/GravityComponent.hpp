@@ -12,4 +12,6 @@ public:
     ~GravityComponent() override = default;
 private:
     float m_Gravity = 0.0f;
+    float limitedSubstitution;
+    float limitedGravity;
 };

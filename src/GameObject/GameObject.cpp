@@ -7,22 +7,28 @@ GameObject::GameObject()
     transform.rotation = glm::vec3(0.0f);
     transform.scale = glm::vec3(1.0f);
     color = glm::vec4(0.1f);
+    update = [this](float deltaTime) { this->DynamicUpdate(deltaTime); };
+    textureId = Scene::getInstance().textureManager->missingTexture;
 }
 
-GameObject::GameObject(float x, float y, std::string textureLocation)
+GameObject::GameObject(float x, float y, std::string textureLocation) : GameObject()
 {
     transform.position = glm::vec3(x, y, 0.0f);
-    transform.rotation = glm::vec3(0.0f);
-    transform.scale = glm::vec3(1.0f);
-    color = glm::vec4(1.0f);
     textureId = Scene::getInstance().textureManager->loadTexture(textureLocation);
+    DynamicUpdate(0.0f);
 }
 
-void    GameObject::Update(float deltaTime)
+void    GameObject::DynamicUpdate(float deltaTime)
 {
     for (auto& component : components)
         component->update(deltaTime);
     UpdateTransform();
+    UpdateShaderProgram(translation, rotation, scale, textureId);
+    Draw();
+}
+
+void    GameObject::StaticUpdate()
+{
     UpdateShaderProgram(translation, rotation, scale, textureId);
     Draw();
 }

@@ -9,6 +9,14 @@ ShaderProgram::ShaderProgram()
     use();
 }
 
+ShaderProgram::ShaderProgram(const char *vertexShader, const char *fragmentShader)
+{
+    programId = glCreateProgram();
+    attachShader(vertexShader, GL_VERTEX_SHADER);
+    attachShader(fragmentShader, GL_FRAGMENT_SHADER);
+    link();
+}
+
 ShaderProgram::~ShaderProgram()
 {
     glDeleteProgram(programId);
@@ -49,6 +57,7 @@ void ShaderProgram::attachShader(const char *fileName, unsigned int shaderType)
         glGetShaderInfoLog(shaderId, 512, 0, log);
         std::cout << "Shader Error !\n"
                   << log << std::endl;
+        exit(1);
     }
 
     glAttachShader(programId, shaderId);

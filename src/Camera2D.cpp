@@ -1,10 +1,8 @@
 #include "../inc/Camera2D.hpp"
 #include "Scene.hpp"
 
-void Camera2D::Update(GLFWwindow *window, glm::vec2 playerPos)
+void Camera2D::Update(GLFWwindow *window)
 {
-    camPosition.x = playerPos.x;
-    camPosition.y = playerPos.y;
 }
 
 glm::mat4 Camera2D::GetViewMatrix() const
@@ -15,4 +13,10 @@ glm::mat4 Camera2D::GetViewMatrix() const
 void Camera2D::SetProjection(float left, float right, float bottom, float top)
 {
     mtxProj = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+}
+
+void    Camera2D::followPoint(GLFWwindow *window, glm::vec2 point)
+{
+    camPosition.x = point.x;
+    camPosition.y = point.y;
 }

@@ -7,18 +7,26 @@ class GameObject;
 #include "VaoObject.hpp"
 #include "Article.hpp"
 #include "Component.hpp"
+#include <functional>
 
 class GameObject : public Article, public VaoObject
 {
 public:
     GameObject();
     GameObject(float x, float y, std::string textureLocation);
-    void Update(float deltaTime);
+    std::function<void(float)> update;
+    
     void AddComponent(Component *component);
-    Component *GetComponent(std::string name);
     void RemoveComponent(Component *component);
     ~GameObject();
     std::vector<Component*> components;
+
+    glm::vec2 GetPosition() const { return (transform.position); }
+    glm::vec3 GetScale() const { return (transform.scale); }
+    glm::vec3 GetRotation() const { return (transform.rotation); }
+
+    bool isStatic = false;
+
     template <typename T>
     T *GetComponent()
     {
@@ -30,4 +38,7 @@ public:
         std::cout << "Component not found" << std::endl;
         return (nullptr);
     }
+private:
+    void DynamicUpdate(float deltaTime);
+    void StaticUpdate();
 };

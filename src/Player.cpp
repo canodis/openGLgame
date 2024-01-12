@@ -1,13 +1,20 @@
 #include "Player.hpp"
 #include "Scene.hpp"
 #include <iostream>
+#include "ComponentCreator.hpp"
+#include <BoxCollision2d.hpp>
 
 Player::Player()
 {
-    speed = 1.0f;
-    GameObject *object = Scene::getInstance().gameObjectManager->Create2dObject("player", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    object->SetTexture(Scene::getInstance().textureManager->loadTexture("./textures/kirmizibalik.png"));
+    speed = 5.0f;
+    jumpSpeed = 5.0f;
+    canJump = true;
+    GameObject *object = Scene::getInstance().gameObjectManager->Create2dObject("player");
+    // object->SetTexture(Scene::getInstance().textureManager->loadTexture("./textures/mario.png"));
     object->SetShaderProgram(Scene::getInstance().shaderProgram);
+    object->transform.position = glm::vec3(0);
+    object->AddComponent(ComponentCreator::Create<GravityComponent>());
+    object->AddComponent(ComponentCreator::Create<BoxCollision2d>());
     Scene::getInstance().gameObjects.push_back(object);
     this->setGameObject(object);
 }
@@ -23,23 +30,20 @@ void Player::setGameObject(GameObject *gameObject)
 
 void Player::processInput(GLFWwindow *window, float deltaTime)
 {
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    {
-        obj->velocity.y += speed * deltaTime;
-    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    {
-        obj->velocity.y = -speed * deltaTime;
-    }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
         obj->velocity.x = -speed * deltaTime;
-        obj->transform.scale.x = -1.0f;
+        obj->transform.scale.x = -1;
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
         obj->velocity.x = speed * deltaTime;
-        obj->transform.scale.x = 1.0f;
+        obj->transform.scale.x = 1;
+    }
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    {
+        if (obj->velocity.y <= 0)
+            obj->velocity.y = jumpSpeed;
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     {
@@ -64,7 +68,4 @@ void Player::processInput(GLFWwindow *window, float deltaTime)
 void    Player::Update(float deltaTime)
 {
     obj->transform.position.x += obj->velocity.x;
-    obj->transform.position.y += obj->velocity.y;
-    obj->velocity.x = 0;
-    obj->velocity.y = 0;
 }

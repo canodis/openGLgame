@@ -16,6 +16,8 @@ GLADPATH	=	-I./glad/
 FRMWK		=	-I/usr/include/GL
 LINKER		= 	-L./lib
 INCLUDE_DIR = 	$(shell find ./inc/ -type d)
+CXXFLAGS += -I/$(HOME)/goinfre/.brew/opt/freetype/include/freetype2 -I/$HOME/goinfre/.brew/opt/libpng/include/libpng16
+LDFLAGS += -L/$(HOME)/goinfre/.brew/opt/freetype/lib -lfreetype
 INCLUDE_FLAGS = $(addprefix -I, $(INCLUDE_DIR))
 # INCLUDE_FLAGS = -I./inc/ -I./inc/GameObject -I./inc/Managers -I./inc/Data -I./inc/Components
 GLM_DIR		= 	-I./glm/
@@ -28,7 +30,7 @@ CE = \033[0m
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			 $(CC) $(CFLAGS) $(GLADPATH) $(FRMPATH) $(LINKER) $(INCLUDE_FLAGS) $(GLM_DIR) $(IMGUIDIR) -o $@ $^ glad/glad.c -lglfw -Wno-deprecated
+			 $(CC) $(CFLAGS) $(CXXFLAGS) $(GLADPATH) $(FRMPATH) $(LINKER) $(INCLUDE_FLAGS) $(GLM_DIR) $(IMGUIDIR) -o $@ $^ glad/glad.c -lglfw $(LDFLAGS) -Wno-deprecated
 			 echo "\n\033[92m---> Game Created ✓\033[0m";
 
 objs/%.o:	srcs/%.cpp
@@ -47,6 +49,9 @@ fclean:		clean
 re : fclean all
 
 a: re
+	./game map.txt
+
+aa: all
 	./game map.txt
 
 .PHONY: all, clean, fclean, re, a

@@ -13,6 +13,8 @@ class Scene;
 #include <vector>
 #include "GameObject.hpp"
 #include "Timer.hpp"
+#include "TextRenderer.hpp"
+#include "BoxCollision2dController.hpp"
 
 class Scene
 {
@@ -33,6 +35,8 @@ public:
 	GameObjectManager *gameObjectManager;
 	Timer *timer;
 	Player *player;
+	TextRenderer *textRenderer;
+	BoxCollision2dController *boxCollision2dController;
 	std::vector<GameObject *> gameObjects;
 
 private:
@@ -44,10 +48,14 @@ private:
 		textureManager = new TextureManager();
 		gameObjectManager = new GameObjectManager(vaoManager);
 		timer = new Timer();
+		textRenderer = new TextRenderer();
+		boxCollision2dController = new BoxCollision2dController();
+		init_uniforms();
 	}
 	~Scene() {}
 
 	void init_window(int width, int height);
+	void init_uniforms();
 };
 
 // Kullanımı:

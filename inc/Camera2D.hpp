@@ -19,7 +19,8 @@ public:
     Camera2D(Camera2D const&) = delete;
     void operator=(Camera2D const&) = delete;
 
-    void Update(GLFWwindow *window, glm::vec2 playerPos);
+    void Update(GLFWwindow *window);
+    void followPoint(GLFWwindow *window, glm::vec2 point);
     glm::mat4 GetViewMatrix() const;
     void SetProjection(float left, float right, float bottom, float top);
     glm::vec3 camPosition;

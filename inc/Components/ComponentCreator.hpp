@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.hpp"
+#include "GravityComponent.hpp"
 
 class ComponentCreator
 {
