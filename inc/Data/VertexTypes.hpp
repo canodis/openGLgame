@@ -7,7 +7,6 @@ class  Vertex2dObject
 {
 public:
 	glm::vec2 pos;
-	glm::vec4 color;
 	glm::vec2 texCoord;
 };
 

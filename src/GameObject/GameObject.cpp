@@ -6,7 +6,7 @@ GameObject::GameObject()
     transform.position = glm::vec3(0.0f);
     transform.rotation = glm::vec3(0.0f);
     transform.scale = glm::vec3(1.0f);
-    color = glm::vec4(0.1f);
+    color = glm::vec4(1.0f);
     update = [this](float deltaTime) { this->DynamicUpdate(deltaTime); };
     textureId = Scene::getInstance().textureManager->missingTexture;
 }
@@ -22,7 +22,7 @@ void    GameObject::DynamicUpdate(float deltaTime)
     for (auto& component : components)
         component->update(deltaTime);
     UpdateTransform();
-    UpdateShaderProgram(translation, rotation, scale, textureId);
+    UpdateShaderProgram(translation, rotation, scale, color, textureId);
     Draw();
 }
 
@@ -30,7 +30,7 @@ void    GameObject::StaticUpdate()
 {
     for (auto& component : components)
         component->update(0.0f);
-    UpdateShaderProgram(translation, rotation, scale, textureId);
+    UpdateShaderProgram(translation, rotation, scale, color,textureId);
     Draw();
 }
 

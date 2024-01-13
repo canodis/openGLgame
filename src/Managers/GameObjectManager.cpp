@@ -29,7 +29,6 @@ GameObject *GameObjectManager::Create2dObject(std::string name, const glm::vec4 
         for (int i = 0; i < 4; i++)
         {
             tempVertices[i].pos = verticesPos[i];
-            tempVertices[i].color = color;
             tempVertices[i].texCoord = texCoords[i];
         }
         for (int i = 0; i < 4; i++)

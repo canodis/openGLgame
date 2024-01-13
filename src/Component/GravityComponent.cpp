@@ -2,6 +2,7 @@
 
 GravityComponent::GravityComponent()
 {
+    isGrounded = false;
     m_Gravity = 9.8f;
     limitedSubstitution = 1.0f;
     limitedGravity = -15.0;
@@ -15,6 +16,11 @@ GravityComponent::GravityComponent(GameObject *gameObject) : GravityComponent()
 
 void GravityComponent::update(float deltaTime) 
 {
+    if (isGrounded)
+    {
+        this->object->velocity.y = 0;
+        return;
+    }
     float jumpForce = this->object->velocity.y * deltaTime;
     if (jumpForce > 0.1f)
     {
@@ -37,4 +43,9 @@ void GravityComponent::setGravity(float gravity)
 void GravityComponent::setGameObject(GameObject *gameObject)
 {
     this->object = gameObject;
+}
+
+void GravityComponent::setGrounded(bool grounded)
+{
+    isGrounded = grounded;
 }

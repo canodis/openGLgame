@@ -42,35 +42,20 @@ void Player::processInput(GLFWwindow *window, float deltaTime)
     }
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
-        if (obj->velocity.y <= 0)
+        if (obj->GetComponent<GravityComponent>()->isGrounded)
+        {
+            obj->GetComponent<GravityComponent>()->setGrounded(false);
             obj->velocity.y = jumpSpeed;
+        }
     }
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    {
-        obj->transform.position.y += speed * deltaTime;
-    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    {
-        obj->transform.position.y -= speed * deltaTime;
-    }
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-    {
-        obj->transform.rotation.z += speed * deltaTime * 100;
-    }
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-    {
-        obj->transform.rotation.z -= speed * deltaTime * 100;
-    }
-    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-    {
-        obj->transform.scale.x += speed * deltaTime;
-        obj->transform.scale.y += speed * deltaTime;
-    }
-    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-    {
-        obj->transform.scale.x -= speed * deltaTime;
-        obj->transform.scale.y -= speed * deltaTime;
-    }
+    // if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    // {
+    //     obj->transform.position.y += speed * deltaTime;
+    // }
+    // if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    // {
+    //     obj->transform.position.y -= speed * deltaTime;
+    // }
 }
 
 void    Player::Update(float deltaTime)

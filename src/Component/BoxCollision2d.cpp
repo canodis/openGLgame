@@ -1,5 +1,6 @@
 #include "BoxCollision2d.hpp"
 #include "Scene.hpp"
+#include "GravityComponent.hpp"
 
 BoxCollision2d::BoxCollision2d()
 {
@@ -8,9 +9,10 @@ BoxCollision2d::BoxCollision2d()
     {
         GameObject *obj = Scene::getInstance().gameObjectManager->Create2dObject("boxCollision2d");
         obj->SetTexture(Scene::getInstance().textureManager->loadTexture("./textures/white.png"));
+        obj->SetShaderProgram(Scene::getInstance().shaderProgram);
+        obj->SetColor(glm::vec4(0.0f, 0.7f, 0.0f, 0.4f));
         debugObjects.push_back(obj);
     }
-    debug = false;
 }
 
 BoxCollision2d::BoxCollision2d(GameObject *gameObject) : BoxCollision2d()
@@ -44,10 +46,6 @@ void BoxCollision2d::update(float deltaTime)
     {
         isColliding(objects[up]);
     }
-    if ((objects.find(down) != objects.end()))
-    {
-        isColliding(objects[down]);
-    }
     if ((objects.find(leftup) != objects.end()))
     {
         isColliding(objects[leftup]);
@@ -63,6 +61,14 @@ void BoxCollision2d::update(float deltaTime)
     if ((objects.find(rightdown) != objects.end()))
     {
         isColliding(objects[rightdown]);
+    }
+    if ((objects.find(down) != objects.end()))
+    {
+        isColliding(objects[down]);
+    }
+    else
+    {
+        grounded(false);
     }
     drawDebugCollision();
 }
@@ -103,6 +109,7 @@ void BoxCollision2d::overlapCalculation(GameObject *other, float &overlapX, floa
         else
         {
             this->object->transform.position.y += overlapY;
+            grounded(true);
         }
     }
 }
@@ -129,6 +136,7 @@ dis::ivec2 BoxCollision2d::getOrigin(GameObject *gameObject)
 
 void BoxCollision2d::drawDebugCollision()
 {
+    static bool &debug = Scene::getInstance().debug;
     if (!debug)
         return;
     debugObjects[0]->transform.position.x = left.x;
@@ -152,11 +160,18 @@ void BoxCollision2d::drawDebugCollision()
     {
         obj->update(0.0f);
     }
-
-    Scene::getInstance().textRenderer->renderText("origin : " + std::to_string(objorigin.x) + ", " + std::to_string(objorigin.y), -4.9f, 3.9f, 0.004f, glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
 void BoxCollision2d::setCollisionScale(glm::vec2 scale)
 {
     collisionScale = scale;
+}
+
+void BoxCollision2d::grounded(bool grounded)
+{
+    GravityComponent *gravity = this->object->GetComponent<GravityComponent>();
+    if (gravity != nullptr)
+    {
+        gravity->setGrounded(grounded);
+    }
 }

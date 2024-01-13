@@ -39,6 +39,7 @@ public:
 	BoxCollision2dController *boxCollision2dController;
 	std::vector<GameObject *> gameObjects;
 
+	bool debug;
 private:
 	Scene(int width, int height)
 	{
@@ -50,10 +51,13 @@ private:
 		timer = new Timer();
 		textRenderer = new TextRenderer();
 		boxCollision2dController = new BoxCollision2dController();
+		debug = false;
 		init_uniforms();
+		keycallback();
 	}
 	~Scene();
 
 	void init_window(int width, int height);
 	void init_uniforms();
+	void keycallback();
 };

@@ -5,10 +5,11 @@ class Component;
 
 class Component {
 public:
-    virtual ~Component() {}
-    Component() {}
-    Component(GameObject *gameObject) {}
+    Component();
+    Component(GameObject *gameObject);
+    virtual ~Component();
     virtual void setGameObject(GameObject *gameObject) = 0;
     virtual void update(float deltaTime) = 0;
+
     GameObject *object;
 };

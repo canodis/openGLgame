@@ -12,6 +12,7 @@ public:
     void setGameObject(GameObject *gameObject) override;
     void isColliding(GameObject *gameObject);
     void setCollisionScale(glm::vec2 scale);
+    void grounded(bool grounded);
     dis::ivec2 getOrigin(GameObject *gameObject);
 private:
     void drawDebugCollision();
@@ -30,5 +31,4 @@ private:
 
     glm::vec2 collisionScale;
     dis::ivec2 objorigin;
-    bool debug;
 };

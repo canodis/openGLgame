@@ -10,7 +10,9 @@ public:
     void update(float deltaTime) override;
     void setGravity(float gravity);
     void setGameObject(GameObject *gameObject) override;
+    void setGrounded(bool grounded);
     ~GravityComponent() override = default;
+    bool  isGrounded;
 private:
     float m_Gravity = 0.0f;
     float limitedSubstitution;

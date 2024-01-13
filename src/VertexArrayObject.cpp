@@ -30,19 +30,15 @@ void    VertexArrayObject::build(std::vector<Vertex2dObject> &vertices, const In
 
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex2dObject), (void *)(2 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2dObject), (void *)(2 * sizeof(float)));
 
 	glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2dObject), (void *)(6 * sizeof(float)));
-
-    glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_IBoid);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
     m_AtrribList.push_back(0);
     m_AtrribList.push_back(1);
-    m_AtrribList.push_back(2);
     m_IndexCount = indices.size();
     m_VertexCount = vertices.size();
 }

@@ -21,6 +21,7 @@ public:
     void    setMat3(const std::string &name, const glm::mat3 *value);
     void    setMat4(const std::string &name, const glm::mat4 *value);
     void    setVec3(const std::string &name, const glm::vec3 &value);
+    void    setVec4(const std::string &name, const glm::vec4 &value);
     void    setFloat(const std::string &name, const float &value);
     void    setInt(const std::string &name, const int &value);
     void    addUniform(const std::string &name);
