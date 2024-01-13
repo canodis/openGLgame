@@ -21,7 +21,7 @@ unsigned int TextureManager::loadTexture(const std::string filename)
     if (!data)
     {
         std::cerr << "Texture can not load: " << filename << std::endl;
-        return -1;
+        return missingTexture;
     }
 
     glGenTextures(1, &id);
@@ -46,4 +46,12 @@ void TextureManager::activateTexture(unsigned int level, unsigned int id)
 {
     glActiveTexture(level);
     glBindTexture(GL_TEXTURE_2D, id);
+}
+
+TextureManager::~TextureManager()
+{
+    for (auto it = m_textureMap.begin(); it != m_textureMap.end(); ++it)
+    {
+        glDeleteTextures(1, &it->second);
+    }
 }

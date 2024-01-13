@@ -12,6 +12,7 @@ public:
     ShaderProgram *m_ShaderProgram;
 
     VaoObject();
+    ~VaoObject();
     void SetShaderProgram(ShaderProgram *shaderProgram);
     void UpdateShaderProgram(glm::mat4 &t, glm::mat4 &r, glm::mat4 &s, unsigned int textureId);
     void Draw();

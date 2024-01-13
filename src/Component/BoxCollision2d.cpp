@@ -1,35 +1,162 @@
 #include "BoxCollision2d.hpp"
 #include "Scene.hpp"
 
+BoxCollision2d::BoxCollision2d()
+{
+    collisionScale = glm::vec2(1.0f, 1.0f);
+    for (int i = 0; i < 8; i++)
+    {
+        GameObject *obj = Scene::getInstance().gameObjectManager->Create2dObject("boxCollision2d");
+        obj->SetTexture(Scene::getInstance().textureManager->loadTexture("./textures/white.png"));
+        debugObjects.push_back(obj);
+    }
+    debug = false;
+}
+
+BoxCollision2d::BoxCollision2d(GameObject *gameObject) : BoxCollision2d()
+{
+    this->object = gameObject;
+}
+
 void BoxCollision2d::update(float deltaTime)
 {
     std::map<dis::ivec2, GameObject *> objects = Scene::getInstance().boxCollision2dController->objects;
+    objorigin = getOrigin(this->object);
 
-    dis::ivec2 left = dis::ivec2((int)floor(this->object->transform.position.x - 1.0f), (int)floor(this->object->transform.position.y));
-    dis::ivec2 right = dis::ivec2((int)floor(this->object->transform.position.x + 1.0f), (int)floor(this->object->transform.position.y));
-    dis::ivec2 up = dis::ivec2((int)floor(this->object->transform.position.x), (int)floor(this->object->transform.position.y + 1.0f));
-    dis::ivec2 down = dis::ivec2((int)floor(this->object->transform.position.x), (int)floor(this->object->transform.position.y - 1.0f));
+    left = dis::ivec2(objorigin.x - 1.0f, objorigin.y);
+    leftup = dis::ivec2(objorigin.x - 1.0f, objorigin.y + 1.0f);
+    leftdown = dis::ivec2(objorigin.x - 1.0f, objorigin.y - 1.0f);
+    right = dis::ivec2(objorigin.x + 1.0f, objorigin.y);
+    rightup = dis::ivec2(objorigin.x + 1.0f, objorigin.y + 1.0f);
+    rightdown = dis::ivec2(objorigin.x + 1.0f, objorigin.y - 1.0f);
+    up = dis::ivec2(objorigin.x, objorigin.y + 1.0f);
+    down = dis::ivec2(objorigin.x, objorigin.y - 1.0f);
 
-    if ((objects.find(left) != objects.end()) || (objects.find(right) != objects.end()) || (objects.find(up) != objects.end()) || (objects.find(down) != objects.end()))
+    if ((objects.find(left) != objects.end()))
     {
         isColliding(objects[left]);
     }
-    
+    if ((objects.find(right) != objects.end()))
+    {
+        isColliding(objects[right]);
+    }
+    if ((objects.find(up) != objects.end()))
+    {
+        isColliding(objects[up]);
+    }
+    if ((objects.find(down) != objects.end()))
+    {
+        isColliding(objects[down]);
+    }
+    if ((objects.find(leftup) != objects.end()))
+    {
+        isColliding(objects[leftup]);
+    }
+    if ((objects.find(leftdown) != objects.end()))
+    {
+        isColliding(objects[leftdown]);
+    }
+    if ((objects.find(rightup) != objects.end()))
+    {
+        isColliding(objects[rightup]);
+    }
+    if ((objects.find(rightdown) != objects.end()))
+    {
+        isColliding(objects[rightdown]);
+    }
+    drawDebugCollision();
 }
-
 
 void BoxCollision2d::isColliding(GameObject *other)
 {
-    if (this->object->transform.position.x < other->transform.position.x + 1.0f &&
-        this->object->transform.position.x + 1.0f > other->transform.position.x &&
-        this->object->transform.position.y < other->transform.position.y + 1.0f &&
-        this->object->transform.position.y + 1.0f > other->transform.position.y)
+    float overlapX, overlapY;
+
+    if (this->object->transform.position.x<other->transform.position.x + collisionScale.x &&this->object->transform.position.x + collisionScale.x> other->transform.position.x &&
+        this->object->transform.position.y<other->transform.position.y + collisionScale.y &&this->object->transform.position.y + collisionScale.y> other->transform.position.y)
     {
-        std::cout << "Collision" << std::endl;
+        overlapX = std::min(this->object->transform.position.x + collisionScale.x, other->transform.position.x + collisionScale.x) - std::max(this->object->transform.position.x, other->transform.position.x);
+        overlapY = std::min(this->object->transform.position.y + collisionScale.y, other->transform.position.y + collisionScale.y) - std::max(this->object->transform.position.y, other->transform.position.y);
+
+        overlapCalculation(other, overlapX, overlapY);
+    }
+}
+
+void BoxCollision2d::overlapCalculation(GameObject *other, float &overlapX, float &overlapY)
+{
+    if (overlapX < overlapY)
+    {
+        if (this->object->transform.position.x < other->transform.position.x)
+        {
+            this->object->transform.position.x -= overlapX;
+        }
+        else
+        {
+            this->object->transform.position.x += overlapX;
+        }
+    }
+    else
+    {
+        if (this->object->transform.position.y < other->transform.position.y)
+        {
+            this->object->transform.position.y -= overlapY;
+        }
+        else
+        {
+            this->object->transform.position.y += overlapY;
+        }
     }
 }
 
 void BoxCollision2d::setGameObject(GameObject *gameObject)
 {
     this->object = gameObject;
+}
+
+dis::ivec2 BoxCollision2d::getOrigin(GameObject *gameObject)
+{
+    float originx;
+    float originy;
+    if (gameObject->transform.position.x > 0)
+        originx = gameObject->transform.position.x + collisionScale.x / 2;
+    else
+        originx = gameObject->transform.position.x - collisionScale.x / 2;
+    if (gameObject->transform.position.y > 0)
+        originy = gameObject->transform.position.y + collisionScale.y / 2;
+    else
+        originy = gameObject->transform.position.y - collisionScale.y / 2;
+    return dis::ivec2(originx, originy);
+}
+
+void BoxCollision2d::drawDebugCollision()
+{
+    if (!debug)
+        return;
+    debugObjects[0]->transform.position.x = left.x;
+    debugObjects[0]->transform.position.y = left.y;
+    debugObjects[1]->transform.position.x = right.x;
+    debugObjects[1]->transform.position.y = right.y;
+    debugObjects[2]->transform.position.x = up.x;
+    debugObjects[2]->transform.position.y = up.y;
+    debugObjects[3]->transform.position.x = down.x;
+    debugObjects[3]->transform.position.y = down.y;
+    debugObjects[4]->transform.position.x = leftup.x;
+    debugObjects[4]->transform.position.y = leftup.y;
+    debugObjects[5]->transform.position.x = leftdown.x;
+    debugObjects[5]->transform.position.y = leftdown.y;
+    debugObjects[6]->transform.position.x = rightup.x;
+    debugObjects[6]->transform.position.y = rightup.y;
+    debugObjects[7]->transform.position.x = rightdown.x;
+    debugObjects[7]->transform.position.y = rightdown.y;
+
+    for (auto &obj : debugObjects)
+    {
+        obj->update(0.0f);
+    }
+
+    Scene::getInstance().textRenderer->renderText("origin : " + std::to_string(objorigin.x) + ", " + std::to_string(objorigin.y), -4.9f, 3.9f, 0.004f, glm::vec3(1.0f, 1.0f, 1.0f));
+}
+
+void BoxCollision2d::setCollisionScale(glm::vec2 scale)
+{
+    collisionScale = scale;
 }

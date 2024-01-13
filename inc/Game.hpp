@@ -10,6 +10,5 @@
 #include "GameObject.hpp"
 #include "Player.hpp"
 #include "MapReader.hpp"
-#include "ComponentCreator.hpp"
 #include "GravityComponent.hpp"
 #include "BoxCollision2d.hpp"

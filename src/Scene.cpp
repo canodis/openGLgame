@@ -27,3 +27,15 @@ void	Scene::init_uniforms()
     shaderProgram->addUniform("textureSampler");
     shaderProgram->addUniform("viewMatrix");
 }
+
+Scene::~Scene()
+{
+	delete vaoManager;
+	delete shaderProgram;
+	delete textureManager;
+	delete gameObjectManager;
+	delete timer;
+	delete textRenderer;
+	delete boxCollision2dController;
+	glfwTerminate();
+}

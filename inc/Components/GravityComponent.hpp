@@ -6,6 +6,7 @@
 class GravityComponent : public Component {
 public:
     GravityComponent();
+    GravityComponent(GameObject *gameObject);
     void update(float deltaTime) override;
     void setGravity(float gravity);
     void setGameObject(GameObject *gameObject) override;

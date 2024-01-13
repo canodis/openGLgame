@@ -3,7 +3,6 @@
 #include "Scene.hpp"
 #include <iostream>
 #include <fstream>
-#include <ComponentCreator.hpp>
 #include <BoxCollision2dController.hpp>
 
 MapReader::MapReader(int ac, char **av) {
@@ -15,8 +14,7 @@ MapReader::MapReader(int ac, char **av) {
     readMap("./map.txt");
 }
 
-MapReader::~MapReader() {
-}
+MapReader::~MapReader() { }
 
 void    MapReader::readMap(const char *location)
 {
@@ -75,11 +73,9 @@ void    MapReader::createCollidableMapObject(char c, int x, int y, std::string t
     GameObject *gameObject = Scene::getInstance().gameObjectManager->Create2dObject("mapObject");
     gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture(textureLocation));
     gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
-    gameObject->transform.position = glm::vec3(-((float)x), -((float)y), 0.0f);
-    gameObject->isStatic = true;
+    gameObject->setPosition(glm::vec3(-((float)x), -((float)y), 0.0f));
+    gameObject->setStatic();
     Scene::getInstance().boxCollision2dController->objects.insert({dis::ivec2(-x, -y), gameObject});
-
-    // gameObject->Update(0.0f);
     gameObjects.push_back(gameObject);
 }
 
@@ -88,9 +84,8 @@ void    MapReader::createMapObject(char c, int x, int y, std::string textureLoca
     GameObject *gameObject = Scene::getInstance().gameObjectManager->Create2dObject("mapObject");
     gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture(textureLocation));
     gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
-    gameObject->transform.position = glm::vec3(-((float)x), -((float)y), 0.0f);
-    gameObject->isStatic = true;
-    // gameObject->Update(0.0f);
+    gameObject->setStatic();
+    gameObject->setPosition(glm::vec3(-((float)x), -((float)y), 0.0f));
     gameObjects.push_back(gameObject);
 }
 
@@ -101,3 +96,4 @@ void    MapReader::drawMap(float deltaTime)
        object->update(deltaTime);
     }
 }
+

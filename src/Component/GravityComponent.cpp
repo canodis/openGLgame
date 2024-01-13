@@ -8,6 +8,11 @@ GravityComponent::GravityComponent()
     this->object = nullptr;
 }
 
+GravityComponent::GravityComponent(GameObject *gameObject) : GravityComponent()
+{
+    this->object = gameObject;
+}
+
 void GravityComponent::update(float deltaTime) 
 {
     float jumpForce = this->object->velocity.y * deltaTime;

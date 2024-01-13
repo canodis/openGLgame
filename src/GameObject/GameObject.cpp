@@ -15,7 +15,6 @@ GameObject::GameObject(float x, float y, std::string textureLocation) : GameObje
 {
     transform.position = glm::vec3(x, y, 0.0f);
     textureId = Scene::getInstance().textureManager->loadTexture(textureLocation);
-    DynamicUpdate(0.0f);
 }
 
 void    GameObject::DynamicUpdate(float deltaTime)
@@ -29,22 +28,16 @@ void    GameObject::DynamicUpdate(float deltaTime)
 
 void    GameObject::StaticUpdate()
 {
+    for (auto& component : components)
+        component->update(0.0f);
     UpdateShaderProgram(translation, rotation, scale, textureId);
     Draw();
 }
 
-void    GameObject::AddComponent(Component *component)
+void    GameObject::setStatic()
 {
-    for (auto& c : components)
-    {
-        if (c == component)
-        {
-            std::cout << "Component already exists" << std::endl;
-            return;
-        }
-    }
-    component->setGameObject(this);
-    components.push_back(component);
+    isStatic = true;
+    update = [this](float deltaTime) { this->StaticUpdate(); };
 }
 
 void    GameObject::RemoveComponent(Component *component)
@@ -57,6 +50,12 @@ void    GameObject::RemoveComponent(Component *component)
             break;
         }
     }
+}
+
+void    GameObject::setPosition(glm::vec3 position)
+{
+    transform.position = position;
+    UpdateTransform();
 }
 
 GameObject::~GameObject()

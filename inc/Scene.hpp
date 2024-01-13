@@ -52,11 +52,8 @@ private:
 		boxCollision2dController = new BoxCollision2dController();
 		init_uniforms();
 	}
-	~Scene() {}
+	~Scene();
 
 	void init_window(int width, int height);
 	void init_uniforms();
 };
-
-// Kullanımı:
-// Scene& myScene = Scene::getInstance(1024, 768);

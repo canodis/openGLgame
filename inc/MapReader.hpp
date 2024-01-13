@@ -7,11 +7,11 @@ class MapReader
 {
 public:
     MapReader(int ac, char **av);
+    ~MapReader();
     void readMap(const char *location);
     void createGameObjects();
     void drawMap(float deltaTime);
     void test(int x, int y);
-    ~MapReader();
 private:
     std::vector<std::string> map;
     std::vector<GameObject *> gameObjects;

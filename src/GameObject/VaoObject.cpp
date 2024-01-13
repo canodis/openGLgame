@@ -26,3 +26,8 @@ VaoObject::VaoObject()
 {
     m_ShaderProgram = Scene::getInstance().shaderProgram;
 }
+
+VaoObject::~VaoObject()
+{
+    delete m_Vao;
+}
