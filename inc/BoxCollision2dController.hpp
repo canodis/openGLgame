@@ -9,4 +9,3 @@ class BoxCollision2dController
 public:
     std::map<dis::ivec2, GameObject *> objects;
 };
-
