@@ -137,6 +137,7 @@ dis::ivec2 BoxCollision2d::getOrigin(GameObject *gameObject)
 {
     float originx;
     float originy;
+
     if (gameObject->transform.position.x > 0)
         originx = gameObject->transform.position.x + collisionScale.x / 2;
     else

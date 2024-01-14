@@ -2,6 +2,8 @@
 
 Animation::Animation()
 {
+    loop = true;
+    animationSpeed = 0.1f;
 }
 
 Animation::Animation(float speed)

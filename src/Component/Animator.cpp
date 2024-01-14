@@ -23,11 +23,17 @@ void Animator::update(float deltaTime)
     elapsedTime += deltaTime;
     if (elapsedTime >= currentAnimation->animationSpeed)
     {
+        if (currentAnimation->loop == false && currentFrame == currentAnimation->textures.size())
+        {
+            return;
+        }
+        if (currentFrame >= currentAnimation->textures.size())
+        {
+            currentFrame = 0;
+        }
+        object->SetTexture(currentAnimation->textures[currentFrame]);
         elapsedTime = 0;
         currentFrame++;
-        if (currentFrame >= currentAnimation->textures.size())
-            currentFrame = 0;
-        object->SetTexture(currentAnimation->textures[currentFrame]);
     }
 }
 
@@ -38,10 +44,9 @@ void Animator::setGameObject(GameObject *gameObject)
 
 void Animator::setStatic()
 {
-
 }
 
-void Animator::loadTexturesFromDirectory(std::string animationName, std::string path, std::string file, std::string extension, float animationSpeed)
+Animation *Animator::loadTexturesFromDirectory(std::string animationName, std::string path, std::string file, std::string extension, float animationSpeed)
 {
     std::string fullPath;
     Animation animation;
@@ -60,6 +65,7 @@ void Animator::loadTexturesFromDirectory(std::string animationName, std::string 
         i++;
     }
     animations[animationName] = animation;
+    return &animations[animationName];
 }
 
 void Animator::setCurrentAnimation(std::string animationName)
@@ -69,5 +75,18 @@ void Animator::setCurrentAnimation(std::string animationName)
         std::cout << "Animation " << animationName << " not found" << std::endl;
         return;
     }
+    if (currentAnimation == &animations[animationName])
+        return;
     currentAnimation = &animations[animationName];
+    currentFrame = 0;
+}
+
+Animation *Animator::getAnimation(std::string animationName)
+{
+    if (animations.find(animationName) == animations.end())
+    {
+        std::cout << "Animation " << animationName << " not found" << std::endl;
+        return NULL;
+    }
+    return &animations[animationName];
 }

@@ -13,9 +13,10 @@ public:
     ~Animator() override;
     void update(float deltaTime) override;
     void setGameObject(GameObject *gameObject) override;
-    void loadTexturesFromDirectory(std::string animationName, std::string path, std::string file, std::string extension, float animationSpeed);
+    Animation *loadTexturesFromDirectory(std::string animationName, std::string path, std::string file, std::string extension, float animationSpeed);
     void setCurrentAnimation(std::string animationName);
     void setStatic() override;
+    Animation *getAnimation(std::string animationName);
 private:
     Animation *currentAnimation;
     float elapsedTime;

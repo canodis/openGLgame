@@ -11,5 +11,6 @@ public:
     void addTexture(unsigned int texture);
     float animationSpeed;
     std::vector<unsigned int> textures;
+    bool loop;
 private:
 };

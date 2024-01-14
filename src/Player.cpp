@@ -14,10 +14,12 @@ Player::Player()
     object->SetShaderProgram(Scene::getInstance().shaderProgram);
     object->transform.position = glm::vec3(0);
     object->AddComponent<GravityComponent>();
-    object->AddComponent<BoxCollision2d>()->setCollisionScale(glm::vec2(0.7f, 0.9f));
+    object->AddComponent<BoxCollision2d>()->setCollisionScale(glm::vec2(0.8f, 0.9f));
     Animator *anim = object->AddComponent<Animator>();
     anim->loadTexturesFromDirectory("idle", "./animations/Player/Idle/", "PlayerIdle", "png", 0.2f);
     anim->loadTexturesFromDirectory("run", "./animations/Player/Run/", "PlayerRun", "png", 0.1f);
+    anim->loadTexturesFromDirectory("jump", "./animations/Player/Jump/", "PlayerJump", "png", 0.1f)->loop = false;
+    anim->loadTexturesFromDirectory("fall", "./animations/Player/Fall/", "PlayerFall", "png", 0.1f);
     anim->setCurrentAnimation("idle");
     Scene::getInstance().gameObjects.push_back(object);
     this->setGameObject(object);
@@ -60,12 +62,21 @@ void    Player::Update(float deltaTime)
 
     Animator *anim = obj->GetComponent<Animator>();
 
-    if (obj->velocity.x == 0 && obj->velocity.y == 0)
+    if (obj->velocity.y > 0)
     {
-        anim->setCurrentAnimation("idle");
+        anim->setCurrentAnimation("jump");
     }
-    else
+    else if (obj->velocity.y < 0)
+    {
+        anim->setCurrentAnimation("fall");
+    }
+    else if (obj->velocity.x != 0)
     {
         anim->setCurrentAnimation("run");
     }
+    else
+    {
+        anim->setCurrentAnimation("idle");
+    }
+    
 }
