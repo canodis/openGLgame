@@ -93,9 +93,6 @@ void    MapReader::createMapObject(char c, int x, int y, std::string textureLoca
 
 void    MapReader::drawMap(float deltaTime)
 {
-    for (auto &object : gameObjects)
-    {
-       object->update(deltaTime);
-    }
+    Camera2D::getInstance().renderGameObjects(gameObjects, deltaTime);
 }
 

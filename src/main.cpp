@@ -16,7 +16,7 @@ int main(int ac, char **av)
 
     glfwSwapInterval(0);
     Scene::getInstance().timer->start();
-    Scene::getInstance().timer->setMaxFPS(12435);
+    Scene::getInstance().timer->setMaxFPS(6666);
     while (glfwGetKey(Scene::getInstance().window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(Scene::getInstance().window))
     {
         Scene::getInstance().shaderProgram->use();

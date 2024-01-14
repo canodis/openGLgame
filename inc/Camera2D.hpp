@@ -2,6 +2,7 @@
 
 #include "../glm/glm.hpp"
 #include "../glm/gtc/matrix_transform.hpp"
+#include "GameObject.hpp"
 # define BEGINX 0.0f
 # define BEGINY 0.0f
 
@@ -25,8 +26,12 @@ public:
     void SetProjection(float left, float right, float bottom, float top);
     glm::vec3 camPosition;
     glm::mat4 mtxProj;
-
+    bool isInsideCameraView(GameObject *object);
+    void renderGameObjects(std::vector<GameObject *> &gameObjects, float deltaTime);
+    
 private:
     Camera2D() : camPosition(0.0f, 0.0f, 0.0f), mtxProj(1.0f) {}
+    float width;
+    float height;
 };
 

@@ -90,8 +90,8 @@ void BoxCollision2d::isColliding(GameObject *other)
         return;
     float overlapX, overlapY;
 
-    if (this->object->transform.position.x<other->transform.position.x + collisionScale.x &&this->object->transform.position.x + collisionScale.x> other->transform.position.x &&
-        this->object->transform.position.y<other->transform.position.y + collisionScale.y &&this->object->transform.position.y + collisionScale.y> other->transform.position.y)
+    if (this->object->transform.position.x<other->transform.position.x + collisionScale.x && this->object->transform.position.x + collisionScale.x> other->transform.position.x &&
+        this->object->transform.position.y<other->transform.position.y + collisionScale.y && this->object->transform.position.y + collisionScale.y> other->transform.position.y)
     {
         overlapX = std::min(this->object->transform.position.x + collisionScale.x, other->transform.position.x + collisionScale.x) - std::max(this->object->transform.position.x, other->transform.position.x);
         overlapY = std::min(this->object->transform.position.y + collisionScale.y, other->transform.position.y + collisionScale.y) - std::max(this->object->transform.position.y, other->transform.position.y);
