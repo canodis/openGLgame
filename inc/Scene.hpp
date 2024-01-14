@@ -39,6 +39,8 @@ public:
 	BoxCollision2dController *boxCollision2dController;
 	std::vector<GameObject *> gameObjects;
 
+	glm::vec3 playerPosition;
+
 	bool debug;
 private:
 	Scene(int width, int height)

@@ -5,12 +5,10 @@
 int main(int ac, char **av)
 {
     MapReader mapReader(ac, av);
-    Camera2D::getInstance().SetProjection(-5.0f, 5.0f, -5.0f, 5.0f);
+    Camera2D::getInstance().SetProjection(-5.0f, 5.0f, -3.0f, 7.0f);
     Player *player = new Player();
     Scene::getInstance().player = player;
-
     mapReader.createGameObjects();
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

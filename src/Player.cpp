@@ -22,6 +22,7 @@ Player::Player()
     anim->loadTexturesFromDirectory("fall", "./animations/Player/Fall/", "PlayerFall", "png", 0.1f);
     anim->setCurrentAnimation("idle");
     Scene::getInstance().gameObjects.push_back(object);
+    object->setPosition(glm::vec3(-27, -7, 0));
     this->setGameObject(object);
 }
 
@@ -54,6 +55,7 @@ void Player::processInput(GLFWwindow *window, float deltaTime)
             obj->velocity.y = jumpSpeed;
         }
     }
+
 }
 
 void    Player::Update(float deltaTime)

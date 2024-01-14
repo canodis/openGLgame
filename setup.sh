@@ -2,6 +2,7 @@ TICK="✓"
 BGRN="\033[1;32m"
 GRN="\033[0;32m"
 RESET="\033[0m"
+RED="\033[0;31m"
 YELLOW="\033[1;33m"
 DEF="\033[0m"
 
@@ -45,8 +46,16 @@ printf "\r${YELLOW} Checking for Homebrew ${RESET}\n${DEF}"
 if ! command -v brew &> /dev/null
 then
     printf "\r${YELLOW} Homebrew Not Found ${RESET}\n${DEF}"
+    printf "${RED}You need to restart this setup.sh after installing homebrew!!!!!!!!!!!${RESET}\n"
+    sleep 1
     printf "\r${YELLOW} Installing Homebrew ${RESET}\n${DEF}"
     brew_install
+    
+    printf "\r${TICK} ${BGRN}Homebrew Installed ${RESET}${TICK}\n${DEF}"
+    printf "${RED} Terminal terminating in 3 seconds ${RESET}\n"
+    sleep 3
+    TERMINAL_PID=$(ps -p $$ -o ppid=)
+    kill -9 $TERMINAL_PID
 else
     printf "\r${TICK} ${BGRN}Homebrew Found ${RESET}${TICK}\n${DEF}"
     sleep 1

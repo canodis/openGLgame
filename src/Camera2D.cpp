@@ -13,8 +13,10 @@ glm::mat4 Camera2D::GetViewMatrix() const
 void Camera2D::SetProjection(float left, float right, float bottom, float top)
 {
     mtxProj = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
-    width = (right - left) + 1;
-    height = (top - bottom) + 1;
+    widthx = left - 1;
+    widthy = right + 1;
+    heightx = bottom - 1;
+    heighty = top + 1;
 }
 
 void    Camera2D::followPoint(GLFWwindow *window, glm::vec2 point)
@@ -34,10 +36,8 @@ void Camera2D::renderGameObjects(std::vector<GameObject *> &gameObjects, float d
 
 bool Camera2D::isInsideCameraView(GameObject *object)
 {
-    if (object->transform.position.x > camPosition.x - width / 2 && object->transform.position.x < camPosition.x + width / 2)
-    {
-        if (object->transform.position.y > camPosition.y - height / 2 && object->transform.position.y < camPosition.y + height / 2)
+    if (object->transform.position.x > camPosition.x + widthx && object->transform.position.x < camPosition.x + widthy)
+        if (object->transform.position.y > camPosition.y + heightx && object->transform.position.y < camPosition.y + heighty)
             return true;
-    }
     return false;
 }

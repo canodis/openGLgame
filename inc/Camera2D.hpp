@@ -31,7 +31,9 @@ public:
     
 private:
     Camera2D() : camPosition(0.0f, 0.0f, 0.0f), mtxProj(1.0f) {}
-    float width;
-    float height;
+    float widthx;
+    float widthy;
+    float heightx;
+    float heighty;
 };
 

@@ -57,11 +57,17 @@ void    MapReader::selectMapObject(char c, int x, int y)
         case grass:
             createCollidableMapObject(c, x, y, "./textures/grass.jpeg");
             break;
-        case stone:
-            createMapObject(c, x, y, "./textures/stone.png");
+        case grassBottom:
+            createMapObject(c, x, y, "./textures/grassBottom.jpeg");
             break;
         case player:
-            createMapObject(c, x, y, "./textures/player.png");
+            Scene::getInstance().playerPosition = glm::vec3(-((float)x), -((float)y), 0.0f);
+            break;
+        case ana:
+            createMapObject(c, x, y, "./textures/ana.jpeg");
+            break;
+        case stone:
+            createCollidableMapObject(c, x, y, "./textures/stone.jpeg");
             break;
         default:
             std::cout << "Error: Unknown map object : " << c <<  std::endl;
