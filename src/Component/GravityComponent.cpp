@@ -49,3 +49,7 @@ void GravityComponent::setGrounded(bool grounded)
 {
     isGrounded = grounded;
 }
+
+void GravityComponent::setStatic()
+{
+}

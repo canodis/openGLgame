@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <BoxCollision2dController.hpp>
+#include "BoxCollision2d.hpp"
 
 MapReader::MapReader(int ac, char **av) {
     // if (ac != 2)
@@ -74,6 +75,7 @@ void    MapReader::createCollidableMapObject(char c, int x, int y, std::string t
     gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture(textureLocation));
     gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
     gameObject->setPosition(glm::vec3(-((float)x), -((float)y), 0.0f));
+    gameObject->AddComponent<BoxCollision2d>();
     gameObject->setStatic();
     Scene::getInstance().boxCollision2dController->objects.insert({dis::ivec2(-x, -y), gameObject});
     gameObjects.push_back(gameObject);

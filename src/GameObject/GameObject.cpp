@@ -38,6 +38,8 @@ void    GameObject::setStatic()
 {
     isStatic = true;
     update = [this](float deltaTime) { this->StaticUpdate(); };
+    for (auto& component : components)
+        component->setStatic();
 }
 
 void    GameObject::RemoveComponent(Component *component)

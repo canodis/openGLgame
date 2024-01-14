@@ -12,6 +12,7 @@ public:
     void setGameObject(GameObject *gameObject) override;
     void setGrounded(bool grounded);
     ~GravityComponent() override = default;
+    void setStatic() override;
     bool  isGrounded;
 private:
     float m_Gravity = 0.0f;

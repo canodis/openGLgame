@@ -8,12 +8,16 @@ class BoxCollision2d : public Component {
 public:
     BoxCollision2d();
     BoxCollision2d(GameObject *gameObject);
+    ~BoxCollision2d() override;
     void update(float deltaTime) override;
+    void dynamicUpdate(float deltaTime);
+    void staticUpdate(float deltaTime);
     void setGameObject(GameObject *gameObject) override;
     void isColliding(GameObject *gameObject);
     void setCollisionScale(glm::vec2 scale);
     void grounded(bool grounded);
     dis::ivec2 getOrigin(GameObject *gameObject);
+    void setStatic() override;
 private:
     void drawDebugCollision();
     void overlapCalculation(GameObject *other, float &overlapX, float &overlapY);
@@ -31,4 +35,6 @@ private:
 
     glm::vec2 collisionScale;
     dis::ivec2 objorigin;
+
+    std::function<void(float)> updateType;
 };

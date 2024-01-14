@@ -4,6 +4,7 @@
 
 BoxCollision2d::BoxCollision2d()
 {
+    updateType = [this](float deltaTime) { this->dynamicUpdate(deltaTime); };
     collisionScale = glm::vec2(1.0f, 1.0f);
     for (int i = 0; i < 8; i++)
     {
@@ -21,6 +22,11 @@ BoxCollision2d::BoxCollision2d(GameObject *gameObject) : BoxCollision2d()
 }
 
 void BoxCollision2d::update(float deltaTime)
+{
+    updateType(deltaTime);
+}
+
+void BoxCollision2d::dynamicUpdate(float deltaTime)
 {
     std::map<dis::ivec2, GameObject *> objects = Scene::getInstance().boxCollision2dController->objects;
     objorigin = getOrigin(this->object);
@@ -73,8 +79,15 @@ void BoxCollision2d::update(float deltaTime)
     drawDebugCollision();
 }
 
+void BoxCollision2d::staticUpdate(float deltaTime)
+{
+
+}
+
 void BoxCollision2d::isColliding(GameObject *other)
 {
+    if (other->GetComponent<BoxCollision2d>() == nullptr)
+        return;
     float overlapX, overlapY;
 
     if (this->object->transform.position.x<other->transform.position.x + collisionScale.x &&this->object->transform.position.x + collisionScale.x> other->transform.position.x &&
@@ -105,6 +118,7 @@ void BoxCollision2d::overlapCalculation(GameObject *other, float &overlapX, floa
         if (this->object->transform.position.y < other->transform.position.y)
         {
             this->object->transform.position.y -= overlapY;
+            this->object->velocity.y = 0.0f;
         }
         else
         {
@@ -139,6 +153,7 @@ void BoxCollision2d::drawDebugCollision()
     static bool &debug = Scene::getInstance().debug;
     if (!debug)
         return;
+
     debugObjects[0]->transform.position.x = left.x;
     debugObjects[0]->transform.position.y = left.y;
     debugObjects[1]->transform.position.x = right.x;
@@ -174,4 +189,16 @@ void BoxCollision2d::grounded(bool grounded)
     {
         gravity->setGrounded(grounded);
     }
+}
+
+void BoxCollision2d::setStatic()
+{
+    updateType = [this](float deltaTime) { this->staticUpdate(deltaTime); };
+}
+
+
+BoxCollision2d::~BoxCollision2d()
+{
+    for (auto& obj : debugObjects)
+        delete obj;
 }
