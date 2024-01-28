@@ -101,7 +101,7 @@ void Client::_udpThreadFunc()
         {
             char senderIP[INET_ADDRSTRLEN];
             inet_ntop(AF_INET, &senderAddr.sin_addr, senderIP, INET_ADDRSTRLEN);
-            std::cout << "Udp message from " << senderIP << ":" << ntohs(senderAddr.sin_port) << " : " << buffer << std::endl;
+            
         }
     }
 }
@@ -202,6 +202,6 @@ void Client::renderPlayers()
 {
     for (const auto &player : _players)
     {
-        player.second->gameObject->Draw();
+        player.second->gameObject->update(0);
     }
 }
