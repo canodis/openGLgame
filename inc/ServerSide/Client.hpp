@@ -47,6 +47,8 @@ private:
     void _parseTcpMessage(const std::string &message);
     void _tcpLoginRequest(std::istringstream &iss);
     void _deletePlayer(int fd);
+    void _udpPlayerPosition(const std::string &msg);
+    void _createPlayer(int fd, int x, int y);
     std::thread _tcpThread;
     std::thread _udpThread;
 };

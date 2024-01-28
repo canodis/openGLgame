@@ -16,12 +16,12 @@ public:
     {
         this->fd = fd;
         this->username = "canodis";
-        gameObject = Scene::getInstance().gameObjectManager->Create2dObject("serverplayer");
+        gameObject = Scene::getInstance().gameObjectManager->Create2dObject("player");
         gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture("./animations/Player/Idle/PlayerIdle0.png"));
         gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
         gameObject->setPosition(glm::vec3(posx, posy, 0));
     }
-    void SetPosition(int x, int y)
+    void SetPosition(float x, float y)
     {
         gameObject->setPosition(glm::vec3(x, y, 0));
     }

@@ -99,11 +99,35 @@ void Client::_udpThreadFunc()
         }
         else
         {
-            char senderIP[INET_ADDRSTRLEN];
-            inet_ntop(AF_INET, &senderAddr.sin_addr, senderIP, INET_ADDRSTRLEN);
-            
+            // std::cout << "Received UDP message: " << buffer << std::endl;
+            _udpPlayerPosition(buffer);
         }
     }
+}
+
+void    Client::_udpPlayerPosition(const std::string &msg)
+{
+    int fd;
+    float x, y;
+    std::istringstream iss(msg);
+
+    iss >> fd;
+    iss >> x;
+    iss >> y;
+    std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
+    if (it == _players.end())
+    {
+        _createPlayer(fd, x, y);
+    }
+    else
+    {
+        it->second->SetPosition(x, y);
+    }
+}
+
+void    Client::_createPlayer(int fd, int x, int y)
+{
+    _players.insert(std::pair<int, ServerPlayer *>(fd, new ServerPlayer(fd, x, y)));
 }
 
 void Client::sendTcpMessage(const char *message)
@@ -181,11 +205,11 @@ void Client::_tcpLoginRequest(std::istringstream &ss)
     ss >> playerCount;
     ss >> _serverFd;
     std::cout << "Server fd: " << _serverFd << std::endl;
-    for (int i = 0; i < playerCount - 1; i++)
-    {
-        ss >> playerFd;
-        _players.insert(std::pair<int, ServerPlayer *>(playerFd, new ServerPlayer(playerFd, 0, 0)));
-    }
+    // for (int i = 0; i < playerCount - 1; i++)
+    // {
+    //     ss >> playerFd;
+    //     _players.insert(std::pair<int, ServerPlayer *>(playerFd, new ServerPlayer(playerFd, 0, 0)));
+    // }
 }
 
 void Client::_deletePlayer(int fd)
