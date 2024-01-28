@@ -25,7 +25,7 @@ private:
     struct sockaddr_in _tcpAddr;
     std::thread _tcpThread;
     std::map<int, ServerPlayer *> &_players;
-    int _serverFd;
+    int &_serverFd;
     float _accumulatedTime;
 
     void _initSocket();

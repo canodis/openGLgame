@@ -28,7 +28,7 @@ private:
     struct sockaddr_in _serverUdpAddr;
     std::thread _udpThread;
     std::map<int, ServerPlayer *> &_players;
-    int _serverFd;
+    int &_serverFd;
     float _tickRate;
 
     void _createPlayer(int fd, int x, int y);

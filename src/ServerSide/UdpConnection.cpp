@@ -24,7 +24,6 @@ void UdpConnection::sendPlayerPosition(float x, float y, float deltaTime)
     if (_accumulatedTime >= _tickRate)
     {
         char buffer[101];
-        std::cout << "Sending player position" << std::endl;
         sprintf(buffer, "%d %f %f", _serverFd, x, y);
         sendUdpMessage(buffer);
         _accumulatedTime = 0;
