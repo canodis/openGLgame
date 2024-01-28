@@ -4,6 +4,7 @@
 #include <BoxCollision2d.hpp>
 #include "Animator.hpp"
 #include "GravityComponent.hpp"
+#include "UdpPositionSender.hpp"
 
 Player::Player() : speed(5), jumpSpeed(5)
 {
@@ -11,6 +12,7 @@ Player::Player() : speed(5), jumpSpeed(5)
     object->SetShaderProgram(Scene::getInstance().shaderProgram);
     object->transform.position = glm::vec3(0);
     object->AddComponent<BoxCollision2d>()->setCollisionScale(glm::vec2(0.8f, 0.9f));
+    object->AddComponent<UdpPositionSender>();
     Animator *anim = object->AddComponent<Animator>();
     anim->loadTexturesFromDirectory("idle", "./animations/Player/Idle/", "PlayerIdle", "png", 0.2f);
     anim->loadTexturesFromDirectory("run", "./animations/Player/Run/", "PlayerRun", "png", 0.1f);

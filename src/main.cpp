@@ -31,7 +31,6 @@ int main(int ac, char **av)
         Camera2D::getInstance().followPoint(Scene::getInstance().window, player->GetPosition());
         Scene::getInstance().shaderProgram->setMat4("viewMatrix", &Camera2D::getInstance().mtxProj);
         Scene::getInstance().textRenderer->ShowPlayerInfo();
-        Client::getInstance().sendPlayerPosition(player->GetPosition().x, player->GetPosition().y, delta);
         player->ResetVelocity();
         glfwSwapBuffers(Scene::getInstance().window);
         glfwPollEvents();
