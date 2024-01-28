@@ -5,6 +5,7 @@ SRCS		= 	$(wildcard src/*.cpp)
 SRCS		+=  $(wildcard src/GameObject/*.cpp)
 SRCS		+=  $(wildcard src/Managers/*.cpp)
 SRCS		+=  $(wildcard src/Component/*.cpp)
+SRCS		+=  $(wildcard src/ServerSide/*.cpp)
 # SRCS		+=  $(wildcard imgui/*.cpp)
 
 OBJS		= 	$(patsubst srcs/%.cpp,objs/%.o,$(SRCS))
@@ -19,7 +20,6 @@ INCLUDE_DIR = 	$(shell find ./inc/ -type d)
 CXXFLAGS += -I/$(HOME)/goinfre/.brew/opt/freetype/include/freetype2 -I/$HOME/goinfre/.brew/opt/libpng/include/libpng16
 LDFLAGS += -L/$(HOME)/goinfre/.brew/opt/freetype/lib -lfreetype
 INCLUDE_FLAGS = $(addprefix -I, $(INCLUDE_DIR))
-# INCLUDE_FLAGS = -I./inc/ -I./inc/GameObject -I./inc/Managers -I./inc/Data -I./inc/Components
 GLM_DIR		= 	-I./glm/
 IMGUIDIR	=	-I./imgui/
 

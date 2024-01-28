@@ -42,6 +42,8 @@ public:
 	glm::vec3 playerPosition;
 
 	bool debug;
+
+	void DrawGameObjects(float deltaTime);
 private:
 	Scene(int width, int height)
 	{

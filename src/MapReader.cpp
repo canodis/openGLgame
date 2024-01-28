@@ -7,11 +7,6 @@
 #include "BoxCollision2d.hpp"
 
 MapReader::MapReader(int ac, char **av) {
-    // if (ac != 2)
-    // {
-    //     std::cout << "Usage: ./my_rpg map_location" << std::endl;
-    //     exit(1);
-    // }
     readMap("./map.txt");
 }
 
@@ -51,26 +46,14 @@ void    MapReader::selectMapObject(char c, int x, int y)
 {
     switch (c)
     {
-        case background:
-            createMapObject(c, x, y, "./textures/background.jpeg");
+        case water:
+            createCollidableMapObject(c, x, y, "./textures/desertTilesets/water.png");
             break;
-        case grass:
-            createCollidableMapObject(c, x, y, "./textures/grass.jpeg");
+        case desertMiddle:
+            createMapObject(c, x, y, "./textures/desertTilesets/desertMiddle.png");
             break;
-        case grassBottom:
-            createMapObject(c, x, y, "./textures/grassBottom.jpeg");
-            break;
-        case player:
-            Scene::getInstance().playerPosition = glm::vec3(-((float)x), -((float)y), 0.0f);
-            break;
-        case ana:
-            createMapObject(c, x, y, "./textures/ana.jpeg");
-            break;
-        case stone:
-            createCollidableMapObject(c, x, y, "./textures/stone.jpeg");
-            break;
-        default:
-            std::cout << "Error: Unknown map object : " << c <<  std::endl;
+        case desertRoadMiddle:
+            createMapObject(c, x, y, "./textures/desertTilesets/desertRoadMiddle.png");
             break;
     }
 }

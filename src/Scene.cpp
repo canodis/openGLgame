@@ -37,6 +37,12 @@ void Scene::keycallback()
             Scene::getInstance().debug = !Scene::getInstance().debug; });
 }
 
+void Scene::DrawGameObjects(float deltaTime)
+{
+	for (auto &object : gameObjects)
+		object->update(deltaTime);
+}
+
 Scene::~Scene()
 {
 	delete vaoManager;

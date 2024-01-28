@@ -12,3 +12,4 @@
 #include "MapReader.hpp"
 #include "GravityComponent.hpp"
 #include "BoxCollision2d.hpp"
+#include "Client.hpp"

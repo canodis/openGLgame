@@ -1,6 +1,5 @@
 #include "BoxCollision2d.hpp"
 #include "Scene.hpp"
-#include "GravityComponent.hpp"
 
 BoxCollision2d::BoxCollision2d()
 {
@@ -72,10 +71,6 @@ void BoxCollision2d::dynamicUpdate(float deltaTime)
     {
         isColliding(objects[down]);
     }
-    else
-    {
-        grounded(false);
-    }
     drawDebugCollision();
 }
 
@@ -123,7 +118,6 @@ void BoxCollision2d::overlapCalculation(GameObject *other, float &overlapX, floa
         else
         {
             this->object->transform.position.y += overlapY;
-            grounded(true);
         }
     }
 }
@@ -183,20 +177,11 @@ void BoxCollision2d::setCollisionScale(glm::vec2 scale)
     collisionScale = scale;
 }
 
-void BoxCollision2d::grounded(bool grounded)
-{
-    GravityComponent *gravity = this->object->GetComponent<GravityComponent>();
-    if (gravity != nullptr)
-    {
-        gravity->setGrounded(grounded);
-    }
-}
 
 void BoxCollision2d::setStatic()
 {
     updateType = [this](float deltaTime) { this->staticUpdate(deltaTime); };
 }
-
 
 BoxCollision2d::~BoxCollision2d()
 {
