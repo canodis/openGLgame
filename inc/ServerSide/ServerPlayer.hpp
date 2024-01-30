@@ -35,7 +35,7 @@ public:
         gameObject->setPosition(glm::vec3(x, y, 0));
     }
 
-    void SetAnimation(AnimationType anim)
+    void SetAnimation(int anim)
     {
         Animator *animator = gameObject->GetComponent<Animator>();
         animator->setCurrentAnimation(anim);

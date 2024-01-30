@@ -18,7 +18,7 @@ public:
     void update(float deltaTime) override;
     void setGameObject(GameObject *gameObject) override;
     Animation *loadTexturesFromDirectory(AnimationType anim, std::string path, std::string file, std::string extension, float animationSpeed);
-    void setCurrentAnimation(AnimationType animationState);
+    void setCurrentAnimation(int animationState);
     void setStatic() override;
     Animation *getAnimation(AnimationType animationType);
     void setServerPlayer(bool isServerPlayer);
@@ -26,8 +26,8 @@ public:
 private:
     bool isServerPlayer;
     Animation *currentAnimation;
-    AnimationType currentAnimationType;
+    int currentAnimationType;
     float elapsedTime;
     int currentFrame;
-    std::map<AnimationType, Animation> animations;
+    std::map<int, Animation> animations;
 };

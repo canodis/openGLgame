@@ -105,16 +105,10 @@ void TcpConnection::_animationRequest(std::istringstream &ss)
     ss >> fd;
     ss >> animation;
 
-    AnimationType animType = static_cast<AnimationType>(animation);
-
-    if (animation < 0 || animation >= static_cast<int>(AnimationType::run) + 1) {
-        std::cerr << "Invalid animation value: " << animation << std::endl;
-        return;
-    }
     std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
     if (it != _players.end())
     {
-        it->second->SetAnimation(animType);
+        it->second->SetAnimation(animation);
     }
 }
 

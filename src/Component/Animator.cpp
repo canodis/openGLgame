@@ -80,7 +80,7 @@ Animation *Animator::loadTexturesFromDirectory(AnimationType anim, std::string p
     return &animations[anim];
 }
 
-void Animator::setCurrentAnimation(AnimationType animationState)
+void Animator::setCurrentAnimation(int animationState)
 {
     if (animations.find(animationState) == animations.end())
     {
@@ -90,10 +90,10 @@ void Animator::setCurrentAnimation(AnimationType animationState)
     if (currentAnimation == &animations[animationState])
         return;
     currentAnimation = &animations[animationState];
-    currentAnimationType = animationState;
+    currentAnimationType = (int)animationState;
     if (isServerPlayer)
     {
-
+        sendAnimationToServer((AnimationType)animationState);
     }
     currentFrame = 0;
     elapsedTime = 0;
@@ -114,7 +114,7 @@ void Animator::setServerPlayer(bool isServerPlayer)
     this->isServerPlayer = isServerPlayer;
 }
 
-void sendAnimationToServer(AnimationType animationType)
+void Animator::sendAnimationToServer(AnimationType animationType)
 {
     Client::getInstance().tcpConnection->sendAnimationToServer(animationType);
 }
