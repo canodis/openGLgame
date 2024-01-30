@@ -24,7 +24,6 @@ public:
         anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/Player/Idle/", "PlayerIdle", "png", 0.2f);
         anim->loadTexturesFromDirectory(AnimationType::run, "./animations/Player/Run/", "PlayerRun", "png", 0.1f);
         anim->setCurrentAnimation(AnimationType::idle);
-        anim->setServerPlayer(true);
         gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
         gameObject->setPosition(glm::vec3(posx, posy, 0));
     }
@@ -32,6 +31,11 @@ public:
     void SetPosition(float x, float y)
     {
         gameObject->setPosition(glm::vec3(x, y, 0));
+    }
+
+    void SetScale(int x)
+    {
+        gameObject->transform.scale.x = x;
     }
 
     void SetAnimation(int anim)

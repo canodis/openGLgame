@@ -1,22 +1,12 @@
 #include "Animator.hpp"
 #include "Scene.hpp"
 #include <filesystem>
-#include "Client.hpp"
 
 Animator::Animator()
 {
     currentAnimation = NULL;
-    isServerPlayer = false;
     elapsedTime = 0;
     currentFrame = 0;
-}
-
-Animator::Animator(bool isServerPlayer)
-{
-    currentAnimation = NULL;
-    elapsedTime = 0;
-    currentFrame = 0;
-    this->isServerPlayer = isServerPlayer;
 }
 
 Animator::Animator(GameObject *gameObject) : Animator()
@@ -91,10 +81,6 @@ void Animator::setCurrentAnimation(int animationState)
         return;
     currentAnimation = &animations[animationState];
     currentAnimationType = (int)animationState;
-    if (isServerPlayer)
-    {
-        sendAnimationToServer((AnimationType)animationState);
-    }
     currentFrame = 0;
     elapsedTime = 0;
 }
@@ -109,12 +95,7 @@ Animation *Animator::getAnimation(AnimationType animationType)
     return &animations[animationType];
 }
 
-void Animator::setServerPlayer(bool isServerPlayer)
+int Animator::getAnimationType() const
 {
-    this->isServerPlayer = isServerPlayer;
-}
-
-void Animator::sendAnimationToServer(AnimationType animationType)
-{
-    Client::getInstance().tcpConnection->sendAnimationToServer(animationType);
+    return currentAnimationType;
 }

@@ -12,7 +12,6 @@ class Animator : public Component
 {
 public:
     Animator();
-    Animator(bool isServerPlayer);
     Animator(GameObject *gameObject);
     ~Animator() override;
     void update(float deltaTime) override;
@@ -21,10 +20,8 @@ public:
     void setCurrentAnimation(int animationState);
     void setStatic() override;
     Animation *getAnimation(AnimationType animationType);
-    void setServerPlayer(bool isServerPlayer);
-    void sendAnimationToServer(AnimationType animationType);
+    int getAnimationType() const;
 private:
-    bool isServerPlayer;
     Animation *currentAnimation;
     int currentAnimationType;
     float elapsedTime;

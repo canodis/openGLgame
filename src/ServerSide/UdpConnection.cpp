@@ -30,6 +30,20 @@ void UdpConnection::sendPlayerPosition(float x, float y, float deltaTime)
     }
 }
 
+void UdpConnection::sendPlayerAllData(float x, float y, int scaleX, int animation, float deltaTime)
+{
+    if (_serverFd == -1)
+        return;
+    _accumulatedTime += deltaTime;
+    if (_accumulatedTime >= _tickRate)
+    {
+        char buffer[101];
+        sprintf(buffer, "%d %f %f %d %d", _serverFd, x, y, scaleX, animation);
+        sendUdpMessage(buffer);
+        _accumulatedTime = 0;
+    }
+}
+
 void UdpConnection::_initSocket()
 {
     _udpSocket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -88,11 +102,14 @@ void UdpConnection::_playerPositionHandle(const std::string &msg)
 {
     int fd;
     float x, y;
+    int scaleX, animation;
     std::istringstream iss(msg);
 
     iss >> fd;
     iss >> x;
     iss >> y;
+    iss >> scaleX;
+    iss >> animation;
     std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
     if (it == _players.end())
     {
@@ -101,6 +118,8 @@ void UdpConnection::_playerPositionHandle(const std::string &msg)
     else
     {
         it->second->SetPosition(x, y);
+        it->second->SetScale(scaleX);
+        it->second->SetAnimation(animation);
     }
 }
 

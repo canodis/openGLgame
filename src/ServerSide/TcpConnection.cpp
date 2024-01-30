@@ -91,6 +91,7 @@ void TcpConnection::_parse(const std::string &message)
         else if (substr.find("Anim") == 0)
         {
             std::istringstream ss(substr.substr(4));
+            std::cout << "Anim request : " << ss.str() << std::endl;
             _animationRequest(ss);
         }
         start = end + 1;
@@ -106,6 +107,7 @@ void TcpConnection::_animationRequest(std::istringstream &ss)
     ss >> animation;
 
     std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
+    std::cout << "Animation request for fd " << fd << " animation " << animation << std::endl;
     if (it != _players.end())
     {
         it->second->SetAnimation(animation);
@@ -137,5 +139,6 @@ void TcpConnection::sendAnimationToServer(int animation)
     std::string message = "/Anim "
         + std::to_string(Client::getInstance()._serverFd) + " "
         + std::to_string(animation) + "*";
+    std::cout << "Sended " << message << std::endl;
     sendTcpMessage(message.c_str());
 }
