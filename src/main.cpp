@@ -25,8 +25,8 @@ int main(int ac, char **av)
         glfwSetWindowTitle(Scene::getInstance().window, std::to_string(1.0f / delta).c_str());
         player->processInput(Scene::getInstance().window, delta);
         mapReader.drawMap(delta);
+        Client::getInstance().renderPlayers(delta);
         Scene::getInstance().DrawGameObjects(delta);
-        Client::getInstance().renderPlayers();
         player->Update(delta);
         Camera2D::getInstance().followPoint(Scene::getInstance().window, player->GetPosition());
         Scene::getInstance().shaderProgram->setMat4("viewMatrix", &Camera2D::getInstance().mtxProj);

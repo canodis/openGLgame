@@ -1,10 +1,22 @@
 #include "Animator.hpp"
 #include "Scene.hpp"
 #include <filesystem>
+#include "Client.hpp"
 
 Animator::Animator()
 {
     currentAnimation = NULL;
+    isServerPlayer = false;
+    elapsedTime = 0;
+    currentFrame = 0;
+}
+
+Animator::Animator(bool isServerPlayer)
+{
+    currentAnimation = NULL;
+    elapsedTime = 0;
+    currentFrame = 0;
+    this->isServerPlayer = isServerPlayer;
 }
 
 Animator::Animator(GameObject *gameObject) : Animator()
@@ -46,7 +58,7 @@ void Animator::setStatic()
 {
 }
 
-Animation *Animator::loadTexturesFromDirectory(std::string animationName, std::string path, std::string file, std::string extension, float animationSpeed)
+Animation *Animator::loadTexturesFromDirectory(AnimationType anim, std::string path, std::string file, std::string extension, float animationSpeed)
 {
     std::string fullPath;
     Animation animation;
@@ -64,29 +76,45 @@ Animation *Animator::loadTexturesFromDirectory(std::string animationName, std::s
         animation.animationSpeed = animationSpeed;
         i++;
     }
-    animations[animationName] = animation;
-    return &animations[animationName];
+    animations[anim] = animation;
+    return &animations[anim];
 }
 
-void Animator::setCurrentAnimation(std::string animationName)
+void Animator::setCurrentAnimation(AnimationType animationState)
 {
-    if (animations.find(animationName) == animations.end())
+    if (animations.find(animationState) == animations.end())
     {
-        std::cout << "Animation " << animationName << " not found" << std::endl;
+        std::cout << "Animation " << animationState << " not found" << std::endl;
         return;
     }
-    if (currentAnimation == &animations[animationName])
+    if (currentAnimation == &animations[animationState])
         return;
-    currentAnimation = &animations[animationName];
+    currentAnimation = &animations[animationState];
+    currentAnimationType = animationState;
+    if (isServerPlayer)
+    {
+
+    }
     currentFrame = 0;
+    elapsedTime = 0;
 }
 
-Animation *Animator::getAnimation(std::string animationName)
+Animation *Animator::getAnimation(AnimationType animationType)
 {
-    if (animations.find(animationName) == animations.end())
+    if (animations.find(animationType) == animations.end())
     {
-        std::cout << "Animation " << animationName << " not found" << std::endl;
+        std::cout << "Animation " << animationType << " not found" << std::endl;
         return NULL;
     }
-    return &animations[animationName];
+    return &animations[animationType];
+}
+
+void Animator::setServerPlayer(bool isServerPlayer)
+{
+    this->isServerPlayer = isServerPlayer;
+}
+
+void sendAnimationToServer(AnimationType animationType)
+{
+    Client::getInstance().tcpConnection->sendAnimationToServer(animationType);
 }

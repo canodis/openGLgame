@@ -1,5 +1,6 @@
 #pragma once
 
+class TcpConnection;
 #include <sys/socket.h>
 #include <iostream>
 #include <netinet/in.h>
@@ -20,6 +21,7 @@ public:
     ~TcpConnection();
     void sendTcpMessage(const char *message);
     void sendPlayerPosition(float x, float y, float deltaTime);
+    void sendAnimationToServer(int animation);
 private:
     int _tcpSocket;
     struct sockaddr_in _tcpAddr;
@@ -33,4 +35,5 @@ private:
     void _parse(const std::string &message);
     void _loginRequest(std::istringstream &iss);
     void _deletePlayer(int fd);
+    void _animationRequest(std::istringstream &ss);
 };

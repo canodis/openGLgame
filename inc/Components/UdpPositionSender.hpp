@@ -13,5 +13,6 @@ public:
     void setGameObject(GameObject *gameObject) override;
     void setStatic() override;
 private:
+    glm::vec3 lastPosition;
     GameObject *gameObject;
 };

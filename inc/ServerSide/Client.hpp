@@ -1,5 +1,6 @@
 #pragma once
 
+class Client;
 
 # include <sys/socket.h>
 # include <netinet/in.h>
@@ -28,11 +29,11 @@ public:
         static Client instance;
         return instance;
     }
-    void renderPlayers();
+    void renderPlayers(float deltaTime);
     TcpConnection *tcpConnection;
     UdpConnection *udpConnection;
+    int _serverFd;
 private:
     std::map<int, ServerPlayer *> _players;
-    int _serverFd;
     Client();
 };

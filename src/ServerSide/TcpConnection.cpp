@@ -1,4 +1,5 @@
 #include "TcpConnection.hpp"
+#include "Client.hpp"
 
 TcpConnection::TcpConnection(std::map<int, ServerPlayer *> &players, int &serverFd) : _players(players), _serverFd(serverFd)
 {
@@ -87,7 +88,33 @@ void TcpConnection::_parse(const std::string &message)
             std::istringstream ss(substr.substr(5));
             _loginRequest(ss);
         }
+        else if (substr.find("Anim") == 0)
+        {
+            std::istringstream ss(substr.substr(4));
+            _animationRequest(ss);
+        }
         start = end + 1;
+    }
+}
+
+void TcpConnection::_animationRequest(std::istringstream &ss)
+{
+    int fd;
+    int animation;
+
+    ss >> fd;
+    ss >> animation;
+
+    AnimationType animType = static_cast<AnimationType>(animation);
+
+    if (animation < 0 || animation >= static_cast<int>(AnimationType::run) + 1) {
+        std::cerr << "Invalid animation value: " << animation << std::endl;
+        return;
+    }
+    std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
+    if (it != _players.end())
+    {
+        it->second->SetAnimation(animType);
     }
 }
 
@@ -109,4 +136,12 @@ void TcpConnection::_deletePlayer(int fd)
         delete it->second;
         _players.erase(it);
     }
+}
+
+void TcpConnection::sendAnimationToServer(int animation)
+{
+    std::string message = "/Anim "
+        + std::to_string(Client::getInstance()._serverFd) + " "
+        + std::to_string(animation) + "*";
+    sendTcpMessage(message.c_str());
 }

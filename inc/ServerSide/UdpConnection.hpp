@@ -8,6 +8,7 @@
 #include <thread>
 #include <sstream>
 #include <map>
+class UdpConnection;
 #include "ServerPlayer.hpp"
 
 # define SERVER_IP "45.87.173.55"

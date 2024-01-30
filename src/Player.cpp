@@ -2,7 +2,6 @@
 #include "Scene.hpp"
 #include <iostream>
 #include <BoxCollision2d.hpp>
-#include "Animator.hpp"
 #include "GravityComponent.hpp"
 #include "UdpPositionSender.hpp"
 
@@ -14,9 +13,9 @@ Player::Player() : speed(5), jumpSpeed(5)
     object->AddComponent<BoxCollision2d>()->setCollisionScale(glm::vec2(0.8f, 0.9f));
     object->AddComponent<UdpPositionSender>();
     Animator *anim = object->AddComponent<Animator>();
-    anim->loadTexturesFromDirectory("idle", "./animations/Player/Idle/", "PlayerIdle", "png", 0.2f);
-    anim->loadTexturesFromDirectory("run", "./animations/Player/Run/", "PlayerRun", "png", 0.1f);
-    anim->setCurrentAnimation("idle");
+    anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/Player/Idle/", "PlayerIdle", "png", 0.2f);
+    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/Player/Run/", "PlayerRun", "png", 0.1f);
+    anim->setCurrentAnimation(AnimationType::idle);
     Scene::getInstance().gameObjects.push_back(object);
     object->setPosition(glm::vec3(-27, -7, 0));
     this->setGameObject(object);
@@ -63,11 +62,11 @@ void    Player::Update(float deltaTime)
 
     if (obj->velocity.x != 0 || obj->velocity.y != 0)
     {
-        anim->setCurrentAnimation("run");
+        anim->setCurrentAnimation(AnimationType::run);
     }
     else
     {
-        anim->setCurrentAnimation("idle");
+        anim->setCurrentAnimation(AnimationType::idle);
     }
     
 }
