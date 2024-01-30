@@ -20,7 +20,6 @@ public:
         this->username = "canodis";
         gameObject = Scene::getInstance().gameObjectManager->Create2dObject("player");
         gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture("./animations/Player/Idle/PlayerIdle0.png"));
-        gameObject->AddComponent<Animator>();
         Animator *anim = gameObject->AddComponent<Animator>();
         anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/Player/Idle/", "PlayerIdle", "png", 0.2f);
         anim->loadTexturesFromDirectory(AnimationType::run, "./animations/Player/Run/", "PlayerRun", "png", 0.1f);
