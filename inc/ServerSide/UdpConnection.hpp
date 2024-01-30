@@ -22,7 +22,7 @@ public:
     ~UdpConnection();
     void sendUdpMessage(const char *message);
     void sendPlayerPosition(float x, float y, float deltaTime);
-    void sendPlayerAllData(float x, float y, int scaleX, int animation, int scaleX, float deltaTime);
+    void sendPlayerAllData(float x, float y, int scaleX, int animation, float deltaTime);
 private:
     float _accumulatedTime;
     int _udpSocket;
