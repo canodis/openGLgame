@@ -8,6 +8,7 @@
 Player::Player() : speed(5), jumpSpeed(5)
 {
     GameObject *object = Scene::getInstance().gameObjectManager->Create2dObject("player");
+    object->SetTexture(Scene::getInstance().textureManager->loadTexture("./animations/Player/Idle/PlayerIdle0.png"));
     object->SetShaderProgram(Scene::getInstance().shaderProgram);
     object->transform.position = glm::vec3(0);
     object->AddComponent<BoxCollision2d>()->setCollisionScale(glm::vec2(0.8f, 0.9f));
@@ -19,11 +20,10 @@ Player::Player() : speed(5), jumpSpeed(5)
     Scene::getInstance().gameObjects.push_back(object);
     object->setPosition(glm::vec3(-27, -7, 0));
     this->setGameObject(object);
+    targetPosition = object->transform.position;
 }
 
-Player::~Player()
-{
-}
+Player::~Player() {}
 
 void Player::setGameObject(GameObject *gameObject)
 {
@@ -32,28 +32,41 @@ void Player::setGameObject(GameObject *gameObject)
 
 void Player::processInput(GLFWwindow *window, float deltaTime)
 {
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    bool currentMouseRightButtonState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE;
+    if (currentMouseRightButtonState && !lastMouseRightButtonState)
     {
-        obj->velocity.x = -speed * deltaTime;
-        obj->transform.scale.x = -1;
+        targetPosition = Camera2D::getInstance().getMouseWorldPosition(window);
     }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if (obj->transform.position.x < targetPosition.x)
     {
         obj->velocity.x = speed * deltaTime;
         obj->transform.scale.x = 1;
     }
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    else if (obj->transform.position.x > targetPosition.x)
     {
-        obj->velocity.y = speed * deltaTime;
+        obj->velocity.x = -speed * deltaTime;
+        obj->transform.scale.x = -1;
     }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    else
+    {
+        obj->velocity.x = 0;
+    }
+    if (obj->transform.position.y < targetPosition.y)
     {
         obj->velocity.y = -speed * deltaTime;
     }
-
+    else if (obj->transform.position.y > targetPosition.y)
+    {
+        obj->velocity.y = speed * deltaTime;
+    }
+    else
+    {
+        obj->velocity.y = 0;
+    }
+    lastMouseRightButtonState = currentMouseRightButtonState;
 }
 
-void    Player::Update(float deltaTime)
+void Player::Update(float deltaTime)
 {
     obj->transform.position.x += obj->velocity.x;
     obj->transform.position.y += obj->velocity.y;
@@ -68,5 +81,4 @@ void    Player::Update(float deltaTime)
     {
         anim->setCurrentAnimation(AnimationType::idle);
     }
-    
 }

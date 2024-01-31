@@ -5,11 +5,11 @@
 int main(int ac, char **av)
 {
     Client::getInstance();
-    MapReader mapReader(ac, av);
+    MapController mapController(ac, av);
     Camera2D::getInstance().SetProjection(-5.0f, 5.0f, -3.0f, 7.0f);
     Player *player = new Player();
     Scene::getInstance().player = player;
-    mapReader.createGameObjects();
+    mapController.createGameObjects();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -24,7 +24,7 @@ int main(int ac, char **av)
         float delta = Scene::getInstance().timer->elapsedSeconds();
         glfwSetWindowTitle(Scene::getInstance().window, std::to_string(1.0f / delta).c_str());
         player->processInput(Scene::getInstance().window, delta);
-        mapReader.drawMap(delta);
+        mapController.drawMap(delta);
         Client::getInstance().renderPlayers(delta);
         Scene::getInstance().DrawGameObjects(delta);
         player->Update(delta);

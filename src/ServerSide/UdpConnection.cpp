@@ -4,7 +4,7 @@ UdpConnection::UdpConnection(std::map<int, ServerPlayer *> &players, int &server
 {
     _initSocket();
     _udpThread = std::thread(&UdpConnection::_threadFunc, this);
-    _tickRate = 1.0 / 60;
+    _tickRate = 1.0 / 30;
 }
 
 UdpConnection::~UdpConnection()
@@ -13,7 +13,7 @@ UdpConnection::~UdpConnection()
 
 void UdpConnection::sendUdpMessage(const char *message)
 {
-    sendto(_udpSocket, message, strlen(message), 0, (struct sockaddr *)&_serverUdpAddr, sizeof(_serverUdpAddr));
+    sendto(_udpSocket, message, strlen(message), 0, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr));
 }
 
 void UdpConnection::sendPlayerPosition(float x, float y, float deltaTime)
@@ -24,21 +24,21 @@ void UdpConnection::sendPlayerPosition(float x, float y, float deltaTime)
     if (_accumulatedTime >= _tickRate)
     {
         char buffer[101];
-        sprintf(buffer, "%d %f %f", _serverFd, x, y);
+        sprintf(buffer, "%d %f %f ", _serverFd, x, y);
         sendUdpMessage(buffer);
         _accumulatedTime = 0;
     }
 }
 
-void UdpConnection::sendPlayerAllData(float x, float y, int scaleX, int animation, float deltaTime)
+void UdpConnection::sendPlayerAllData(float x, float y, int scaleX, int animation, float deltaTime, bool forceSend)
 {
     if (_serverFd == -1)
         return;
     _accumulatedTime += deltaTime;
-    if (_accumulatedTime >= _tickRate)
+    if (_accumulatedTime >= _tickRate || forceSend)
     {
         char buffer[101];
-        sprintf(buffer, "%d %f %f %d %d", _serverFd, x, y, scaleX, animation);
+        sprintf(buffer, "%d %f %f %d %d ", _serverFd, x, y, scaleX, animation);
         sendUdpMessage(buffer);
         _accumulatedTime = 0;
     }
@@ -53,31 +53,25 @@ void UdpConnection::_initSocket()
         exit(1);
     }
 
-    int reuse = 1;
-    if (setsockopt(_udpSocket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0)
-    {
-        std::cout << "Error setting UDP socket options" << std::endl;
-        exit(1);
-    }
-
     memset(&_clientUdpAddr, 0, sizeof(_clientUdpAddr));
-    _clientUdpAddr.sin_family = AF_INET;
-    _clientUdpAddr.sin_port = htons(CLIENT_UDP_PORT);
-    _clientUdpAddr.sin_addr.s_addr = INADDR_ANY;
-    if (bind(_udpSocket, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr)) < 0)
-    {
-        std::cout << "Error binding UDP socket: " << strerror(errno) << std::endl;
-        exit(1);
-    }
 
-    memset(&_serverUdpAddr, 0, sizeof(_serverUdpAddr));
-    _serverUdpAddr.sin_family = AF_INET;
-    _serverUdpAddr.sin_port = htons(SERVER_UDP_PORT);
-    if (inet_pton(AF_INET, SERVER_IP, &_serverUdpAddr.sin_addr) <= 0)
-    {
-        std::cout << "Error converting IP address" << std::endl;
-        exit(1);
-    }
+    _clientUdpAddr.sin_family = AF_INET;
+    _clientUdpAddr.sin_port = htons(SERVER_UDP_PORT);
+    _clientUdpAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
+    // if (bind(_udpSocket, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr)) < 0)
+    // {
+    //     std::cout << "Error binding UDP socket: " << strerror(errno) << std::endl;
+    //     exit(1);
+    // }
+
+    // memset(&_serverUdpAddr, 0, sizeof(_serverUdpAddr));
+    // _serverUdpAddr.sin_family = AF_INET;
+    // _serverUdpAddr.sin_port = htons(SERVER_UDP_PORT);
+    // if (inet_pton(AF_INET, SERVER_IP, &_serverUdpAddr.sin_addr) <= 0)
+    // {
+    //     std::cout << "Error converting IP address" << std::endl;
+    //     exit(1);
+    // }
 }
 
 void UdpConnection::_threadFunc()

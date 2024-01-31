@@ -16,7 +16,7 @@ class Client;
 # include "TcpConnection.hpp"
 # include "UdpConnection.hpp"
 
-# define SERVER_IP "45.87.173.55"
+# define SERVER_IP "193.57.41.221"
 # define SERVER_TCP_PORT 8080
 # define SERVER_UDP_PORT 8081
 # define CLIENT_UDP_PORT 8082

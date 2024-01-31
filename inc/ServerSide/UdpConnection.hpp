@@ -11,7 +11,7 @@
 class UdpConnection;
 #include "ServerPlayer.hpp"
 
-# define SERVER_IP "45.87.173.55"
+# define SERVER_IP "193.57.41.221"
 # define SERVER_UDP_PORT 8081
 # define CLIENT_UDP_PORT 8082
 
@@ -22,7 +22,7 @@ public:
     ~UdpConnection();
     void sendUdpMessage(const char *message);
     void sendPlayerPosition(float x, float y, float deltaTime);
-    void sendPlayerAllData(float x, float y, int scaleX, int animation, float deltaTime);
+    void sendPlayerAllData(float x, float y, int scaleX, int animation, float deltaTime, bool forceSend = false);
 private:
     float _accumulatedTime;
     int _udpSocket;

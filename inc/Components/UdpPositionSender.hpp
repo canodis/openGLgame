@@ -13,6 +13,8 @@ public:
     void setGameObject(GameObject *gameObject) override;
     void setStatic() override;
 private:
+    int getAnimationType();
     glm::vec3 lastPosition;
     GameObject *gameObject;
+    bool lastSend;
 };

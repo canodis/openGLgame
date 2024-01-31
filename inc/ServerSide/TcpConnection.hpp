@@ -11,7 +11,6 @@ class TcpConnection;
 #include <map>
 #include "ServerPlayer.hpp"
 
-# define SERVER_IP "45.87.173.55"
 # define SERVER_TCP_PORT 8080
 
 class TcpConnection
