@@ -5,7 +5,7 @@
 #include "GravityComponent.hpp"
 #include "UdpPositionSender.hpp"
 
-Player::Player() : speed(5), jumpSpeed(5)
+Player::Player() : speed(2), jumpSpeed(5)
 {
     GameObject *object = Scene::getInstance().gameObjectManager->Create2dObject("player");
     object->SetTexture(Scene::getInstance().textureManager->loadTexture("./animations/Player/Idle/PlayerIdle0.png"));
@@ -20,7 +20,7 @@ Player::Player() : speed(5), jumpSpeed(5)
     Scene::getInstance().gameObjects.push_back(object);
     object->setPosition(glm::vec3(-27, -7, 0));
     this->setGameObject(object);
-    targetPosition = object->transform.position;
+    this->targetPosition = object->transform.position;
 }
 
 Player::~Player() {}
@@ -37,39 +37,20 @@ void Player::processInput(GLFWwindow *window, float deltaTime)
     {
         targetPosition = Camera2D::getInstance().getMouseWorldPosition(window);
     }
-    if (obj->transform.position.x < targetPosition.x)
-    {
-        obj->velocity.x = speed * deltaTime;
-        obj->transform.scale.x = 1;
-    }
-    else if (obj->transform.position.x > targetPosition.x)
-    {
-        obj->velocity.x = -speed * deltaTime;
-        obj->transform.scale.x = -1;
-    }
-    else
-    {
-        obj->velocity.x = 0;
-    }
-    if (obj->transform.position.y < targetPosition.y)
-    {
-        obj->velocity.y = -speed * deltaTime;
-    }
-    else if (obj->transform.position.y > targetPosition.y)
-    {
-        obj->velocity.y = speed * deltaTime;
-    }
-    else
-    {
-        obj->velocity.y = 0;
-    }
     lastMouseRightButtonState = currentMouseRightButtonState;
 }
 
 void Player::Update(float deltaTime)
 {
-    obj->transform.position.x += obj->velocity.x;
-    obj->transform.position.y += obj->velocity.y;
+    if (isVectorEqual(obj->transform.position, targetPosition) == false)
+    {
+        move(deltaTime);
+    }
+
+    if (isVectorEqual(obj->transform.position, targetPosition) == false)
+    {
+        move(deltaTime);
+    }
 
     Animator *anim = obj->GetComponent<Animator>();
 
@@ -81,4 +62,18 @@ void Player::Update(float deltaTime)
     {
         anim->setCurrentAnimation(AnimationType::idle);
     }
+}
+
+bool Player::isVectorEqual(glm::vec2 a, glm::vec2 b) const
+{
+    return (fabs(a.x - b.x) < EPSILON && fabs(a.y - b.y) < EPSILON);
+}
+
+void Player::move(float deltaTime)
+{
+    glm::vec2 direction = targetPosition - obj->transform.position;
+    direction = glm::normalize(direction);
+    obj->velocity = direction * speed;
+    obj->transform.position += glm::vec3(obj->velocity * deltaTime, 0.0f);
+    obj->transform.scale.x = direction.x > 0 ? 1 : -1;
 }

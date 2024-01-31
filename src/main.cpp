@@ -6,7 +6,7 @@ int main(int ac, char **av)
 {
     Client::getInstance();
     MapController mapController(ac, av);
-    Camera2D::getInstance().SetProjection(-5.0f, 5.0f, -3.0f, 7.0f);
+    Camera2D::getInstance().SetProjection(-7.0f, 7.0f, -5.0f, 9.0f);
     Player *player = new Player();
     Scene::getInstance().player = player;
     mapController.createGameObjects();

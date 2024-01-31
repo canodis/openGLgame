@@ -42,14 +42,18 @@ void Camera2D::renderGameObjects(std::map<dis::ivec2, GameObject *> &gameObjects
     }
 }
 
-glm::vec2 Camera2D::getMouseWorldPosition(GLFWwindow *window)
-{
+glm::vec3 Camera2D::getMouseWorldPosition(GLFWwindow *window) {
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
-    glm::vec2 mousePos = glm::vec2(xpos, ypos);
-    glm::vec2 worldPos = glm::vec2(0.0f, 0.0f);
-    worldPos.x = (mousePos.x - (Scene::getInstance().windowWidth / 2)) / (Scene::getInstance().windowWidth / 2);
-    worldPos.y = (mousePos.y - (Scene::getInstance().windowHeight / 2)) / (Scene::getInstance().windowHeight / 2);
-    worldPos = glm::vec2(camPosition.x + worldPos.x, camPosition.y + worldPos.y);
-    return worldPos;
+
+    glm::vec2 ndcPos;
+    ndcPos.x = (xpos / Scene::getInstance().windowWidth) * 2.0f - 1.0f;
+    ndcPos.y = 1.0f - (ypos / Scene::getInstance().windowHeight) * 2.0f;
+
+    glm::vec4 clipSpacePos = glm::vec4(glm::vec3(ndcPos, -1.0f), 1.0f);
+    glm::vec4 worldPos = glm::inverse(mtxProj) * clipSpacePos;
+    worldPos += glm::vec4(camPosition, 0.0f);
+
+    return glm::vec3(worldPos.x, worldPos.y, 0);
 }
+

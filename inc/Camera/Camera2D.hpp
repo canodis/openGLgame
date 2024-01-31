@@ -30,8 +30,11 @@ public:
     glm::mat4 mtxProj;
     bool isInsideCameraView(GameObject *object);
     void renderGameObjects(std::map<dis::ivec2, GameObject *> &gameObjects, float deltaTime);
-    glm::vec2 getMouseWorldPosition(GLFWwindow *window);
-    
+    glm::vec3 getMouseWorldPosition(GLFWwindow *window);
+    float getLeft() const { return (widthx); }
+    float getRight() const { return (widthy); }
+    float getBottom() const { return (heightx); }
+    float getTop() const { return (heighty); }
 private:
     Camera2D() : camPosition(0.0f, 0.0f, 0.0f), mtxProj(1.0f) {}
     float widthx;

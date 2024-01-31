@@ -16,11 +16,15 @@ public:
 
     glm::vec2 GetPosition() const { return (obj->GetPosition()); }
     glm::vec2 GetVelocity() const { return (obj->velocity); }
+    void move(float deltaTime);
 private:
     GameObject *obj;
     float speed;
     float jumpSpeed;
     bool canJump;
-    glm::vec2 targetPosition;
+    glm::vec3 targetPosition;
     bool lastMouseRightButtonState = true;
+    const float EPSILON = 0.01f;
+    bool isVectorEqual(glm::vec2 a, glm::vec2 b) const;
+    void handleScale();
 };

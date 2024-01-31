@@ -120,8 +120,9 @@ void    TextRenderer::ShowPlayerInfo()
     TextRenderer *textRenderer = Scene::getInstance().textRenderer;
     textRenderer->shaderProgram->use();
     Player *player = Scene::getInstance().player;
-    textRenderer->renderText("Player Position: " + std::to_string(player->GetPosition().x) + ", " + std::to_string(player->GetPosition().y), -4.9f, 4.5f, 0.004f, glm::vec3(1.0f, 1.0f, 0.0f));
-    textRenderer->renderText("Player Velocity: " + std::to_string(player->GetVelocity().x) + ", " + std::to_string(player->GetVelocity().y), -4.9f, 4.2f, 0.004f, glm::vec3(1.0f, 1.0f, 0.0f));
+    Camera2D &camera = Camera2D::getInstance();
+    textRenderer->renderText("Player Position: " + std::to_string(player->GetPosition().x) + ", " + std::to_string(player->GetPosition().y), camera.getLeft() + 1.1f, camera.getTop() - 1.6f, 0.006f, glm::vec3(1.0f, 0.0f, 1.0f));
+    textRenderer->renderText("Player Velocity: " + std::to_string(player->GetVelocity().x) + ", " + std::to_string(player->GetVelocity().y), camera.getLeft() + 1.1f, camera.getTop() - 1.9f, 0.006f, glm::vec3(1.0f, 0.0f, 1.0f));
     textRenderer->setMat4("projection", &Camera2D::getInstance().mtxProj);
 }
 

@@ -13,14 +13,14 @@ SRCS        +=  $(wildcard src/Global/*.cpp)
 OBJS        =   $(SRCS:src/%.cpp=obj/%.o)
 
 CC          =   c++ -g
-CFLAGS      =   -framework OpenGl -std=c++11
+CFLAGS = -std=c++11
 FRMPATH     =   -I./GLFW/
 GLADPATH    =   -I./glad/
 FRMWK       =   -I/usr/include/GL
 LINKER      =   -L./lib
 INCLUDE_DIR =   $(shell find ./inc/ -type d)
 CXXFLAGS    +=  -I/$(HOME)/goinfre/.brew/opt/freetype/include/freetype2 -I/$HOME/goinfre/.brew/opt/libpng/include/libpng16
-LDFLAGS     +=  -L/$(HOME)/goinfre/.brew/opt/freetype/lib -lfreetype
+LDFLAGS += -framework OpenGL -L/$(HOME)/goinfre/.brew/opt/freetype/lib -lfreetype -lglfw
 INCLUDE_FLAGS = $(addprefix -I, $(INCLUDE_DIR))
 GLM_DIR     =   -I./glm/
 IMGUIDIR    =   -I./imgui/
@@ -32,8 +32,8 @@ CE = \033[0m
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(CXXFLAGS) $(GLADPATH) $(FRMPATH) $(LINKER) $(INCLUDE_FLAGS) $(GLM_DIR) $(IMGUIDIR) -o $@ $^ glad/glad.c -lglfw $(LDFLAGS) -Wno-deprecated
-	echo "\n\033[92m---> Game Created ✓\033[0m";
+	@ $(CC) $(OBJS) glad/glad.c $(CFLAGS) $(CXXFLAGS) $(GLADPATH) $(FRMPATH) $(INCLUDE_FLAGS) $(GLM_DIR) $(IMGUIDIR) $(LINKER) -o $@ $(LDFLAGS) -Wno-deprecated
+	@ echo "\n\033[92m---> Game Created ✓\033[0m";
 
 obj/%.o: src/%.cpp
 	@ mkdir -p $(@D)
