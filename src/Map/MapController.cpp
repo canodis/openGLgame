@@ -132,4 +132,3 @@ void    MapController::drawMap(float deltaTime)
 {
     Camera2D::getInstance().renderGameObjects(mapObjects, deltaTime);
 }
-

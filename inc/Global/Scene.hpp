@@ -16,6 +16,8 @@ class Scene;
 #include "TextRenderer.hpp"
 #include "BoxCollision2dController.hpp"
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
 class Scene
 {
 public:
@@ -38,15 +40,14 @@ public:
 	TextRenderer *textRenderer;
 	BoxCollision2dController *boxCollision2dController;
 	std::vector<GameObject *> gameObjects;
-
 	glm::vec3 playerPosition;
-
 	int windowWidth;
 	int windowHeight;
-
 	bool debug;
-
 	void DrawGameObjects(float deltaTime);
+	void handleSizeChange(int width, int height);
+	glm::vec2 getWindowSize() const;
+	float deltaTime = 0;
 private:
 	Scene(int width, int height)
 	{
@@ -59,8 +60,7 @@ private:
 		textRenderer = new TextRenderer();
 		boxCollision2dController = new BoxCollision2dController();
 		debug = false;
-		windowWidth = width;
-		windowHeight = height;
+		glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 		init_uniforms();
 		keycallback();
 	}
@@ -70,3 +70,4 @@ private:
 	void init_uniforms();
 	void keycallback();
 };
+

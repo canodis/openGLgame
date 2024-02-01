@@ -17,4 +17,5 @@ private:
     HighResClock    m_Start;
     HighResClock    m_End;
     float           m_MaxFPS;
+    float           m_maxFrameTime;
 };

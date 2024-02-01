@@ -4,35 +4,34 @@
 
 int main(int ac, char **av)
 {
+    Player *player = new Player();
     Client::getInstance();
     MapController mapController(ac, av);
-    Camera2D::getInstance().SetProjection(-7.0f, 7.0f, -5.0f, 9.0f);
-    Player *player = new Player();
-    Scene::getInstance().player = player;
+    Scene *scene = &Scene::getInstance();
+    scene->player = player;
     mapController.createGameObjects();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.0, 0.0, 0.0, 1.0);
-
+    Camera2D *camera = &Camera2D::getInstance();
     glfwSwapInterval(0);
-    Scene::getInstance().timer->start();
-    Scene::getInstance().timer->setMaxFPS(4564);
-    while (glfwGetKey(Scene::getInstance().window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(Scene::getInstance().window))
+    scene->timer->start();
+    while (glfwGetKey(scene->window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(scene->window))
     {
-        Scene::getInstance().shaderProgram->use();
+        scene->shaderProgram->use();
         glClear(GL_COLOR_BUFFER_BIT);
-        float delta = Scene::getInstance().timer->elapsedSeconds();
-        glfwSetWindowTitle(Scene::getInstance().window, std::to_string(1.0f / delta).c_str());
-        player->processInput(Scene::getInstance().window, delta);
+        float delta = scene->timer->elapsedSeconds();
+        player->processInput(scene->window, delta);
         mapController.drawMap(delta);
+        scene->DrawGameObjects(delta);
         Client::getInstance().renderPlayers(delta);
-        Scene::getInstance().DrawGameObjects(delta);
         player->Update(delta);
-        Camera2D::getInstance().followPoint(Scene::getInstance().window, player->GetPosition());
-        Scene::getInstance().shaderProgram->setMat4("viewMatrix", &Camera2D::getInstance().mtxProj);
-        Scene::getInstance().textRenderer->ShowPlayerInfo();
+        camera->getInstance().followPoint(scene->window, player->GetPosition());
+        scene->shaderProgram->setMat4("viewMatrix", &camera->getInstance().mtxProj);
+        scene->textRenderer->ShowPlayerInfo();
+        camera->update(scene->window, delta);
         player->ResetVelocity();
-        glfwSwapBuffers(Scene::getInstance().window);
+        glfwSwapBuffers(scene->window);
         glfwPollEvents();
     }
 }

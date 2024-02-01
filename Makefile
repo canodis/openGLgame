@@ -38,7 +38,7 @@ $(NAME): $(OBJS)
 obj/%.o: src/%.cpp
 	@ mkdir -p $(@D)
 	@ $(CC) $(CFLAGS) $(CXXFLAGS) $(GLADPATH) $(FRMPATH) $(INCLUDE_FLAGS) $(GLM_DIR) $(IMGUIDIR) -c $< -o $@
-	@ echo "\033[K$(CY)[RT] :$(CE) $(CG)Compiling $<$(CE) \033[1A";
+	@ echo "\033[K$(CY)[DIS] :$(CE) $(CG)Compiling $<$(CE) \033[1A";
 
 clean:
 	@ /bin/rm -rf obj/

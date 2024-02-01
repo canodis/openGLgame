@@ -3,7 +3,8 @@
 
 Timer::Timer()
 {
-    m_MaxFPS = 60;
+    m_MaxFPS = 6666;
+    m_maxFrameTime = 1.0 / m_MaxFPS;
 }
 
 void    Timer::start()
@@ -16,10 +17,9 @@ double Timer::elapsedSeconds() {
 
     std::chrono::duration<double> diff = m_End - m_Start;
     double elapsedSeconds = diff.count();
-    double maxFrameTime = 1.0 / m_MaxFPS;
 
-    if (elapsedSeconds < maxFrameTime) {
-        double timeToWait = maxFrameTime - elapsedSeconds;
+    if (elapsedSeconds < m_maxFrameTime) {
+        double timeToWait = m_maxFrameTime - elapsedSeconds;
         std::this_thread::sleep_for(std::chrono::duration<double>(timeToWait));
 
         m_End = std::chrono::high_resolution_clock::now();
@@ -32,4 +32,5 @@ double Timer::elapsedSeconds() {
 void    Timer::setMaxFPS(float maxFPS)
 {
     m_MaxFPS = maxFPS;
+    m_maxFrameTime = 1.0 / m_MaxFPS;
 }

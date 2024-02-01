@@ -74,7 +74,7 @@ void TcpConnection::_parse(const std::string &message)
             std::istringstream ss(substr.substr(3));
             int new_fd;
             ss >> new_fd;
-            _players.insert(std::pair<int, ServerPlayer *>(new_fd, new ServerPlayer(new_fd, 0, 0)));
+            _players.insert(std::pair<int, ServerPlayer *>(new_fd, new ServerPlayer(new_fd, -27, -7)));
         }
         else if (substr.find("Left") == 0)
         {
@@ -86,6 +86,7 @@ void TcpConnection::_parse(const std::string &message)
         else if (substr.find("Login") == 0)
         {
             std::istringstream ss(substr.substr(5));
+            std::cout << "Login request : " << ss.str() << std::endl;
             _loginRequest(ss);
         }
         else if (substr.find("Anim") == 0)
@@ -121,7 +122,11 @@ void TcpConnection::_loginRequest(std::istringstream &ss)
 
     ss >> playerCount;
     ss >> _serverFd;
-    std::cout << "Server fd: " << _serverFd << std::endl;
+    for (int i = 0; i < playerCount - 1; i++)
+    {
+        ss >> playerFd;
+        _players.insert(std::pair<int, ServerPlayer *>(playerFd, new ServerPlayer(playerFd, -27, -7)));
+    }
 }
 
 void TcpConnection::_deletePlayer(int fd)

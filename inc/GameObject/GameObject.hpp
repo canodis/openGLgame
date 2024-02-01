@@ -26,6 +26,7 @@ public:
 
     void setPosition(glm::vec3 position);
     void setStatic();
+    void move(glm::vec3 target, float deltaTime, float speed);
 
     bool isStatic = false;
 

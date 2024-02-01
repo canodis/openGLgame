@@ -1,5 +1,10 @@
 #include "Scene.hpp"
 
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    Scene::getInstance().handleSizeChange(width, height);
+}
+
 void Scene::init_window(int width, int height)
 {
 	if (!glfwInit())
@@ -19,6 +24,7 @@ void Scene::init_window(int width, int height)
 	}
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 }
 
 void Scene::init_uniforms()
@@ -53,4 +59,16 @@ Scene::~Scene()
 	delete textRenderer;
 	delete boxCollision2dController;
 	glfwTerminate();
+}
+
+glm::vec2 Scene::getWindowSize() const
+{
+	return glm::vec2(windowWidth, windowHeight);
+}
+
+void Scene::handleSizeChange(int width, int height)
+{
+	windowWidth = width;
+	windowHeight = height;
+	glViewport(0, 0, width, height);
 }

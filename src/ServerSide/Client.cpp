@@ -11,6 +11,6 @@ void Client::renderPlayers(float deltaTime)
 {
     for (const auto &player : _players)
     {
-        player.second->gameObject->update(deltaTime);
+        player.second->update(deltaTime);
     }
 }

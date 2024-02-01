@@ -24,7 +24,5 @@ private:
     bool canJump;
     glm::vec3 targetPosition;
     bool lastMouseRightButtonState = true;
-    const float EPSILON = 0.01f;
-    bool isVectorEqual(glm::vec2 a, glm::vec2 b) const;
-    void handleScale();
+    const float EPSILON = 0.1f;
 };

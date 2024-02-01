@@ -30,7 +30,7 @@ void UdpConnection::sendPlayerPosition(float x, float y, float deltaTime)
     }
 }
 
-void UdpConnection::sendPlayerAllData(float x, float y, int scaleX, int animation, float deltaTime, bool forceSend)
+void UdpConnection::sendPlayerAllData(float targetX, float targetY, float deltaTime, bool forceSend)
 {
     if (_serverFd == -1)
         return;
@@ -38,7 +38,7 @@ void UdpConnection::sendPlayerAllData(float x, float y, int scaleX, int animatio
     if (_accumulatedTime >= _tickRate || forceSend)
     {
         char buffer[101];
-        sprintf(buffer, "%d %f %f %d %d ", _serverFd, x, y, scaleX, animation);
+        sprintf(buffer, "%d %f %f ", _serverFd, targetX, targetY);
         sendUdpMessage(buffer);
         _accumulatedTime = 0;
     }
@@ -58,20 +58,6 @@ void UdpConnection::_initSocket()
     _clientUdpAddr.sin_family = AF_INET;
     _clientUdpAddr.sin_port = htons(SERVER_UDP_PORT);
     _clientUdpAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
-    // if (bind(_udpSocket, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr)) < 0)
-    // {
-    //     std::cout << "Error binding UDP socket: " << strerror(errno) << std::endl;
-    //     exit(1);
-    // }
-
-    // memset(&_serverUdpAddr, 0, sizeof(_serverUdpAddr));
-    // _serverUdpAddr.sin_family = AF_INET;
-    // _serverUdpAddr.sin_port = htons(SERVER_UDP_PORT);
-    // if (inet_pton(AF_INET, SERVER_IP, &_serverUdpAddr.sin_addr) <= 0)
-    // {
-    //     std::cout << "Error converting IP address" << std::endl;
-    //     exit(1);
-    // }
 }
 
 void UdpConnection::_threadFunc()
@@ -95,25 +81,21 @@ void UdpConnection::_threadFunc()
 void UdpConnection::_playerPositionHandle(const std::string &msg)
 {
     int fd;
-    float x, y;
-    int scaleX, animation;
+    float targetX, targetY;
+    int animation;
     std::istringstream iss(msg);
 
     iss >> fd;
-    iss >> x;
-    iss >> y;
-    iss >> scaleX;
-    iss >> animation;
+    iss >> targetX;
+    iss >> targetY;
     std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
     if (it == _players.end())
     {
-        _createPlayer(fd, x, y);
+        _createPlayer(fd, -27, -7);
     }
     else
     {
-        it->second->SetPosition(x, y);
-        it->second->SetScale(scaleX);
-        it->second->SetAnimation(animation);
+        it->second->SetTargetPosition(targetX, targetY);
     }
 }
 

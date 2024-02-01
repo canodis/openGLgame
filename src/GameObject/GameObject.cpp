@@ -60,6 +60,17 @@ void    GameObject::setPosition(glm::vec3 position)
     UpdateTransform();
 }
 
+void    GameObject::move(glm::vec3 target, float deltaTime, float speed)
+{
+    if (glm::distance(transform.position, target) < 0.1f)
+        return;
+    glm::vec2 direction = target - transform.position;
+    direction = glm::normalize(direction);
+    velocity = direction * speed;
+    transform.position += glm::vec3(velocity * deltaTime, 0.0f);
+    transform.scale.x = direction.x > 0 ? 1 : -1;
+}
+
 GameObject::~GameObject()
 {
     for (auto& component : components)
