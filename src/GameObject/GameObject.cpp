@@ -37,6 +37,7 @@ void    GameObject::StaticUpdate()
 void    GameObject::setStatic()
 {
     isStatic = true;
+    DynamicUpdate(0);
     update = [this](float deltaTime) { this->StaticUpdate(); };
     for (auto& component : components)
         component->setStatic();

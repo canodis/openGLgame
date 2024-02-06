@@ -70,5 +70,6 @@
         "thread": "cpp",
         "filesystem": "cpp",
         "csignal": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/goinfre/rtosun/game/glm"
 }

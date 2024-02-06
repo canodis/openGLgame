@@ -5,130 +5,80 @@
 #include <fstream>
 #include <BoxCollision2dController.hpp>
 #include "BoxCollision2d.hpp"
+#include <sstream>
 
-MapController::MapController(int ac, char **av) {
-    readMap("./map.txt");
+MapController::MapController(int ac, char **av)
+{
 }
 
-MapController::~MapController() { }
+MapController::~MapController() {}
 
-void    MapController::readMap(const char *location)
+void MapController::drawMap(float deltaTime)
 {
-    std::ifstream file(location);
-
-    if (!file.is_open())
-    {
-        std::cout << "Error opening file" << std::endl;
-        exit(1);
-    }
-    std::string line;
-    std::string allLines;
-    while (std::getline(file, line))
-    {
-        map.push_back(line);
-    }
-    mapWidth = map[0].size();
-    mapHeight = map.size();
+    Camera2D::getInstance().renderMapObjects(map, deltaTime);
 }
 
-void    MapController::createGameObjects()
+void MapController::loadMap()
 {
-    for (int y = 0; y < map.size(); y++)
+    std::fstream file;
+    file.open("map.txt", std::ios::in);
+    if (file.is_open())
     {
-        for (int x = 0; map[y][x]; x++)
+        std::string line;
+        while (std::getline(file, line))
         {
-            selectMapObject(map[y][x], x, y);
+            std::istringstream iss(line);
+            float x, y;
+            std::string texturePath;
+            int layer;
+            bool isCollidable;
+            if (!(iss >> x >> y >> texturePath >> layer >> isCollidable))
+            {
+                continue;
+            }
+            addToMap(dis::ivec2(x, y), Scene::getInstance().textureManager->loadTexture(texturePath), layer, texturePath, isCollidable);
         }
     }
+    file.close();
 }
 
-void    MapController::selectMapObject(char c, int x, int y)
+void MapController::addToMap(dis::ivec2 pos, unsigned int textureId, int layer, std::string texturePath, bool isCollidable)
 {
-    switch (c)
+    MapObject *mapObject = new MapObject(glm::ivec3(pos.x, pos.y, 0), textureId, layer, isCollidable);
+    if (isCollidable)
     {
-        case water:
-            createCollidableMapObject(c, x, y, "./textures/grassSpriteSheet/water.png");
-            break;
-        case grassLeftUp:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassLeftUp.png");
-            break;
-        case grassUp:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassUp.png");
-            break;
-        case grassRightUp:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassRightUp.png");
-            break;
-        case grassLeft:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassLeft.png");
-            break;
-        case grassMiddle:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassMiddle.png");
-            break;
-        case grassRight:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassRight.png");
-            break;
-        case grassLeftDown:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassLeftDown.png");
-            break;
-        case grassDown:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassDown.png");
-            break;
-        case grassRightDown:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/grassRightDown.png");
-            break;
-        case rockLeftUp:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockLeftUp.png");
-            break;
-        case rockUp:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockUp.png");
-            break;
-        case rockRightUp:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockRightUp.png");
-            break;
-        case rockLeft:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockLeft.png");
-            break;
-        case rockMiddle:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockMiddle.png");
-            break;
-        case rockRight:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockRight.png");
-            break;
-        case rockLeftDown:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockLeftDown.png");
-            break;
-        case rockDown:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockDown.png");
-            break;
-        case rockRightDown:
-            createMapObject(c, x, y, "./textures/grassSpriteSheet/rockRightDown.png");
-            break;
+        mapObject->m_gameObject->AddComponent<BoxCollision2d>();
+        Scene::getInstance().boxCollision2dController->objects.insert({pos, mapObject->m_gameObject});
+    }
+    if (map[layer].find(pos) != map[layer].end())
+    {
+        delete map[layer][pos];
+        map[layer].erase(pos);
+    }
+    map[layer][pos] = mapObject;
+    map[layer][pos]->texturePath = texturePath;
+    mapObject->m_gameObject->setStatic();
+}
+
+void MapController::removeFromMap(dis::ivec2 pos, int layer)
+{
+    dis::ivec2 obj(pos.x, pos.y);
+    if (map[layer].find(obj) != map[layer].end())
+    {
+        delete map[layer][obj];
+        map[layer].erase(obj);
     }
 }
 
-void    MapController::createCollidableMapObject(char c, int x, int y, std::string textureLocation)
+MapObject *MapController::getObjectAt(dis::ivec2 pos)
 {
-    GameObject *gameObject = Scene::getInstance().gameObjectManager->Create2dObject("mapObject");
-    gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture(textureLocation));
-    gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
-    gameObject->setPosition(glm::vec3(-((float)x), -((float)y), 0.0f));
-    gameObject->AddComponent<BoxCollision2d>();
-    gameObject->setStatic();
-    Scene::getInstance().boxCollision2dController->objects.insert({dis::ivec2(-x, -y), gameObject});
-    mapObjects.insert({dis::ivec2(-x, -y), gameObject});
-}
-
-void    MapController::createMapObject(char c, int x, int y, std::string textureLocation)
-{
-    GameObject *gameObject = Scene::getInstance().gameObjectManager->Create2dObject("mapObject");
-    gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture(textureLocation));
-    gameObject->SetShaderProgram(Scene::getInstance().shaderProgram);
-    gameObject->setStatic();
-    gameObject->setPosition(glm::vec3(-((float)x), -((float)y), 0.0f));
-    mapObjects.insert({dis::ivec2(-x, -y), gameObject});
-}
-
-void    MapController::drawMap(float deltaTime)
-{
-    Camera2D::getInstance().renderGameObjects(mapObjects, deltaTime);
+    std::map<int, std::map<dis::ivec2, MapObject *>>::reverse_iterator it;
+    for (it = map.rbegin(); it != map.rend(); it++)
+    {
+        if (it->second.find(pos) != it->second.end())
+        {
+            return it->second[pos];
+        }
+    }
+    return NULL;
 }

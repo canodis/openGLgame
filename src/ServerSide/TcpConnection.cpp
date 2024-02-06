@@ -40,6 +40,7 @@ void TcpConnection::_initSocket()
         std::cout << "Error connecting to server" << std::endl;
         exit(1);
     }
+    sendTcpMessage(GUARD);
 }
 
 void TcpConnection::_ThreadFunc()
@@ -74,7 +75,7 @@ void TcpConnection::_parse(const std::string &message)
             std::istringstream ss(substr.substr(3));
             int new_fd;
             ss >> new_fd;
-            _players.insert(std::pair<int, ServerPlayer *>(new_fd, new ServerPlayer(new_fd, -27, -7)));
+            _players.insert(std::pair<int, ServerPlayer *>(new_fd, new ServerPlayer(new_fd, 0, 0)));
         }
         else if (substr.find("Left") == 0)
         {
@@ -107,6 +108,7 @@ void TcpConnection::_animationRequest(std::istringstream &ss)
     ss >> fd;
     ss >> animation;
 
+    std::lock_guard<std::mutex> lock(Client::getInstance()._playerMutex);
     std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
     std::cout << "Animation request for fd " << fd << " animation " << animation << std::endl;
     if (it != _players.end())
@@ -122,15 +124,17 @@ void TcpConnection::_loginRequest(std::istringstream &ss)
 
     ss >> playerCount;
     ss >> _serverFd;
+    std::lock_guard<std::mutex> lock(Client::getInstance()._playerMutex);
     for (int i = 0; i < playerCount - 1; i++)
     {
         ss >> playerFd;
-        _players.insert(std::pair<int, ServerPlayer *>(playerFd, new ServerPlayer(playerFd, -27, -7)));
+        _players.insert(std::pair<int, ServerPlayer *>(playerFd, new ServerPlayer(playerFd, 0, 0)));
     }
 }
 
 void TcpConnection::_deletePlayer(int fd)
 {
+    std::lock_guard<std::mutex> lock(Client::getInstance()._playerMutex);
     std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
     if (it != _players.end())
     {

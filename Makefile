@@ -8,6 +8,8 @@ SRCS        +=  $(wildcard src/Component/*.cpp)
 SRCS        +=  $(wildcard src/ServerSide/*.cpp)
 SRCS        +=  $(wildcard src/Map/*.cpp)
 SRCS        +=  $(wildcard src/Global/*.cpp)
+SRCS        +=  $(wildcard src/Camera/*.cpp)
+SRCS        +=  $(wildcard src/ComponentUtils/*.cpp)
 # SRCS        +=  $(wildcard imgui/*.cpp)
 
 OBJS        =   $(SRCS:src/%.cpp=obj/%.o)

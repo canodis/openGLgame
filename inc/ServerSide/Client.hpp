@@ -4,6 +4,7 @@ class Client;
 
 # include <sys/socket.h>
 # include <netinet/in.h>
+# include <mutex>
 # include <arpa/inet.h>
 # include <unistd.h>
 # include <string.h>
@@ -33,6 +34,7 @@ public:
     TcpConnection *tcpConnection;
     UdpConnection *udpConnection;
     int _serverFd;
+    std::mutex _playerMutex;
 private:
     std::map<int, ServerPlayer *> _players;
     Client();

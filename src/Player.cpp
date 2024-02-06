@@ -19,7 +19,7 @@ Player::Player() : speed(3), jumpSpeed(5)
     anim->loadTexturesFromDirectory(AnimationType::run, "./animations/Player/Run/", "PlayerRun", "png", 0.1f);
     anim->setCurrentAnimation(AnimationType::idle);
     Scene::getInstance().gameObjects.push_back(object);
-    object->setPosition(glm::vec3(-27, -7, 0));
+    object->setPosition(glm::vec3(0, 0, 0));
     this->setGameObject(object);
     this->targetPosition = object->transform.position;
 }

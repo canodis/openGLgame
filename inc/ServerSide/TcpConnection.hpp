@@ -11,7 +11,7 @@ class TcpConnection;
 #include <map>
 #include "ServerPlayer.hpp"
 
-# define SERVER_TCP_PORT 8080
+#define GUARD "6663131"
 
 class TcpConnection
 {

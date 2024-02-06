@@ -9,7 +9,7 @@ int main(int ac, char **av)
     MapController mapController(ac, av);
     Scene *scene = &Scene::getInstance();
     scene->player = player;
-    mapController.createGameObjects();
+    mapController.loadMap();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.0, 0.0, 0.0, 1.0);

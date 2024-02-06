@@ -4,6 +4,7 @@
 #include "../glm/gtc/matrix_transform.hpp"
 #include "GameObject.hpp"
 #include "ivec2.hpp"
+#include "MapObject.hpp"
 #include <map>
 #define BEGINX 0.0f
 #define BEGINY 0.0f
@@ -25,6 +26,7 @@ public:
     void setProjection(float left, float right, float bottom, float top);
     bool isInsideCameraView(GameObject *object);
     void renderGameObjects(std::map<dis::ivec2, GameObject *> &gameObjects, float deltaTime);
+    void renderMapObjects(std::map<int, std::map<dis::ivec2, MapObject *>> &objects, float deltaTime);
     glm::vec3 getMouseWorldPosition(GLFWwindow *window);
     glm::mat4 GetViewMatrix() const;
     float getLeft() const { return (widthx); }

@@ -1,4 +1,5 @@
 #include "UdpConnection.hpp"
+#include "Client.hpp"
 
 UdpConnection::UdpConnection(std::map<int, ServerPlayer *> &players, int &serverFd) : _players(players), _serverFd(serverFd), _accumulatedTime(0)
 {
@@ -88,10 +89,11 @@ void UdpConnection::_playerPositionHandle(const std::string &msg)
     iss >> fd;
     iss >> targetX;
     iss >> targetY;
+    std::lock_guard<std::mutex> lock(Client::getInstance()._playerMutex);
     std::map<int, ServerPlayer *>::iterator it = _players.find(fd);
     if (it == _players.end())
     {
-        _createPlayer(fd, -27, -7);
+        _createPlayer(fd, 0, 0);
     }
     else
     {
@@ -101,5 +103,6 @@ void UdpConnection::_playerPositionHandle(const std::string &msg)
 
 void UdpConnection::_createPlayer(int fd, int x, int y)
 {
+    std::lock_guard<std::mutex> lock(Client::getInstance()._playerMutex);
     _players.insert(std::pair<int, ServerPlayer *>(fd, new ServerPlayer(fd, x, y)));
 }
