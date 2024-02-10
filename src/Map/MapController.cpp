@@ -1,5 +1,4 @@
 #include "MapController.hpp"
-#include "MapObjectTypes.hpp"
 #include "Scene.hpp"
 #include <iostream>
 #include <fstream>

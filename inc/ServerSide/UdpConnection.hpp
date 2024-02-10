@@ -8,6 +8,7 @@
 #include <thread>
 #include <sstream>
 #include <map>
+#include <functional>
 class UdpConnection;
 #include "ServerPlayer.hpp"
 
@@ -21,20 +22,27 @@ public:
     UdpConnection(std::map<int, ServerPlayer *> &players, int &serverFd);
     ~UdpConnection();
     void sendUdpMessage(const char *message);
-    void sendPlayerPosition(float x, float y, float deltaTime);
-    void sendPlayerAllData(float x, float y, float deltaTime, bool forceSend = false);
+    void sendPlayerAllData(Transform playerTransform, float x, float y, float deltaTime, bool forceSend = false);
+    void connect();
+    void disconnect();
 private:
     float _accumulatedTime;
     int _udpSocket;
+    int &_serverFd;
+    float _tickRate;
+    bool _udpIsRunning;
     struct sockaddr_in _clientUdpAddr;
     struct sockaddr_in _serverUdpAddr;
     std::thread _udpThread;
     std::map<int, ServerPlayer *> &_players;
-    int &_serverFd;
-    float _tickRate;
+    std::map<int, std::function<void(std::istringstream &)>> _udpPackageHandlers;
 
-    void _createPlayer(int fd, int x, int y);
-    void _initSocket();
+    void _connectSocket();
+    void _handleResponse(std::istringstream iss);
+    void _initResponseHandlers();
+    ServerPlayer *_createPlayer(int fd, int x, int y);
     void _threadFunc();
-    void _playerPositionHandle(const std::string &msg);
+    void _playerPositionHandle(std::istringstream &iss);
+    void _pingHandle(std::istringstream &iss);
+    void _serverShutDownHandle(std::istringstream &iss);
 };

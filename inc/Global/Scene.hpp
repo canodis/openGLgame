@@ -16,7 +16,7 @@ class Scene;
 #include "TextRenderer.hpp"
 #include "BoxCollision2dController.hpp"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 class Scene
 {
@@ -48,6 +48,9 @@ public:
 	void handleSizeChange(int width, int height);
 	glm::vec2 getWindowSize() const;
 	float deltaTime = 0;
+	float drawTotalTime = 0.0f;
+	float calculeTotalTime = 0.0f;
+
 private:
 	Scene(int width, int height)
 	{
@@ -70,4 +73,3 @@ private:
 	void init_uniforms();
 	void keycallback();
 };
-

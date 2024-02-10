@@ -24,7 +24,7 @@ void Article::SetTexture(unsigned int textureId)
     this->textureId = textureId;
 }
 
-unsigned int Article::GetTexture() const
+unsigned int Article::GetTextureId() const
 {
     return (textureId);
 }

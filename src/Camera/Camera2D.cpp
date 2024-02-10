@@ -71,14 +71,23 @@ glm::vec3 Camera2D::getMouseWorldPosition(GLFWwindow *window) {
 
 void Camera2D::renderMapObjects(std::map<int, std::map<dis::ivec2, MapObject *>> &objects, float delta)
 {
+    std::map<unsigned int, std::vector<MapObject*>> instances;
     for (auto &layer : objects)
     {
         for (auto &object : layer.second)
         {
             if (isInsideCameraView(object.second->m_gameObject))
             {
-                object.second->m_gameObject->update(delta);
+                instances[object.second->getTextureId()].push_back(object.second);
             }
+        }
+    }
+    for (auto &instance : instances)
+    {
+        Scene::getInstance().textureManager->activateTexture(0, instance.first);
+        for (auto &object : instance.second)
+        {
+            object->m_gameObject->update(delta);
         }
     }
 }

@@ -4,9 +4,26 @@
 TcpConnection::TcpConnection(std::map<int, ServerPlayer *> &players, int &serverFd) : _players(players), _serverFd(serverFd)
 {
     _accumulatedTime = 0;
-    _initSocket();
-    _tcpThread = std::thread(&TcpConnection::_ThreadFunc, this);
-    _tcpThread.detach();
+    _tcpSocket = -1;
+    _connectionHandleThread = std::thread(&TcpConnection::_tcpConnectionController, this);
+    _connectionHandleThread.detach();
+}
+
+void TcpConnection::_tcpConnectionController()
+{
+    while (true)
+    {
+        if (_connectSocket() == false)
+        {
+            sleep(2);
+            continue;
+        }
+        _tcpThread = std::thread(&TcpConnection::_listen, this);
+        Client::getInstance().udpConnection->connect();
+        _tcpThread.join();
+        Client::getInstance().udpConnection->disconnect();
+        std::cout << "Reconnecting to server..." << std::endl;
+    }
 }
 
 TcpConnection::~TcpConnection()
@@ -19,8 +36,10 @@ void TcpConnection::sendTcpMessage(const char *message)
     send(_tcpSocket, message, strlen(message), 0);
 }
 
-void TcpConnection::_initSocket()
+bool TcpConnection::_connectSocket()
 {
+    if (_tcpSocket != -1)
+        close(_tcpSocket);
     _tcpSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (_tcpSocket < 0)
     {
@@ -38,12 +57,13 @@ void TcpConnection::_initSocket()
     if (connect(_tcpSocket, (struct sockaddr *)&_tcpAddr, sizeof(_tcpAddr)) < 0)
     {
         std::cout << "Error connecting to server" << std::endl;
-        exit(1);
+        return false;
     }
     sendTcpMessage(GUARD);
+    return true;
 }
 
-void TcpConnection::_ThreadFunc()
+void TcpConnection::_listen()
 {
     char buffer[1024];
     while (true)
@@ -52,7 +72,7 @@ void TcpConnection::_ThreadFunc()
         if (recv(_tcpSocket, buffer, sizeof(buffer), 0) <= 0)
         {
             std::cout << "Server closed." << std::endl;
-            exit(1);
+            break;
         }
         _parse(buffer);
     }
@@ -90,12 +110,6 @@ void TcpConnection::_parse(const std::string &message)
             std::cout << "Login request : " << ss.str() << std::endl;
             _loginRequest(ss);
         }
-        else if (substr.find("Anim") == 0)
-        {
-            std::istringstream ss(substr.substr(4));
-            std::cout << "Anim request : " << ss.str() << std::endl;
-            _animationRequest(ss);
-        }
         start = end + 1;
     }
 }
@@ -130,6 +144,7 @@ void TcpConnection::_loginRequest(std::istringstream &ss)
         ss >> playerFd;
         _players.insert(std::pair<int, ServerPlayer *>(playerFd, new ServerPlayer(playerFd, 0, 0)));
     }
+    Client::getInstance().udpConnection->sendPlayerAllData({}, 0, 0, 0, true);
 }
 
 void TcpConnection::_deletePlayer(int fd)

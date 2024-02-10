@@ -12,6 +12,7 @@ public:
     GameObject* m_gameObject;
     bool isCollidable;
     int getLayer() { return layer; }
+    unsigned int getTextureId() { return m_gameObject->GetTextureId(); }
 private:
     int layer;
 };

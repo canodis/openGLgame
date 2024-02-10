@@ -25,12 +25,14 @@ private:
     int _tcpSocket;
     struct sockaddr_in _tcpAddr;
     std::thread _tcpThread;
+    std::thread _connectionHandleThread;
     std::map<int, ServerPlayer *> &_players;
     int &_serverFd;
     float _accumulatedTime;
 
-    void _initSocket();
-    void _ThreadFunc();
+    bool _connectSocket();
+    void _listen();
+    void _tcpConnectionController();
     void _parse(const std::string &message);
     void _loginRequest(std::istringstream &iss);
     void _deletePlayer(int fd);

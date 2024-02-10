@@ -16,4 +16,5 @@ public:
     void SetShaderProgram(ShaderProgram *shaderProgram);
     void UpdateShaderProgram(glm::mat4 &t, glm::mat4 &r, glm::mat4 &s, glm::vec4 &objColor, unsigned int textureId);
     void Draw();
+    void DrawInstances();
 };
