@@ -33,5 +33,6 @@ public:
     glm::vec2 velocity;
     void SetColor(const glm::vec4 &color);
     void SetTexture(unsigned int textureId);
+    glm::mat4 calculateModelMatrix();
     unsigned int GetTextureId() const;
 };

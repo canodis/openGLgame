@@ -35,3 +35,10 @@ void Article::UpdateTransform()
     rotation = glm::rotate(glm::mat4(1.0f), glm::radians(transform.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
     translation = glm::translate(glm::mat4(1.0f), transform.position);
 }
+
+glm::mat4 Article::calculateModelMatrix()
+{
+    UpdateTransform();
+    glm::mat4 model = translation * rotation * scale;
+    return model;
+}

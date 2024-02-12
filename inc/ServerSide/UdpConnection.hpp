@@ -45,4 +45,5 @@ private:
     void _playerPositionHandle(std::istringstream &iss);
     void _pingHandle(std::istringstream &iss);
     void _serverShutDownHandle(std::istringstream &iss);
+    void _handleNpcPosition(std::istringstream &iss);
 };

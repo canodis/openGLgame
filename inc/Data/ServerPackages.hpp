@@ -4,5 +4,6 @@ enum ServerPackage
 {
     PositionRequest = 0,
     Ping = 1,
-    ServerShutDown = 2
+    ServerShutDown = 2,
+    BasicNpcRequest = 3,
 };

@@ -1,8 +1,30 @@
 #include "Scene.hpp"
 
+Scene &Scene::getInstance()
+{
+	static Scene instance;
+	return instance;
+}
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    Scene::getInstance().handleSizeChange(width, height);
+Scene::Scene()
+{
+	init_window(WIDTH, HEIGHT);
+	vaoManager = new VertexArrayObjectManager();
+	shaderProgram = new ShaderProgram();
+	textureManager = new TextureManager();
+	gameObjectManager = new GameObjectManager(vaoManager);
+	timer = new Timer();
+	textRenderer = new TextRenderer();
+	boxCollision2dController = new BoxCollision2dController();
+	debug = false;
+	glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
+	init_uniforms();
+	keycallback();
+}
+
+void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+{
+	Scene::getInstance().handleSizeChange(width, height);
 }
 
 void Scene::init_window(int width, int height)
@@ -45,6 +67,7 @@ void Scene::keycallback()
 
 void Scene::DrawGameObjects(float deltaTime)
 {
+	shaderProgram->use();
 	for (auto &object : gameObjects)
 		object->update(deltaTime);
 }

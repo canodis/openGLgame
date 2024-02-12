@@ -6,6 +6,7 @@ SRCS        +=  $(wildcard src/GameObject/*.cpp)
 SRCS        +=  $(wildcard src/Managers/*.cpp)
 SRCS        +=  $(wildcard src/Component/*.cpp)
 SRCS        +=  $(wildcard src/ServerSide/*.cpp)
+SRCS        +=  $(wildcard src/ServerSide/Npc/*.cpp)
 SRCS        +=  $(wildcard src/Map/*.cpp)
 SRCS        +=  $(wildcard src/Global/*.cpp)
 SRCS        +=  $(wildcard src/Camera/*.cpp)
@@ -15,7 +16,7 @@ SRCS        +=  $(wildcard src/ComponentUtils/*.cpp)
 OBJS        =   $(SRCS:src/%.cpp=obj/%.o)
 
 CC          =   c++ -g
-CFLAGS = -std=c++11
+CFLAGS = -std=c++17
 FRMPATH     =   -I./GLFW/
 GLADPATH    =   -I./glad/
 FRMWK       =   -I/usr/include/GL

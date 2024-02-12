@@ -35,6 +35,7 @@ public:
     UdpConnection *udpConnection;
     int _serverFd;
     std::mutex _playerMutex;
+    std::mutex _npcMutex;
 private:
     std::map<int, ServerPlayer *> _players;
     Client();

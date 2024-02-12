@@ -1,10 +1,15 @@
 #include "TextureManager.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include <filesystem>
+namespace fs = std::filesystem;
+
 #include <glad.h>
 
-TextureManager::TextureManager() {
-    missingTexture = loadTexture("textures/missingTexture.jpeg");
+TextureManager::TextureManager()
+{
+    loadFromFolder("./animations");
+    loadFromFolder("./textures");
 }
 
 unsigned int TextureManager::loadTexture(const std::string filename)
@@ -46,6 +51,21 @@ void TextureManager::activateTexture(unsigned int level, unsigned int id)
 {
     glActiveTexture(level);
     glBindTexture(GL_TEXTURE_2D, id);
+}
+
+void TextureManager::loadFromFolder(const std::string folder)
+{
+    for (const auto &entry : fs::recursive_directory_iterator(folder))
+    {
+        if (entry.is_regular_file())
+        {
+            std::string filePath = entry.path().string();
+            unsigned int textureID = loadTexture(filePath);
+            if (textureID == missingTexture)
+                continue;
+            std::cout << "TextureLoaded : " << filePath << std::endl;
+        }
+    }
 }
 
 TextureManager::~TextureManager()

@@ -13,7 +13,6 @@ public:
     GameObjectManager(VertexArrayObjectManager *vaoManager);
 
     GameObject *Create2dObject(std::string name, const glm::vec4 &color = glm::vec4(1.0f));
-    GameObject *Create2dObjectInstanced(std::string name, const glm::vec4 &color);
     GameObject *CreateColor2dCube(std::string name, const glm::vec4 &color = glm::vec4(1.0f));
     GameObject *GetGameObject(const std::string &name);
     void        DestroyGameObject(const std::string &name);

@@ -1,10 +1,12 @@
 #pragma once
 
-#include "ServerObject.hpp"
+#include "Npc.hpp"
 
-class BasicServerObject : public ServerObject
+class BasicNpc : public Npc
 {
 public:
+    BasicNpc();
     void update(float deltaTime) override;
 private:
+
 };

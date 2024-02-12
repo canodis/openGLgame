@@ -15,17 +15,16 @@ class Scene;
 #include "Timer.hpp"
 #include "TextRenderer.hpp"
 #include "BoxCollision2dController.hpp"
+#define WIDTH 800
+#define HEIGHT 600
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 class Scene
 {
 public:
-	static Scene &getInstance(int width = 800, int height = 600)
-	{
-		static Scene instance(width, height);
-		return instance;
-	}
+	static Scene &getInstance();
 	Scene(Scene const &) = delete;
 	void operator=(Scene const &) = delete;
 
@@ -48,28 +47,12 @@ public:
 	void handleSizeChange(int width, int height);
 	glm::vec2 getWindowSize() const;
 	float deltaTime = 0;
-	float drawTotalTime = 0.0f;
-	float calculeTotalTime = 0.0f;
-
 private:
-	Scene(int width, int height)
-	{
-		init_window(width, height);
-		vaoManager = new VertexArrayObjectManager();
-		shaderProgram = new ShaderProgram();
-		textureManager = new TextureManager();
-		gameObjectManager = new GameObjectManager(vaoManager);
-		timer = new Timer();
-		textRenderer = new TextRenderer();
-		boxCollision2dController = new BoxCollision2dController();
-		debug = false;
-		glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
-		init_uniforms();
-		keycallback();
-	}
+	Scene();
 	~Scene();
 
 	void init_window(int width, int height);
 	void init_uniforms();
 	void keycallback();
 };
+

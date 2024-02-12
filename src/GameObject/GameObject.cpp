@@ -28,18 +28,10 @@ void    GameObject::DynamicUpdate(float deltaTime)
 
 void    GameObject::StaticUpdate()
 {
-    auto startCalculate = std::chrono::high_resolution_clock::now();
-
     for (auto& component : components)
         component->update(0.0f);
     UpdateShaderProgram(translation, rotation, scale, color,textureId);
-    //end calculate
-    auto endCalculate = std::chrono::high_resolution_clock::now();
-    Scene::getInstance().calculeTotalTime += std::chrono::duration_cast<std::chrono::microseconds>(endCalculate - startCalculate).count();
-    auto startDraw = std::chrono::high_resolution_clock::now();
     Draw();
-    auto endDraw = std::chrono::high_resolution_clock::now();
-    Scene::getInstance().drawTotalTime += std::chrono::duration_cast<std::chrono::microseconds>(endDraw - startDraw).count();
 }
 
 void    GameObject::setStatic()
