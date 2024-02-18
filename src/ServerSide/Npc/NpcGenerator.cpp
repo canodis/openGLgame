@@ -8,22 +8,22 @@ NpcGenerator::~NpcGenerator()
 {
 }
 
-Npc *NpcGenerator::generateNpc(int type)
+Npc *NpcGenerator::generateNpc(int type, float speed)
 {
     Npc *npc = nullptr;
     switch (type)
     {
     case NpcType::WhiteCat:
-        npc = generateWhiteCat();
+        npc = generateWhiteCat(speed);
         break;
     case NpcType::CalicoCat:
-        npc = generateCalicoCat();
+        npc = generateCalicoCat(speed);
         break;
     case NpcType::GhostCat:
-        npc = generateGhostCat();
+        npc = generateGhostCat(speed);
         break;
     case NpcType::RadioactiveCat:
-        npc = generateRadioactiveCat();
+        npc = generateRadioactiveCat(speed);
         break;
     default:
         break;
@@ -31,7 +31,7 @@ Npc *NpcGenerator::generateNpc(int type)
     return npc;
 }
 
-Npc *NpcGenerator::generateWhiteCat()
+Npc *NpcGenerator::generateWhiteCat(float speed)
 {
     Npc *npc = new BasicNpc();
     npc->obj = Scene::getInstance().gameObjectManager->Create2dObject("player");
@@ -39,15 +39,15 @@ Npc *NpcGenerator::generateWhiteCat()
     npc->obj->SetShaderProgram(Scene::getInstance().shaderProgram);
     npc->obj->transform.position = glm::vec3(0);
     Animator *anim = npc->obj->AddComponent<Animator>();
-    Animation *an = anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/WhiteCat/Idle/", "catIdle", "png", 0.2f);
+    Animation *an = anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/WhiteCat/Idle/", "catIdle", "png", speed / 30.0f);
     an->loop = false;
-    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/WhiteCat/Run/", "catRun", "png", 0.2f);
+    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/WhiteCat/Run/", "catRun", "png", speed / 30.0f);
     anim->setCurrentAnimation(AnimationType::idle);
 
     return npc;
 }
 
-Npc *NpcGenerator::generateCalicoCat()
+Npc *NpcGenerator::generateCalicoCat(float speed)
 {
     Npc *npc = new BasicNpc();
     npc->obj = Scene::getInstance().gameObjectManager->Create2dObject("player");
@@ -55,15 +55,15 @@ Npc *NpcGenerator::generateCalicoCat()
     npc->obj->SetShaderProgram(Scene::getInstance().shaderProgram);
     npc->obj->transform.position = glm::vec3(0);
     Animator *anim = npc->obj->AddComponent<Animator>();
-    Animation *an = anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/CalicoCat/Idle/", "calicoIdle", "png", 0.2f);
+    Animation *an = anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/CalicoCat/Idle/", "calicoIdle", "png", speed / 30.0f);
     an->loop = false;
-    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/CalicoCat/Run/", "calicoRun", "png", .15f);
+    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/CalicoCat/Run/", "calicoRun", "png", speed / 30.0f);
     anim->setCurrentAnimation(AnimationType::idle);
 
     return npc;
 }
 
-Npc *NpcGenerator::generateGhostCat()
+Npc *NpcGenerator::generateGhostCat(float speed)
 {
     Npc *npc = new BasicNpc();
     npc->obj = Scene::getInstance().gameObjectManager->Create2dObject("player");
@@ -71,15 +71,15 @@ Npc *NpcGenerator::generateGhostCat()
     npc->obj->SetShaderProgram(Scene::getInstance().shaderProgram);
     npc->obj->transform.position = glm::vec3(0);
     Animator *anim = npc->obj->AddComponent<Animator>();
-    Animation *an = anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/GhostCat/Idle/", "ghostIdle", "png", 0.2f);
+    Animation *an = anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/GhostCat/Idle/", "ghostIdle", "png", speed / 30.0f);
     an->loop = false;
-    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/GhostCat/Run/", "ghostRun", "png", 0.2f);
+    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/GhostCat/Run/", "ghostRun", "png", speed / 30.0f);
     anim->setCurrentAnimation(AnimationType::idle);
 
     return npc;
 }
 
-Npc *NpcGenerator::generateRadioactiveCat()
+Npc *NpcGenerator::generateRadioactiveCat(float speed)
 {
     Npc *npc = new BasicNpc();
     npc->obj = Scene::getInstance().gameObjectManager->Create2dObject("player");
@@ -87,9 +87,9 @@ Npc *NpcGenerator::generateRadioactiveCat()
     npc->obj->SetShaderProgram(Scene::getInstance().shaderProgram);
     npc->obj->transform.position = glm::vec3(0);
     Animator *anim = npc->obj->AddComponent<Animator>();
-    Animation *an = anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/RadioactiveCat/Idle/", "radioactiveIdle", "png", 0.2f);
+    Animation *an = anim->loadTexturesFromDirectory(AnimationType::idle, "./animations/RadioactiveCat/Idle/", "radioactiveIdle", "png", speed / 30.0f);
     an->loop = false;
-    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/RadioactiveCat/Run/", "radioactiveRun", "png", 0.2f);
+    anim->loadTexturesFromDirectory(AnimationType::run, "./animations/RadioactiveCat/Run/", "radioactiveRun", "png", speed / 30.0f);
     anim->setCurrentAnimation(AnimationType::idle);
 
     return npc;

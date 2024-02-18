@@ -165,7 +165,7 @@
 -4 3 ./mapTextures/floorSprites/tile032.png 0 0
 -4 4 ./mapTextures/floorSprites/tile032.png 0 0
 -4 5 ./mapTextures/floorSprites/tile032.png 0 0
--4 6 ./mapTextures/floorSprites/tile025.png 0 0
+-4 6 ./mapTextures/floorSprites/tile048.png 0 0
 -4 7 ./mapTextures/floorSprites/tile025.png 0 0
 -4 8 ./mapTextures/floorSprites/tile000.png 0 0
 -4 9 ./mapTextures/floorSprites/tile000.png 0 0
@@ -188,7 +188,7 @@
 -3 4 ./mapTextures/floorSprites/tile032.png 0 0
 -3 5 ./mapTextures/floorSprites/tile032.png 0 0
 -3 6 ./mapTextures/floorSprites/tile032.png 0 0
--3 7 ./mapTextures/floorSprites/tile009.png 0 0
+-3 7 ./mapTextures/floorSprites/tile048.png 0 0
 -3 8 ./mapTextures/floorSprites/tile000.png 0 0
 -3 9 ./mapTextures/floorSprites/tile025.png 0 0
 -3 10 ./mapTextures/floorSprites/tile020.png 0 0
@@ -428,7 +428,7 @@
 8 2 ./mapTextures/floorSprites/tile021.png 0 0
 8 3 ./mapTextures/floorSprites/tile021.png 0 0
 8 4 ./mapTextures/floorSprites/tile020.png 0 0
-8 5 ./mapTextures/floorSprites/tile000.png 0 0
+8 5 ./mapTextures/floorSprites/tile029.png 0 0
 8 6 ./mapTextures/floorSprites/tile000.png 0 0
 8 7 ./mapTextures/floorSprites/tile000.png 0 0
 8 8 ./mapTextures/floorSprites/tile005.png 0 0

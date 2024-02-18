@@ -10,6 +10,7 @@
 Player::Player() : speed(3), jumpSpeed(5)
 {
     GameObject *object = Scene::getInstance().gameObjectManager->Create2dObject("player");
+    object->SetColor(glm::vec4(0, 1, 0, 1));
     object->SetTexture(Scene::getInstance().textureManager->loadTexture("./animations/Player/Idle/PlayerIdle0.png"));
     object->SetShaderProgram(Scene::getInstance().shaderProgram);
     object->transform.position = glm::vec3(0);
@@ -36,11 +37,24 @@ void Player::processInput(GLFWwindow *window, float deltaTime)
     bool currentMouseRightButtonState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE;
     if (currentMouseRightButtonState && !lastMouseRightButtonState)
     {
-        targetPosition = Camera2D::getInstance().getMouseWorldPosition(window);
-        Client::getInstance().udpConnection->sendPlayerAllData(obj->transform, targetPosition.x, targetPosition.y,
+        glm::vec3 target = Camera2D::getInstance().getMouseWorldPosition(window);
+        Client::getInstance().udpConnection->sendPlayerAllData(obj->transform, target.x, target.y,
              deltaTime, true);
     }
     lastMouseRightButtonState = currentMouseRightButtonState;
+}
+
+static int normalize(int value)
+{
+    if (value > 0)
+    {
+        return 1;
+    }
+    else if (value < 0)
+    {
+        return -1;
+    }
+    return 0;
 }
 
 void Player::Update(float deltaTime)
@@ -52,6 +66,14 @@ void Player::Update(float deltaTime)
     if (obj->velocity.x != 0 || obj->velocity.y != 0)
     {
         anim->setCurrentAnimation(AnimationType::run);
+        if (abs(obj->velocity.x) > abs(obj->velocity.y))
+        {
+            lastDirection = glm::vec2(normalize(obj->velocity.x), 0);
+        }
+        else
+        {
+            lastDirection = glm::vec2(0, normalize(obj->velocity.y));
+        }
     }
     else
     {

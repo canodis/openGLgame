@@ -31,11 +31,12 @@ public:
         return instance;
     }
     void renderPlayers(float deltaTime);
+    void handlePlayerPositionReq(std::istringstream &iss);
     TcpConnection *tcpConnection;
     UdpConnection *udpConnection;
-    int _serverFd;
     std::mutex _playerMutex;
     std::mutex _npcMutex;
+    int _serverFd;
 private:
     std::map<int, ServerPlayer *> _players;
     Client();

@@ -7,11 +7,13 @@ void NpcController::_handleNewNpc(std::istringstream &iss, int id)
     int npcType;
     float x, y;
     float targetX, targetY;
-    float speed;
-    iss >> x >> y >> targetX >> targetY >> speed >> npcType;
-    npcs[id] = npcGenerator.generateNpc(npcType);
+    float speed, health;
+    iss >> x >> y >> targetX >> targetY >> speed >> health >> npcType;
+    npcs[id] = npcGenerator.generateNpc(npcType, speed);
     Npc *npc = npcs[id];
+    
     npc->setSpeed(speed);
+    npc->setHealth(health);
 
     npc->obj->transform.position.x = x;
     npc->obj->transform.position.y = y;
@@ -40,7 +42,6 @@ void NpcController::_handleNpcPosition(std::istringstream &iss, int id)
     float x, y;
     float targetX, targetY;
     iss >> x >> y >> targetX >> targetY;
-    GameObject *npc = npcs[id]->obj;
     npcs[id]->targetPosition.x = x;
     npcs[id]->targetPosition.y = y;
 }

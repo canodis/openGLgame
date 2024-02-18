@@ -17,7 +17,8 @@ public:
     GameObject *gameObject;
     glm::vec3 targetPosition;
 
-    ServerPlayer(int fd, int posx, int posy);
+    ServerPlayer(int fd, float posx, float posy);
+    ServerPlayer(int fd, float posx, float posy, float targetx, float targety);
 
     void SetPosition(float x, float y);
     void SetScale(int x);

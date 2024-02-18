@@ -1,5 +1,6 @@
 #include "Client.hpp"
 #include <sstream>
+#include "Scene.hpp"
 
 Client::Client()
 {
@@ -14,3 +15,11 @@ void Client::renderPlayers(float deltaTime)
         player.second->update(deltaTime);
     }
 }
+
+void Client::handlePlayerPositionReq(std::istringstream &iss)
+{
+    float positionX, positionY, targetX, targetY;
+    iss >> positionX >> positionY >> targetX >> targetY;
+    Scene::getInstance().player->SetPosition(glm::vec3(positionX, positionY, 0));
+    Scene::getInstance().player->SetTargetPosition(glm::vec3(targetX, targetY, 0));
+}   

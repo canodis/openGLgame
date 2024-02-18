@@ -28,8 +28,8 @@ void Camera2D::setProjection(float left, float right, float bottom, float top)
 
 void    Camera2D::followPoint(GLFWwindow *window, glm::vec2 point)
 {
-    camPosition.x = point.x;
-    camPosition.y = point.y;
+    camPosition.x += (point.x - camPosition.x) * 0.007f;
+    camPosition.y += (point.y - camPosition.y) * 0.007f;
 }
 
 bool Camera2D::isInsideCameraView(GameObject *object)

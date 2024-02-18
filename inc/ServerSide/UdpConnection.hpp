@@ -11,6 +11,8 @@
 #include <functional>
 class UdpConnection;
 #include "ServerPlayer.hpp"
+#include "ServerPackages.hpp"
+#include "Client.hpp"
 
 # define SERVER_IP "193.57.41.221"
 # define SERVER_UDP_PORT 8081
@@ -39,9 +41,12 @@ private:
 
     void _connectSocket();
     void _handleResponse(std::istringstream iss);
-    void _initResponseHandlers();
     ServerPlayer *_createPlayer(int fd, int x, int y);
     void _threadFunc();
+
+    //handlers
+
+    void _initResponseHandlers();
     void _playerPositionHandle(std::istringstream &iss);
     void _pingHandle(std::istringstream &iss);
     void _serverShutDownHandle(std::istringstream &iss);

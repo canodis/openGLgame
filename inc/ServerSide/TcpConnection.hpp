@@ -10,7 +10,7 @@ class TcpConnection;
 #include <sstream>
 #include <map>
 #include "ServerPlayer.hpp"
-
+#include "Client.hpp"
 #define GUARD "6663131"
 
 class TcpConnection
@@ -21,20 +21,27 @@ public:
     void sendTcpMessage(const char *message);
     void sendPlayerPosition(float x, float y, float deltaTime);
     void sendAnimationToServer(int animation);
+    void sendPlayerNew(Player *player);
 private:
+    std::string _buffer;
     int _tcpSocket;
     struct sockaddr_in _tcpAddr;
     std::thread _tcpThread;
     std::thread _connectionHandleThread;
     std::map<int, ServerPlayer *> &_players;
+    std::map<int, std::function<void(std::istringstream &)>> _tcpPackageHandlers;
     int &_serverFd;
     float _accumulatedTime;
 
     bool _connectSocket();
     void _listen();
     void _tcpConnectionController();
-    void _parse(const std::string &message);
-    void _loginRequest(std::istringstream &iss);
-    void _deletePlayer(int fd);
+    void _handleResponse(const std::string &message);
     void _animationRequest(std::istringstream &ss);
+
+    // handlers
+    void _initResponseHandlers();
+    void _newPlayerHandle(std::istringstream &iss);
+    void _playerLeftHandle(std::istringstream &iss);
+    void _playerLoginHandle(std::istringstream &iss);
 };

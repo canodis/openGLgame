@@ -9,10 +9,10 @@ class NpcGenerator
 public:
     NpcGenerator();
     ~NpcGenerator();
-    Npc *generateNpc(int type);
-    Npc *generateWhiteCat();
-    Npc *generateCalicoCat();
-    Npc *generateGhostCat();
-    Npc *generateRadioactiveCat();
+    Npc *generateNpc(int type, float speed);
+    Npc *generateWhiteCat(float speed);
+    Npc *generateCalicoCat(float speed);
+    Npc *generateGhostCat(float speed);
+    Npc *generateRadioactiveCat(float speed);
 private:
 };

@@ -63,7 +63,7 @@ void TextureManager::loadFromFolder(const std::string folder)
             unsigned int textureID = loadTexture(filePath);
             if (textureID == missingTexture)
                 continue;
-            std::cout << "TextureLoaded : " << filePath << std::endl;
+            // std::cout << "TextureLoaded : " << filePath << std::endl;
         }
     }
 }

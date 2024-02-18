@@ -8,11 +8,16 @@ class Npc
 {
 public:
     Npc();
+    int _id;
     virtual void update(float deltaTime) = 0;
     void setSpeed(float speed);
-    int _id;
+    void setHealth(float health);
+
+    float getHealth() const;
+
     dis::vec2 targetPosition;
     GameObject *obj;
 protected:
     float speed;
+    float health;
 };
