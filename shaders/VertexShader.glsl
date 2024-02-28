@@ -5,6 +5,7 @@ layout (location = 1) in vec2 aTexCoord;
 
 out vec4 vertexColor;
 out vec2 texCoords;
+out vec4 worldPos;
 
 uniform mat4 mtxTransform;
 uniform vec4 objColor;
@@ -15,4 +16,5 @@ void main()
     gl_Position = viewMatrix * mtxTransform * vec4(aPos, 0.0f, 1.0);
     vertexColor = objColor;
     texCoords = aTexCoord;
+    worldPos = vec4(aPos, 0.0f, 1.0);
 }

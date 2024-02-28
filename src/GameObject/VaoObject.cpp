@@ -1,6 +1,7 @@
 #include "VaoObject.hpp"
 #include "Scene.hpp"
 
+
 void VaoObject::SetShaderProgram(ShaderProgram *shaderProgram)
 {
     m_ShaderProgram = shaderProgram;
@@ -13,6 +14,9 @@ void VaoObject::UpdateShaderProgram(glm::mat4 &t, glm::mat4 &r, glm::mat4 &s, gl
     Scene::getInstance().textureManager->activateTexture(0, textureId);
     m_ShaderProgram->setVec4("objColor", color);
     m_ShaderProgram->setMat4("mtxTransform", &mtxTransform);
+    m_ShaderProgram->setFloat("lightInstensity", 0.3f);
+    
+    m_ShaderProgram->setVec2("lightPosition", glm::vec2(0,0));
 }
 
 void VaoObject::Draw()

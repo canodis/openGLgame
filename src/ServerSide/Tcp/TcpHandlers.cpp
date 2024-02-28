@@ -1,5 +1,6 @@
 #include "TcpConnection.hpp"
 #include "ServerPackages.hpp"
+#include "Colors.hpp"
 
 void TcpConnection::_initResponseHandlers()
 {
@@ -14,7 +15,6 @@ void TcpConnection::_newPlayerHandle(std::istringstream &ss)
     float posX, posY;
     float targetX, targetY;
     ss >> new_fd >> posX >> posY >> targetX >> targetY;
-    std::cout << "New player : " << new_fd << " " << posX << " " << posY << " " << targetX << " " << targetY << std::endl;
     if (_players.find(new_fd) != _players.end())
     {
         _players[new_fd]->SetTargetPosition(posX, posY, targetX, targetY);
@@ -33,12 +33,16 @@ void TcpConnection::_playerLoginHandle(std::istringstream &ss)
 
     ss >> playerCount;
     ss >> _serverFd;
+    std::cout << Color(Color::YELLOW) << "--------------------------------"
+    << "\nPlayer Logined : PlayerFd : " << _serverFd << "\n Player count : " << playerCount << std::endl;
     for (int i = 0; i < playerCount - 1; i++)
     {
         float x, y;
         ss >> playerFd >> x >> y;
+        std::cout << "Other player : " << playerFd << " " << x << " " << y << std::endl;
         _players.insert(std::pair<int, ServerPlayer *>(playerFd, new ServerPlayer(playerFd, x, y)));
     }
+    std::cout << "--------------------------------" << Color(Color::RESET) << std::endl;
     Player *player = Scene::getInstance().player;
     Client::getInstance().udpConnection->sendPlayerAllData(player->GetTransform(), 
         player->GetTargetPosition().x, player->GetTargetPosition().y, 0, true);

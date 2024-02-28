@@ -1,4 +1,3 @@
--3 -5 ./mapTextures/floorSprites/tile000.png 2 0
 -11 -6 ./mapTextures/objects/tile245.png 0 1
 -11 -5 ./mapTextures/objects/tile245.png 0 1
 -11 -4 ./mapTextures/objects/tile245.png 0 1
@@ -176,7 +175,7 @@
 -4 14 ./mapTextures/floorSprites/tile000.png 0 0
 -4 15 ./mapTextures/objects/tile245.png 0 1
 -3 -6 ./mapTextures/objects/tile245.png 0 1
--3 -5 ./mapTextures/floorSprites/tile000.png 0 0
+-3 -5 ./mapTextures/floorSprites/tile002.png 0 0
 -3 -4 ./mapTextures/floorSprites/tile000.png 0 0
 -3 -3 ./mapTextures/floorSprites/tile032.png 0 0
 -3 -2 ./mapTextures/floorSprites/tile032.png 0 0

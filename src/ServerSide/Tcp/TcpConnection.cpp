@@ -118,7 +118,8 @@ void TcpConnection::_handleResponse(const std::string &message)
         iss >> command;
 
         // +2 for the space
-        std::string messageContent(_buffer.begin() + intLen(messageLength) + intLen(command) + 2, _buffer.begin() + messageLength + intLen(messageLength) + intLen(command) + 2);
+        std::string::iterator _bufferIterator = _buffer.begin();
+        std::string messageContent(_bufferIterator + intLen(messageLength) + intLen(command) + 2, _bufferIterator + intLen(messageLength) + messageLength);
 
         std::istringstream messageStream(messageContent);
         if (_tcpPackageHandlers.find(command) != _tcpPackageHandlers.end())

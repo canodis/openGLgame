@@ -59,6 +59,8 @@ void Scene::init_uniforms()
 	shaderProgram->addUniform("textureSampler");
 	shaderProgram->addUniform("viewMatrix");
 	shaderProgram->addUniform("objColor");
+	shaderProgram->addUniform("lightPosition");
+	shaderProgram->addUniform("lightInstensity");
 }
 
 void Scene::keycallback()

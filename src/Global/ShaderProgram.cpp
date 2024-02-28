@@ -86,6 +86,11 @@ void ShaderProgram::setMat3(const std::string &name, const glm::mat3 *value)
     glUniformMatrix3fv(m_UniformVars[name], 1, false, (GLfloat *)value);
 }
 
+void ShaderProgram::setVec2(const std::string &name, const glm::vec2 &value)
+{
+    glUniform2f(m_UniformVars[name], value.x, value.y);
+}
+
 void ShaderProgram::setVec3(const std::string &name, const glm::vec3 &value)
 {
     glUniform3f(m_UniformVars[name], value.x, value.y, value.z);
