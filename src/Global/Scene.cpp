@@ -61,6 +61,7 @@ void Scene::init_uniforms()
 	shaderProgram->addUniform("objColor");
 	shaderProgram->addUniform("lightPosition");
 	shaderProgram->addUniform("lightInstensity");
+	shaderProgram->addUniform("projMatrix");
 }
 
 void Scene::keycallback()

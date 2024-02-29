@@ -28,6 +28,7 @@ public:
     void renderGameObjects(std::map<dis::ivec2, GameObject *> &gameObjects, float deltaTime);
     void renderMapObjects(std::map<int, std::map<dis::ivec2, MapObject *>> &objects, float deltaTime);
     glm::vec3 getMouseWorldPosition(GLFWwindow *window);
+    glm::vec3 getMouseWorldPosition();
     glm::mat4 GetViewMatrix() const;
     float getLeft() const { return (widthx); }
     float getRight() const { return (widthy); }
@@ -36,7 +37,7 @@ public:
     glm::mat4 mtxProj;
 
 private:
-    Camera2D() : camPosition(0.0f, 0.0f, 0.0f), mtxProj(1.0f) { setProjection(-7.0f, 7.0f, -5.0f, 9.0f); _counter = 0; }
+    Camera2D();
     float widthx;
     float widthy;
     float heightx;

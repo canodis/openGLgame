@@ -1,9 +1,9 @@
-#version 330 core
+#version 410 core
 
 out vec4 FragColor;
 
 in vec4 vertexColor;
-in vec4 worldPos;
+in vec2 worldPos;
 uniform sampler2D textureSampler;
 uniform vec2 lightPosition;
 uniform float lightInstensity;

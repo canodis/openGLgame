@@ -2,6 +2,12 @@
 #include "Scene.hpp"
 #include "ServerPlayer.hpp"
 
+Camera2D::Camera2D() : camPosition(0.0f, 0.0f, 0.0f), mtxProj(1.0f)
+{
+    setProjection(-7.0f, 7.0f, -6.0f, 7.0f);
+    _counter = 0;
+}
+
 void Camera2D::update(GLFWwindow *window, float deltaTime)
 {
     _counter += deltaTime;
@@ -26,7 +32,7 @@ void Camera2D::setProjection(float left, float right, float bottom, float top)
     heighty = top + 1;
 }
 
-void    Camera2D::followPoint(GLFWwindow *window, glm::vec2 point)
+void Camera2D::followPoint(GLFWwindow *window, glm::vec2 point)
 {
     camPosition.x += (point.x - camPosition.x) * 0.007f;
     camPosition.y += (point.y - camPosition.y) * 0.007f;
@@ -51,8 +57,29 @@ void Camera2D::renderGameObjects(std::map<dis::ivec2, GameObject *> &gameObjects
     }
 }
 
-glm::vec3 Camera2D::getMouseWorldPosition(GLFWwindow *window) {
+glm::vec3 Camera2D::getMouseWorldPosition(GLFWwindow *window)
+{
     double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
+
+    int windowWidth, windowHeight;
+    glfwGetWindowSize(window, &windowWidth, &windowHeight);
+
+    glm::vec2 ndcPos;
+    ndcPos.x = (xpos / windowWidth) * 2.0f - 1.0f;
+    ndcPos.y = 1.0f - (ypos / windowHeight) * 2.0f;
+
+    glm::vec4 clipSpacePos = glm::vec4(glm::vec3(ndcPos, -1.0f), 1.0f);
+    glm::vec4 worldPos = glm::inverse(mtxProj) * clipSpacePos;
+    worldPos += glm::vec4(camPosition, 0.0f);
+
+    return glm::vec3(worldPos.x, worldPos.y, 0);
+}
+
+glm::vec3 Camera2D::getMouseWorldPosition()
+{
+    double xpos, ypos;
+    GLFWwindow *window = Scene::getInstance().window;
     glfwGetCursorPos(window, &xpos, &ypos);
 
     int windowWidth, windowHeight;
