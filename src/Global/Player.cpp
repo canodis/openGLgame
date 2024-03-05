@@ -9,7 +9,7 @@
 
 Player::Player() : speed(3), jumpSpeed(5)
 {
-    GameObject *object = Scene::getInstance().gameObjectManager->Create2dObject("player");
+    GameObject *object = Scene::getInstance().gameObjectManager->CreateRectangle();
     object->SetColor(glm::vec4(0, 1, 0, 1));
     object->SetTexture(Scene::getInstance().textureManager->loadTexture("./animations/Player/Idle/PlayerIdle0.png"));
     object->SetShaderProgram(Scene::getInstance().shaderProgram);
@@ -32,9 +32,9 @@ void Player::setGameObject(GameObject *gameObject)
     obj = gameObject;
 }
 
-void Player::processInput(GLFWwindow *window, float deltaTime)
+void Player::processInput(GLFWwindow &window, float deltaTime)
 {
-    bool currentMouseRightButtonState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE;
+    bool currentMouseRightButtonState = glfwGetMouseButton(&window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE;
     if (currentMouseRightButtonState && !lastMouseRightButtonState)
     {
         glm::vec3 target = Camera2D::getInstance().getMouseWorldPosition(window);
@@ -57,7 +57,7 @@ static int normalize(int value)
     return 0;
 }
 
-void Player::Update(float deltaTime)
+void Player::update(const float &deltaTime)
 {
     move(deltaTime);
 

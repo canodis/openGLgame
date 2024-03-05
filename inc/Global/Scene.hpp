@@ -19,6 +19,8 @@ class Scene;
 #define HEIGHT 600
 
 
+GameObject *Instantiate(GameObject *gameObject);
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 class Scene
@@ -39,7 +41,7 @@ public:
 	TextRenderer *textRenderer;
 	BoxCollision2dController *boxCollision2dController;
 	std::vector<GameObject *> gameObjects;
-	glm::vec3 playerPosition;
+	glm::vec2 playerPosition;
 	int windowWidth;
 	int windowHeight;
 	bool debug;

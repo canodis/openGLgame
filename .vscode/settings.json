@@ -69,7 +69,9 @@
         "utility": "cpp",
         "thread": "cpp",
         "filesystem": "cpp",
-        "csignal": "cpp"
+        "csignal": "cpp",
+        "__functional_03": "cpp",
+        "memory_resource": "cpp"
     },
     "cmake.sourceDirectory": "/goinfre/rtosun/game/glm"
 }

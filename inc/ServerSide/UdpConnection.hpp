@@ -13,8 +13,9 @@ class UdpConnection;
 #include "ServerPlayer.hpp"
 #include "ServerPackages.hpp"
 #include "Client.hpp"
+#include "Npc.hpp"
 
-# define SERVER_IP "193.57.41.221"
+# define SERVER_IP "37.247.108.252"
 # define SERVER_UDP_PORT 8081
 # define CLIENT_UDP_PORT 8082
 
@@ -24,9 +25,10 @@ public:
     UdpConnection(std::map<int, ServerPlayer *> &players, int &serverFd);
     ~UdpConnection();
     void sendUdpMessage(const char *message);
-    void sendPlayerAllData(Transform playerTransform, float x, float y, float deltaTime, bool forceSend = false);
+    void sendPlayerAllData(const Transform &playerTransform, const float &x, const float &y, const float &deltaTime, const bool &forceSend = false);
     void connect();
     void disconnect();
+    Npc *turrets;
 private:
     float _accumulatedTime;
     int _udpSocket;
@@ -51,4 +53,6 @@ private:
     void _pingHandle(std::istringstream &iss);
     void _serverShutDownHandle(std::istringstream &iss);
     void _handleNpcPosition(std::istringstream &iss);
+
+    
 };

@@ -125,3 +125,15 @@ unsigned int ShaderProgram::getProgramId() const
 {
     return (programId);
 }
+
+
+
+
+
+
+float ShaderProgram::getFloat(const std::string &name)
+{
+    float value;
+    glGetUniformfv(programId, m_UniformVars[name], &value);
+    return (value);
+}

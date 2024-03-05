@@ -6,4 +6,5 @@ enum NpcType
     CalicoCat = 1,
     GhostCat = 2,
     RadioactiveCat = 3,
+    Turret = 4
 };

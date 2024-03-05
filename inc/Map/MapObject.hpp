@@ -15,7 +15,7 @@ public:
     bool isCollidable;
     int getLayer() { return layer; }
     unsigned int getTextureId() { return m_gameObject->GetTextureId(); }
-    void setModelMatrix(glm::mat4 modelMatrix) { this->modelMatrix = modelMatrix; }
+    void setModelMatrix(glm::mat4 &modelMatrix) { this->modelMatrix = modelMatrix; }
     glm::mat4 getModelMatrix() { return modelMatrix; }
 private:
     int layer;

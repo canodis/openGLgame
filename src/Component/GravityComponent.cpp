@@ -40,11 +40,6 @@ void GravityComponent::setGravity(float gravity)
     m_Gravity = gravity;
 }
 
-void GravityComponent::setGameObject(GameObject *gameObject)
-{
-    this->object = gameObject;
-}
-
 void GravityComponent::setGrounded(bool grounded)
 {
     isGrounded = grounded;

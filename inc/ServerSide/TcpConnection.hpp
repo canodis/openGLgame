@@ -19,9 +19,7 @@ public:
     TcpConnection(std::map<int, ServerPlayer *> &players, int &serverFd);
     ~TcpConnection();
     void sendTcpMessage(const char *message);
-    void sendPlayerPosition(float x, float y, float deltaTime);
-    void sendAnimationToServer(int animation);
-    void sendPlayerNew(Player *player);
+    void sendPlayerNew(const Player &player);
 private:
     std::string _buffer;
     int _tcpSocket;
@@ -44,4 +42,10 @@ private:
     void _newPlayerHandle(std::istringstream &iss);
     void _playerLeftHandle(std::istringstream &iss);
     void _playerLoginHandle(std::istringstream &iss);
+
+    void _handleNewTurret(std::istringstream &iss);
+    void _handleTurretShoot(std::istringstream &iss);
+    void _handleTurretDestroy(std::istringstream &iss);
+    void _handleTurretHit(std::istringstream &iss);
+    void _npcDie(std::istringstream &iss);
 };

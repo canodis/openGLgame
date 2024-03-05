@@ -12,14 +12,13 @@ public:
     void update(float deltaTime) override;
     void dynamicUpdate(float deltaTime);
     void staticUpdate(float deltaTime);
-    void setGameObject(GameObject *gameObject) override;
-    void isColliding(GameObject *gameObject);
+    void isColliding(GameObject &gameObject);
     void setCollisionScale(glm::vec2 scale);
-    dis::ivec2 getOrigin(GameObject *gameObject);
+    dis::ivec2 getOrigin(GameObject &gameObject);
     void setStatic() override;
 private:
     void drawDebugCollision();
-    void overlapCalculation(GameObject *other, float &overlapX, float &overlapY);
+    void overlapCalculation(GameObject &other, float &overlapX, float &overlapY);
 
     std::vector<GameObject *> debugObjects;
 

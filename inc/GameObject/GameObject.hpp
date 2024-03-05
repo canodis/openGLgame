@@ -14,19 +14,22 @@ class GameObject : public Article, public VaoObject
 public:
     GameObject();
     GameObject(float x, float y, std::string textureLocation);
+    GameObject(GameObject *gameObject);
     ~GameObject();
     std::function<void(float)> update;
 
     void RemoveComponent(Component *component);
     std::vector<Component *> components;
 
-    glm::vec2 GetPosition() const { return (transform.position); }
-    glm::vec3 GetScale() const { return (transform.scale); }
-    glm::vec3 GetRotation() const { return (transform.rotation); }
+    glm::vec3 GetPosition() const;
+    glm::vec3 GetScale() const;
+    glm::vec3 GetRotation() const;
 
     void setPosition(glm::vec3 position);
     void setStatic();
-    void move(glm::vec3 target, float deltaTime, float speed);
+    void move(const glm::vec3 &target, float deltaTime, float speed);
+    void moveToInfinite(const glm::vec2 &direction, float deltaTime, float speed);
+
 
     bool isStatic = false;
 

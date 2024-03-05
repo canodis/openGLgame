@@ -5,7 +5,7 @@ ServerPlayer::ServerPlayer(int fd, float posx, float posy)
     this->fd = fd;
     this->username = "canodis";
     speed = 3.0f;
-    gameObject = Scene::getInstance().gameObjectManager->Create2dObject("player");
+    gameObject = Scene::getInstance().gameObjectManager->CreateRectangle();
     gameObject->SetTexture(Scene::getInstance().textureManager->loadTexture("./animations/Player/Idle/PlayerIdle0.png"));
     gameObject->AddComponent<BoxCollision2d>()->setCollisionScale(glm::vec2(0.8f, 0.9f));
     Animator *anim = gameObject->AddComponent<Animator>();

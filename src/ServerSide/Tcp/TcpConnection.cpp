@@ -1,4 +1,6 @@
 #include "TcpConnection.hpp"
+#include "Colors.hpp"
+#include "NpcController.hpp"
 
 TcpConnection::TcpConnection(std::map<int, ServerPlayer *> &players, int &serverFd) : _players(players), _serverFd(serverFd)
 {
@@ -16,14 +18,20 @@ void TcpConnection::_tcpConnectionController()
     {
         if (_connectSocket() == false)
         {
+            std::cout << Color(Color::RED) << "Connection failed. Retrying...\n"
+                      << Color(Color::RESET);
             sleep(2);
             continue;
+        }
+        else
+        {
+            std::cout << Color(Color::GREEN) << "Connected to server.\n"
+                      << Color(Color::RESET);
         }
         _tcpThread = std::thread(&TcpConnection::_listen, this);
         Client::getInstance().udpConnection->connect();
         _tcpThread.join();
         Client::getInstance().udpConnection->disconnect();
-        std::cout << "Reconnecting to server..." << std::endl;
     }
 }
 
@@ -56,10 +64,7 @@ bool TcpConnection::_connectSocket()
         exit(1);
     }
     if (connect(_tcpSocket, (struct sockaddr *)&_tcpAddr, sizeof(_tcpAddr)) < 0)
-    {
-        std::cout << "Error connecting to server" << std::endl;
         return false;
-    }
     sendTcpMessage(GUARD);
 
     return true;
@@ -117,8 +122,8 @@ void TcpConnection::_handleResponse(const std::string &message)
         int command;
         iss >> command;
 
-        // +2 for the space
         std::string::iterator _bufferIterator = _buffer.begin();
+        // +2 for the space
         std::string messageContent(_bufferIterator + intLen(messageLength) + intLen(command) + 2, _bufferIterator + intLen(messageLength) + messageLength);
 
         std::istringstream messageStream(messageContent);
@@ -136,21 +141,35 @@ void TcpConnection::_handleResponse(const std::string &message)
     }
 }
 
-// std::istringstream iss(message);
-// int messageLength;
-// int command;
-// std::cout << "Received message: " << message << std::endl;
-// iss >> messageLength;
-// iss >> command;
-// std::lock_guard<std::mutex> lock(Client::getInstance()._playerMutex);
-// if (_tcpPackageHandlers.find(command) != _tcpPackageHandlers.end())
-// {
-//     _tcpPackageHandlers[command](iss);
-// }
-
-void TcpConnection::sendPlayerNew(Player *player)
+void TcpConnection::sendPlayerNew(const Player &player)
 {
-    std::string message = std::to_string((int)ServerPackage::NewPlayer) + " " + std::to_string(_serverFd) + " " + std::to_string(player->GetPosition().x) + " " + std::to_string(player->GetPosition().y) + " " + std::to_string(player->GetTargetPosition().x) + " " + std::to_string(player->GetTargetPosition().y);
-    std::cout << "Sending new player message: " << message << std::endl;
+    std::string message = std::to_string((int)ServerPackage::NewPlayer) + " " + std::to_string(_serverFd) 
+        + " " + std::to_string(player.GetPosition().x) + " " + std::to_string(player.GetPosition().y) 
+        + " " + std::to_string(player.GetTargetPosition().x) + " " + std::to_string(player.GetTargetPosition().y);
     sendTcpMessage(message.c_str());
+}
+
+void TcpConnection::_handleNewTurret(std::istringstream &iss)
+{
+    NpcController::getInstance().handleNewTurret(iss);
+}
+
+void TcpConnection::_handleTurretShoot(std::istringstream &iss)
+{
+    NpcController::getInstance().handleTurretAttack(iss);
+}
+
+void TcpConnection::_handleTurretDestroy(std::istringstream &iss)
+{
+    NpcController::getInstance().handleTurretBulletDestroy(iss);
+}
+
+void TcpConnection::_handleTurretHit(std::istringstream &iss)
+{
+    NpcController::getInstance().handleTurretHit(iss);
+}
+
+void TcpConnection::_npcDie(std::istringstream &iss)
+{
+    NpcController::getInstance().handleNpcDie(iss);
 }

@@ -20,6 +20,7 @@ Scene::Scene()
 	glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 	init_uniforms();
 	keycallback();
+	textureManager->loadFromFolder("textures");
 	glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -67,9 +68,16 @@ void Scene::init_uniforms()
 void Scene::keycallback()
 {
 	glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods)
-					   {
+	{
         if (key == GLFW_KEY_K && action == GLFW_PRESS)
-            Scene::getInstance().debug = !Scene::getInstance().debug; });
+            Scene::getInstance().debug = !Scene::getInstance().debug; 
+		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+			Scene::getInstance().shaderProgram->setFloat("lightInstensity", Scene::getInstance().shaderProgram->getFloat("lightInstensity") + 0.01f);
+		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+			Scene::getInstance().shaderProgram->setFloat("lightInstensity", Scene::getInstance().shaderProgram->getFloat("lightInstensity") - 0.01f);
+	});
+
+
 }
 
 void Scene::DrawGameObjects(float deltaTime)
@@ -101,4 +109,10 @@ void Scene::handleSizeChange(int width, int height)
 	windowWidth = width;
 	windowHeight = height;
 	glViewport(0, 0, width, height);
+}
+
+GameObject *Instantiate(GameObject *gameObject)
+{
+	GameObject *newGameObject = new GameObject(gameObject);
+	return newGameObject;
 }

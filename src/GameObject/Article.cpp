@@ -19,6 +19,8 @@ void Article::SetColor(const glm::vec4 &color)
     this->color = color;
 }
 
+#include <iostream>
+
 void Article::SetTexture(unsigned int textureId)
 {
     this->textureId = textureId;

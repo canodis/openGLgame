@@ -13,7 +13,7 @@ void UdpConnection::sendUdpMessage(const char *message)
     sendto(_udpSocket, message, strlen(message), 0, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr));
 }
 
-void UdpConnection::sendPlayerAllData(Transform playerTransform, float targetX, float targetY, float deltaTime, bool forceSend)
+void UdpConnection::sendPlayerAllData(const Transform &playerTransform, const float &targetX, const float &targetY, const float &deltaTime, const bool &forceSend)
 {
     if (_serverFd == -1)
         return;
@@ -90,6 +90,10 @@ void UdpConnection::_handleResponse(std::istringstream iss)
     }
     else
     {
+        std::cout << "----------------------------------------" << std::endl;
         std::cout << "Unknown response type: " << responseType << std::endl;
+        std::cout << "Response: " << iss.str() << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+
     }
 }

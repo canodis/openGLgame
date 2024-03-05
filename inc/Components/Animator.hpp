@@ -15,10 +15,9 @@ public:
     Animator(GameObject *gameObject);
     ~Animator() override;
     void update(float deltaTime) override;
-    void setGameObject(GameObject *gameObject) override;
+    void setStatic() override;
     Animation *loadTexturesFromDirectory(AnimationType anim, std::string path, std::string file, std::string extension, float animationSpeed);
     void setCurrentAnimation(int animationState);
-    void setStatic() override;
     Animation *getAnimation(AnimationType animationType);
     int getAnimationType() const;
 private:

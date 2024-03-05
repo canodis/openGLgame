@@ -21,13 +21,13 @@ public:
     }
     Camera2D(Camera2D const &) = delete;
     void operator=(Camera2D const &) = delete;
-    void update(GLFWwindow *window, float deltaTime);
-    void followPoint(GLFWwindow *window, glm::vec2 point);
+    void update(GLFWwindow &window, float deltaTime);
+    void followPoint(glm::vec2 point);
     void setProjection(float left, float right, float bottom, float top);
     bool isInsideCameraView(GameObject *object);
     void renderGameObjects(std::map<dis::ivec2, GameObject *> &gameObjects, float deltaTime);
     void renderMapObjects(std::map<int, std::map<dis::ivec2, MapObject *>> &objects, float deltaTime);
-    glm::vec3 getMouseWorldPosition(GLFWwindow *window);
+    glm::vec3 getMouseWorldPosition(GLFWwindow &window);
     glm::vec3 getMouseWorldPosition();
     glm::mat4 GetViewMatrix() const;
     float getLeft() const { return (widthx); }

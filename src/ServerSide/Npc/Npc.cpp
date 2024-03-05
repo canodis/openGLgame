@@ -15,3 +15,8 @@ void Npc::setHealth(float health)
 {
     this->health = health;
 }
+
+Npc::~Npc()
+{
+    
+}

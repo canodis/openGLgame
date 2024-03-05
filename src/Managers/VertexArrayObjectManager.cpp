@@ -18,3 +18,8 @@ VertexArrayObject *VertexArrayObjectManager::getVao(std::string name)
         return (m_VaoMap[name]);
     return (nullptr);   
 }
+
+void VertexArrayObjectManager::setRectangle(VertexArrayObject *vao)
+{
+    m_Rectangle = vao;
+}

@@ -8,6 +8,7 @@ class Npc
 {
 public:
     Npc();
+    virtual ~Npc();
     int _id;
     virtual void update(float deltaTime) = 0;
     void setSpeed(float speed);

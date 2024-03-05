@@ -2,10 +2,12 @@
 
 void BasicNpc::update(float deltaTime)
 {
+    obj->update(deltaTime);
     obj->move(glm::vec3(targetPosition.x, targetPosition.y, 0), deltaTime, speed);
 
     Animator *anim = obj->GetComponent<Animator>();
-
+    if (anim == nullptr)
+        return;
     if (obj->velocity.x != 0 || obj->velocity.y != 0)
     {
         anim->setCurrentAnimation(AnimationType::run);
@@ -19,3 +21,5 @@ void BasicNpc::update(float deltaTime)
 }
 
 BasicNpc::BasicNpc() { }
+
+BasicNpc::~BasicNpc() { }

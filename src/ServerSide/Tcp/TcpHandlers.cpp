@@ -7,6 +7,11 @@ void TcpConnection::_initResponseHandlers()
     _tcpPackageHandlers[(int)ServerPackage::NewPlayer] = std::bind(&TcpConnection::_newPlayerHandle, this, std::placeholders::_1);
     _tcpPackageHandlers[(int)ServerPackage::PlayerLeft] = std::bind(&TcpConnection::_playerLeftHandle, this, std::placeholders::_1);
     _tcpPackageHandlers[(int)ServerPackage::PlayerLogin] = std::bind(&TcpConnection::_playerLoginHandle, this, std::placeholders::_1);
+    _tcpPackageHandlers[(int)ServerPackage::NewTurret] = std::bind(&TcpConnection::_handleNewTurret, this, std::placeholders::_1);
+    _tcpPackageHandlers[(int)ServerPackage::TurretAttack] = std::bind(&TcpConnection::_handleTurretShoot, this, std::placeholders::_1);
+    _tcpPackageHandlers[(int)ServerPackage::TurretBulletDestroy] = std::bind(&TcpConnection::_handleTurretDestroy, this, std::placeholders::_1);
+    _tcpPackageHandlers[(int)ServerPackage::TurretBulletHit] = std::bind(&TcpConnection::_handleTurretHit, this, std::placeholders::_1);
+    _tcpPackageHandlers[(int)ServerPackage::NpcDie] = std::bind(&TcpConnection::_npcDie, this, std::placeholders::_1);
 }
 
 void TcpConnection::_newPlayerHandle(std::istringstream &ss)
@@ -46,7 +51,7 @@ void TcpConnection::_playerLoginHandle(std::istringstream &ss)
     Player *player = Scene::getInstance().player;
     Client::getInstance().udpConnection->sendPlayerAllData(player->GetTransform(), 
         player->GetTargetPosition().x, player->GetTargetPosition().y, 0, true);
-    Client::getInstance().tcpConnection->sendPlayerNew(player);
+    Client::getInstance().tcpConnection->sendPlayerNew(*player);
 }
 
 void TcpConnection::_playerLeftHandle(std::istringstream &ss)

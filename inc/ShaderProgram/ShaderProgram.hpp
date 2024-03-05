@@ -26,6 +26,7 @@ public:
     void    setFloat(const std::string &name, const float &value);
     void    setInt(const std::string &name, const int &value);
     void    addUniform(const std::string &name);
+    float   getFloat(const std::string &name);
     unsigned int getProgramId() const;
 private:
     std::string getShaderFromFile(const char *fileName);

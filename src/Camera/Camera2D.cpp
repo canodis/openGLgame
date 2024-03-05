@@ -8,13 +8,13 @@ Camera2D::Camera2D() : camPosition(0.0f, 0.0f, 0.0f), mtxProj(1.0f)
     _counter = 0;
 }
 
-void Camera2D::update(GLFWwindow *window, float deltaTime)
+void Camera2D::update(GLFWwindow &window, float deltaTime)
 {
     _counter += deltaTime;
     if (_counter > 0.5f)
     {
         _counter = 0;
-        glfwSetWindowTitle(window, std::to_string((int)(1 / deltaTime)).c_str());
+        glfwSetWindowTitle(&window, std::to_string((int)(1 / deltaTime)).c_str());
     }
 }
 
@@ -32,7 +32,7 @@ void Camera2D::setProjection(float left, float right, float bottom, float top)
     heighty = top + 1;
 }
 
-void Camera2D::followPoint(GLFWwindow *window, glm::vec2 point)
+void Camera2D::followPoint(glm::vec2 point)
 {
     camPosition.x += (point.x - camPosition.x) * 0.007f;
     camPosition.y += (point.y - camPosition.y) * 0.007f;
@@ -57,13 +57,13 @@ void Camera2D::renderGameObjects(std::map<dis::ivec2, GameObject *> &gameObjects
     }
 }
 
-glm::vec3 Camera2D::getMouseWorldPosition(GLFWwindow *window)
+glm::vec3 Camera2D::getMouseWorldPosition(GLFWwindow &window)
 {
     double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
+    glfwGetCursorPos(&window, &xpos, &ypos);
 
     int windowWidth, windowHeight;
-    glfwGetWindowSize(window, &windowWidth, &windowHeight);
+    glfwGetWindowSize(&window, &windowWidth, &windowHeight);
 
     glm::vec2 ndcPos;
     ndcPos.x = (xpos / windowWidth) * 2.0f - 1.0f;

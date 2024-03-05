@@ -39,11 +39,6 @@ void Animator::update(float deltaTime)
     }
 }
 
-void Animator::setGameObject(GameObject *gameObject)
-{
-    object = gameObject;
-}
-
 void Animator::setStatic()
 {
 }

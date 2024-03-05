@@ -9,7 +9,6 @@ public:
     GravityComponent(GameObject *gameObject);
     void update(float deltaTime) override;
     void setGravity(float gravity);
-    void setGameObject(GameObject *gameObject) override;
     void setGrounded(bool grounded);
     ~GravityComponent() override = default;
     void setStatic() override;
