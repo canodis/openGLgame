@@ -16,15 +16,18 @@ void TurretNpc::update(float deltaTime)
     obj->update(deltaTime);
     for (auto &bullet : throwObjects)
     {
-        bullet->update(deltaTime);
+        if (!bullet->update(deltaTime))
+        {
+            destroyBullet(bullet->id);
+        }
     }
 }
 
-void TurretNpc::attack(glm::vec3 direction, int bulletId)
+void TurretNpc::attack(glm::vec3 direction, int bulletId, float speed)
 {
     float angle = atan2(direction.y, direction.x) * 57.2958f;
     obj->transform.rotation = glm::vec3(0, 0, angle);
-    ThrowObject *throwObject = new ThrowObject(bulletId, direction, *throwObjectPrefab->obj);
+    ThrowObject *throwObject = new ThrowObject(bulletId, direction, *throwObjectPrefab->obj, speed);
     throwObjects.push_back(throwObject);
 }
 

@@ -4,14 +4,16 @@
 ThrowObject::ThrowObject()
 {
     lifeTime = 5.0f;
-    speed = 5.0f;
+    speed = 45.0f;
     counter = 0.0f;
     this->obj = Scene::getInstance().gameObjectManager->CreateRectangle();
+    obj->transform.scale = glm::vec3(4.0f, 4.0f, 4.0f);
 }
 
-ThrowObject::ThrowObject(int id, const glm::vec3 &direction, const GameObject &obj) : ThrowObject()
+ThrowObject::ThrowObject(int id, const glm::vec3 &direction, const GameObject &obj, float speed) : ThrowObject()
 {
     this->direction = direction;
+    this->speed = speed;
     this->obj->SetTexture(obj.GetTextureId());
     this->id = id;
     calculateRotation();

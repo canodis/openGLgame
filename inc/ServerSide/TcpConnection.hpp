@@ -20,6 +20,7 @@ public:
     ~TcpConnection();
     void sendTcpMessage(const char *message);
     void sendPlayerNew(const Player &player);
+    void terminate();
 private:
     std::string _buffer;
     int _tcpSocket;

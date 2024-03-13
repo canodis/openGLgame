@@ -1,41 +1,34 @@
-#include "Game.hpp"
-#include "NpcController.hpp"
-#include <ft2build.h>
-#include "TurretNpc.hpp"
-#include FT_FREETYPE_H
+#include "Navigator.hpp"
+#include "MainStage.hpp"
+
+void Test();
 
 int main(int ac, char **av)
 {
-    Player *player = new Player();
-    Client::getInstance();
-    MapController mapController(ac, av);
-    Scene *scene = &Scene::getInstance();
-    scene->player = player;
-    mapController.loadMap();
+    Navigator &navigator = Navigator::getInstance();
+    Stage *mainScene = new MainStage();
 
-    Camera2D &camera = Camera2D::getInstance();
-    scene->timer->start();
-    NpcController *npcController = &NpcController::getInstance();
-    scene->shaderProgram->setVec2("lightPosition", glm::vec2(0, 0));
-    scene->shaderProgram->setFloat("lightInstensity", 0.03f);
-    while (glfwGetKey(scene->window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(scene->window))
+    navigator.setActiveStage(mainScene);
+    while (navigator.isRunning)
     {
-        scene->shaderProgram->use();
-        glClear(GL_COLOR_BUFFER_BIT);
-        float delta = scene->timer->elapsedSeconds();
-        player->processInput(*scene->window, delta);
-        scene->shaderProgram->setVec2("lightPosition", glm::vec2(player->GetPosition().x, player->GetPosition().y));
-        mapController.drawMap(delta);
-        npcController->update(delta);
-        Client::getInstance().renderPlayers(delta);
-        scene->DrawGameObjects(delta);
-        player->update(delta);
-        camera.followPoint(player->GetPosition());
-        scene->shaderProgram->setMat4("viewMatrix", &camera.mtxProj);
-        scene->textRenderer->ShowPlayerInfo();
-        camera.update(*scene->window, delta);
-        player->ResetVelocity();
-        glfwSwapBuffers(scene->window);
-        glfwPollEvents();
+        navigator.runActiveStage();
     }
+
+    // TEST //
+    //  Test();
+}
+
+#include "PlayerPositionPackage.hpp"
+
+void Test()
+{
+    PlayerPositionPackage playerPositionPackage(5, 0.0f, 0.0f, 0.0f, 0.0f);
+    msgpack::sbuffer sbuf;
+    msgpack::pack(sbuf, playerPositionPackage);
+
+    std::string rawData(sbuf.data(), sbuf.size());
+    msgpack::object_handle oh = msgpack::unpack(rawData.data(), rawData.size());
+    msgpack::object deserialized = oh.get();
+    BasePacket basePacket;
+    deserialized.convert(basePacket);
 }

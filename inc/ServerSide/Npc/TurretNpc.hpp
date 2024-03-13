@@ -11,7 +11,7 @@ public:
     TurretNpc();
     ~TurretNpc();
     void update(float deltaTime) override;
-    void attack(glm::vec3 direction, int bulletId);
+    void attack(glm::vec3 direction, int bulletId, float speed);
     void destroyBullet(int bulletId);
 private:
     std::vector<ThrowObject *> throwObjects;

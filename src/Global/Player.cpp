@@ -38,8 +38,7 @@ void Player::processInput(GLFWwindow &window, float deltaTime)
     if (currentMouseRightButtonState && !lastMouseRightButtonState)
     {
         glm::vec3 target = Camera2D::getInstance().getMouseWorldPosition(window);
-        Client::getInstance().udpConnection->sendPlayerAllData(obj->transform, target.x, target.y,
-             deltaTime, true);
+        Client::getInstance().udpConnection->sendPlayerAllData(obj->transform, target.x, target.y);
     }
     lastMouseRightButtonState = currentMouseRightButtonState;
 }

@@ -173,3 +173,7 @@ void TcpConnection::_npcDie(std::istringstream &iss)
 {
     NpcController::getInstance().handleNpcDie(iss);
 }
+
+void TcpConnection::terminate()
+{
+}

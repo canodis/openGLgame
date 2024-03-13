@@ -8,7 +8,7 @@ class ThrowObject
 {
 public:
     ThrowObject();
-    ThrowObject(int id, const glm::vec3 &direction, const GameObject &obj);
+    ThrowObject(int id, const glm::vec3 &direction, const GameObject &obj, float speed);
     ThrowObject(const glm::vec3 &targetPosition, const GameObject &obj, float &lifeTime, const glm::vec3 &direction);
     bool update(float deltaTime);
     int id;

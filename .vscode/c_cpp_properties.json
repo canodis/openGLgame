@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${HOME}/goinfre/.brew/opt/freetype/include/freetype2"
+                "${HOME}/goinfre/.brew/opt/freetype/include/freetype2",
+                "${HOME}/goinfre/.brew/Cellar/boost/1.84.0_1/include/**"
             ],
             "defines": [],
             "macFrameworkPath": [

@@ -10,6 +10,8 @@ MapController::MapController(int ac, char **av)
 {
 }
 
+MapController::MapController() {}
+
 MapController::~MapController() {}
 
 void MapController::drawMap(float deltaTime)

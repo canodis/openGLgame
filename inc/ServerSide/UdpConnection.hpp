@@ -10,6 +10,7 @@
 #include <map>
 #include <functional>
 class UdpConnection;
+#include "BasePacket.hpp"
 #include "ServerPlayer.hpp"
 #include "ServerPackages.hpp"
 #include "Client.hpp"
@@ -24,10 +25,11 @@ class UdpConnection
 public:
     UdpConnection(std::map<int, ServerPlayer *> &players, int &serverFd);
     ~UdpConnection();
-    void sendUdpMessage(const char *message);
-    void sendPlayerAllData(const Transform &playerTransform, const float &x, const float &y, const float &deltaTime, const bool &forceSend = false);
+    void sendUdpMessage(const std::string &data);
+    void sendPlayerAllData(const Transform &playerTransform, const float &x, const float &y);
     void connect();
     void disconnect();
+    void terminate();
     Npc *turrets;
 private:
     float _accumulatedTime;
@@ -39,20 +41,21 @@ private:
     struct sockaddr_in _serverUdpAddr;
     std::thread _udpThread;
     std::map<int, ServerPlayer *> &_players;
-    std::map<int, std::function<void(std::istringstream &)>> _udpPackageHandlers;
+    std::map<int, std::function<void(msgpack::object &)>> _udpPackageHandlers;
 
     void _connectSocket();
-    void _handleResponse(std::istringstream iss);
+    void _handleResponse(const std::string &rawData);
     ServerPlayer *_createPlayer(int fd, int x, int y);
     void _threadFunc();
 
     //handlers
 
     void _initResponseHandlers();
-    void _playerPositionHandle(std::istringstream &iss);
-    void _pingHandle(std::istringstream &iss);
-    void _serverShutDownHandle(std::istringstream &iss);
-    void _handleNpcPosition(std::istringstream &iss);
+    void _playerPositionHandle(msgpack::object &rawPacket);
+    void _pingHandle(msgpack::object &rawPacket);
+    void _serverShutDownHandle(msgpack::object &rawPacket);
+    void _handleNpcPosition(msgpack::object &rawPacket);
+    void _handleNewNpc(msgpack::object &rawPacket);
 
     
 };

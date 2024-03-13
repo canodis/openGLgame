@@ -1,49 +1,33 @@
 #include "NpcController.hpp"
-#include <sstream>
 #include "Client.hpp"
+#include <sstream>
 
-void NpcController::_handleNewBasicNpc(std::istringstream &iss, int id)
+void NpcController::handleNewBasicNpc(NewBasicNpcPackage &package)
 {
-    int npcType;
-    float x, y;
-    float targetX, targetY;
-    float speed, health;
-    iss >> x >> y >> targetX >> targetY >> speed >> health >> npcType;
-    npcs[id] = npcGenerator.generateNpc(npcType, speed);
-    Npc *npc = npcs[id];
-    
-    npc->setSpeed(speed);
-    npc->setHealth(10);
-
-    npc->obj->transform.position.x = x;
-    npc->obj->transform.position.y = y;
-
-    npc->targetPosition.x = targetX;
-    npc->targetPosition.y = targetY;
-}
-
-void NpcController::handleNpcPositionReq(std::istringstream &iss)
-{
-    int id;
-    iss >> id;
     std::lock_guard<std::mutex> lock(Client::getInstance()._npcMutex);
-    if (npcs.find(id) != npcs.end())
-    {
-        _handleBasicNpcPosition(iss, id);
-    }
-    else
-    {
-        _handleNewBasicNpc(iss, id);
-    }
+
+    npcs[package.id] = npcGenerator.generateNpc(package.id, package.speed);
+    Npc *npc = npcs[package.id];
+    
+    npc->setSpeed(package.speed);
+    npc->setHealth(package.health);
+
+    npc->obj->transform.position.x = package.x;
+    npc->obj->transform.position.y = package.y;
+
+    npc->targetPosition.x = package.targetX;
+    npc->targetPosition.y = package.targetY;
 }
 
-void NpcController::_handleBasicNpcPosition(std::istringstream &iss, int id)
+void NpcController::handleBasicNpcPosition(BasicNpcPositionPackage &package)
 {
-    float x, y;
-    float targetX, targetY;
-    iss >> x >> y >> targetX >> targetY;
-    npcs[id]->targetPosition.x = targetX;
-    npcs[id]->targetPosition.y = targetY;
+    std::lock_guard<std::mutex> lock(Client::getInstance()._npcMutex);
+    
+    Npc *npc = npcs[package.id];
+    npc->obj->transform.position.x = package.x;
+    npc->obj->transform.position.y = package.y;
+    npc->targetPosition.x = package.targetX;
+    npc->targetPosition.y = package.targetY;
 }
 
 void NpcController::update(float deltaTime)
@@ -63,7 +47,7 @@ NpcController &NpcController::getInstance()
 void NpcController::handleNewTurret(std::istringstream &iss)
 {
     int id;
-    float x, y;
+    float x, y, speed;
     iss >> id >> x >> y;
     if (npcs.find(id) != npcs.end())
     {
@@ -81,15 +65,15 @@ void NpcController::handleNewTurret(std::istringstream &iss)
 void NpcController::handleTurretAttack(std::istringstream &iss)
 {
     int turretId, bulletId;
-    float x, y;
+    float x, y, speed;
     float directionX, directionY;
-    iss >> turretId >> bulletId >> x >> y >> directionX >> directionY;
+    iss >> turretId >> bulletId >> speed >> x >> y >> directionX >> directionY;
     if (npcs.find(turretId) != npcs.end())
     {
         TurretNpc *turret = dynamic_cast<TurretNpc *>(npcs[turretId]);
         if (turret)
         {
-            turret->attack({directionX, directionY, 0}, bulletId);
+            turret->attack({directionX, directionY, 0}, bulletId , speed);
         }
     }
 }
@@ -124,6 +108,7 @@ void NpcController::handleTurretHit(std::istringstream &iss)
 
 void NpcController::destroyNpc(int id)
 {
+    std::lock_guard<std::mutex> lock(Client::getInstance()._npcMutex);
     if (npcs.find(id) != npcs.end())
     {
         delete npcs[id];

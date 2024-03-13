@@ -32,6 +32,7 @@ public:
     }
     void renderPlayers(float deltaTime);
     void handlePlayerPositionReq(std::istringstream &iss);
+    void terminate();
     TcpConnection *tcpConnection;
     UdpConnection *udpConnection;
     std::mutex _playerMutex;

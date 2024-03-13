@@ -10,6 +10,7 @@ class MapController
 {
 public:
     MapController(int ac, char **av);
+    MapController();
     ~MapController();
     void drawMap(float deltaTime);
     void loadMap();

@@ -1,4 +1,6 @@
 #include "UdpConnection.hpp"
+#include "PlayerPositionPackage.hpp"
+#include <msgpack.hpp>
 
 UdpConnection::UdpConnection(std::map<int, ServerPlayer *> &players, int &serverFd) : _players(players), _serverFd(serverFd), _accumulatedTime(0)
 {
@@ -8,24 +10,20 @@ UdpConnection::UdpConnection(std::map<int, ServerPlayer *> &players, int &server
 
 UdpConnection::~UdpConnection() {}
 
-void UdpConnection::sendUdpMessage(const char *message)
+void UdpConnection::sendUdpMessage(const std::string &data)
 {
-    sendto(_udpSocket, message, strlen(message), 0, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr));
+    sendto(_udpSocket, data.c_str(), data.size(), 0, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr));
 }
 
-void UdpConnection::sendPlayerAllData(const Transform &playerTransform, const float &targetX, const float &targetY, const float &deltaTime, const bool &forceSend)
+void UdpConnection::sendPlayerAllData(const Transform &playerTransform, const float &targetX, const float &targetY)
 {
     if (_serverFd == -1)
         return;
-    _accumulatedTime += deltaTime;
-    if (_accumulatedTime >= _tickRate || forceSend)
-    {
-        char buffer[101];
-        sprintf(buffer, "%d %d %f %f %f %f ", (int)ServerPackage::PositionRequest, _serverFd,
-                playerTransform.position.x, playerTransform.position.y, targetX, targetY);
-        sendUdpMessage(buffer);
-        _accumulatedTime = 0;
-    }
+    PlayerPositionPackage playerPositionPackage(_serverFd, playerTransform.position.x, playerTransform.position.y, targetX, targetY);
+    msgpack::sbuffer sbuf;
+    msgpack::pack(sbuf, playerPositionPackage);
+    std::string rawData(sbuf.data(), sbuf.size());
+    sendUdpMessage(rawData);
 }
 
 void UdpConnection::_connectSocket()
@@ -68,32 +66,37 @@ void UdpConnection::_threadFunc()
     socklen_t senderAddrLen = sizeof(senderAddr);
     while (_udpIsRunning)
     {
+        bzero(buffer, sizeof(buffer));
         if (recvfrom(_udpSocket, buffer, sizeof(buffer), 0, (struct sockaddr *)&senderAddr, &senderAddrLen) < 0)
         {
             std::cout << "Error receiving data from server" << std::endl;
         }
         else
         {
-            _handleResponse(std::istringstream(buffer));
+            _handleResponse(std::string(buffer));
         }
     }
     std::cout << "UDP thread ended" << std::endl;
 }
 
-void UdpConnection::_handleResponse(std::istringstream iss)
+void UdpConnection::_handleResponse(const std::string &rawData)
 {
-    int responseType;
-    iss >> responseType;
-    if (_udpPackageHandlers.find(responseType) != _udpPackageHandlers.end())
+    msgpack::object_handle oh = msgpack::unpack(rawData.data(), rawData.size());
+    msgpack::object deserialized = oh.get();
+    BasePacket basePacket;
+    deserialized.convert(basePacket);
+    if (_udpPackageHandlers.find(basePacket.packetId) != _udpPackageHandlers.end())
     {
-        _udpPackageHandlers[responseType](iss);
+        _udpPackageHandlers[basePacket.packetId](deserialized);
     }
     else
     {
         std::cout << "----------------------------------------" << std::endl;
-        std::cout << "Unknown response type: " << responseType << std::endl;
-        std::cout << "Response: " << iss.str() << std::endl;
+        std::cout << "Unknown response type: " << basePacket.packetId << std::endl;
         std::cout << "----------------------------------------" << std::endl;
-
     }
+}
+
+void UdpConnection::terminate()
+{
 }

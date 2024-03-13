@@ -52,7 +52,6 @@ public:
 private:
 	Scene();
 	~Scene();
-
 	void init_window(int width, int height);
 	void init_uniforms();
 	void keycallback();

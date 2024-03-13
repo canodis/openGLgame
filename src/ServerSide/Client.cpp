@@ -22,4 +22,10 @@ void Client::handlePlayerPositionReq(std::istringstream &iss)
     iss >> positionX >> positionY >> targetX >> targetY;
     Scene::getInstance().player->SetPosition(glm::vec3(positionX, positionY, 0));
     Scene::getInstance().player->SetTargetPosition(glm::vec3(targetX, targetY, 0));
-}   
+}
+
+void Client::terminate()
+{
+    tcpConnection->terminate();
+    udpConnection->terminate();
+}

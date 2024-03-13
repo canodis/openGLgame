@@ -71,7 +71,27 @@
         "filesystem": "cpp",
         "csignal": "cpp",
         "__functional_03": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "any": "cpp",
+        "cfenv": "cpp",
+        "charconv": "cpp",
+        "codecvt": "cpp",
+        "compare": "cpp",
+        "condition_variable": "cpp",
+        "coroutine": "cpp",
+        "forward_list": "cpp",
+        "future": "cpp",
+        "list": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "set": "cpp",
+        "span": "cpp",
+        "strstream": "cpp",
+        "typeindex": "cpp",
+        "unordered_set": "cpp",
+        "valarray": "cpp",
+        "variant": "cpp",
+        "*.ipp": "cpp"
     },
     "cmake.sourceDirectory": "/goinfre/rtosun/game/glm"
 }
