@@ -11,4 +11,5 @@ BasicNpcPositionPackage::BasicNpcPositionPackage(int id, float x, float y, float
 
 BasicNpcPositionPackage::BasicNpcPositionPackage() {
     packageId = ServerPackage::BasicNpcPosition;
+    pId = (int)packageId;
 }

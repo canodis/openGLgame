@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Package.hpp"
+#include "BasePackage.hpp"
 
-struct ServerShutdownPackage
+struct ServerShutdownPackage : public BasePackage
 {
-    int packageId;
     ServerShutdownPackage();
-    MSGPACK_DEFINE(packageId);
+    int pId;
+    MSGPACK_DEFINE(pId, MSGPACK_BASE(BasePackage));
 };

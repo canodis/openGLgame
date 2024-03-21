@@ -11,4 +11,5 @@ PlayerPositionPackage::PlayerPositionPackage(int fd, float targetX, float target
 
 PlayerPositionPackage::PlayerPositionPackage() {
     packageId = ServerPackage::PositionRequest;
+    pId = (int)packageId;
 }

@@ -10,7 +10,7 @@
 #include <map>
 #include <functional>
 class UdpConnection;
-#include "BasePacket.hpp"
+#include "BasePackage.hpp"
 #include "ServerPlayer.hpp"
 #include "ServerPackages.hpp"
 #include "Client.hpp"
@@ -44,7 +44,7 @@ private:
     std::map<int, std::function<void(msgpack::object &)>> _udpPackageHandlers;
 
     void _connectSocket();
-    void _handleResponse(const std::string &rawData);
+    void _handleResponse(const char *rawData);
     ServerPlayer *_createPlayer(int fd, int x, int y);
     void _threadFunc();
 

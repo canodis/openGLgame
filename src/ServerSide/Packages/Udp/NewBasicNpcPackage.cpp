@@ -14,4 +14,5 @@ NewBasicNpcPackage::NewBasicNpcPackage(int id, float x, float y, float targetX, 
 
 NewBasicNpcPackage::NewBasicNpcPackage() {
     packageId = ServerPackage::NewBasicNpc;
+    pId = (int)packageId;
 }

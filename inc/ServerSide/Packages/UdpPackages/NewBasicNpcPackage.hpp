@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Package.hpp"
+#include "BasePackage.hpp"
 
-struct NewBasicNpcPackage
+struct NewBasicNpcPackage : public BasePackage
 {
     NewBasicNpcPackage();
     NewBasicNpcPackage(int id, float x, float y, float targetX, float targetY, float speed, float health, int type);
-    int packageId;
+    int pId;
     int id;
     float x; 
     float y;
@@ -15,5 +15,5 @@ struct NewBasicNpcPackage
     float targetY;
     float speed;
     float health;
-    MSGPACK_DEFINE(packageId ,id , x, y, type, targetX, targetY, speed, health);
+    MSGPACK_DEFINE(pId, id, x, y, type, targetX, targetY, speed, health, MSGPACK_BASE(BasePackage));
 };

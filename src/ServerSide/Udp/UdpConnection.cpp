@@ -1,7 +1,7 @@
 #include "UdpConnection.hpp"
 #include "PlayerPositionPackage.hpp"
 #include <msgpack.hpp>
-
+#include "BasePackage.hpp"
 UdpConnection::UdpConnection(std::map<int, ServerPlayer *> &players, int &serverFd) : _players(players), _serverFd(serverFd), _accumulatedTime(0)
 {
     _initResponseHandlers();
@@ -73,26 +73,35 @@ void UdpConnection::_threadFunc()
         }
         else
         {
-            _handleResponse(std::string(buffer));
+            _handleResponse(buffer);
         }
     }
     std::cout << "UDP thread ended" << std::endl;
 }
 
-void UdpConnection::_handleResponse(const std::string &rawData)
+void UdpConnection::_handleResponse(const char *buffer)
 {
-    msgpack::object_handle oh = msgpack::unpack(rawData.data(), rawData.size());
-    msgpack::object deserialized = oh.get();
-    deserialized.convert(basePacket);
-    if (_udpPackageHandlers.find(basePacket.packetId) != _udpPackageHandlers.end())
+    try
     {
-        _udpPackageHandlers[basePacket.packetId](deserialized);
+        msgpack::object_handle oh = msgpack::unpack(buffer, 1024);
+        msgpack::object deserialized = oh.get();
+        BasePackage basePacket;
+
+        deserialized.convert(basePacket);
+        if (_udpPackageHandlers.find(basePacket.packageId) != _udpPackageHandlers.end())
+        {
+            _udpPackageHandlers[basePacket.packageId](deserialized);
+        }
+        else
+        {
+            std::cout << "----------------------------------------" << std::endl;
+            std::cout << "Unknown response type: " << basePacket.packageId << std::endl;
+            std::cout << "----------------------------------------" << std::endl;
+        }
     }
-    else
+    catch (const std::exception &e)
     {
-        std::cout << "----------------------------------------" << std::endl;
-        std::cout << "Unknown response type: " << basePacket.packetId << std::endl;
-        std::cout << "----------------------------------------" << std::endl;
+        std::cerr << e.what() << '\n';
     }
 }
 
