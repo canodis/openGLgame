@@ -12,4 +12,6 @@ NewBasicNpcPackage::NewBasicNpcPackage(int id, float x, float y, float targetX, 
     this->type = type;
 }
 
-NewBasicNpcPackage::NewBasicNpcPackage() : BasePacket(ServerPackage::NewBasicNpc) {}
+NewBasicNpcPackage::NewBasicNpcPackage() {
+    packageId = ServerPackage::NewBasicNpc;
+}

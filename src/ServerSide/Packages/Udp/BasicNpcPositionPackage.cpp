@@ -9,4 +9,6 @@ BasicNpcPositionPackage::BasicNpcPositionPackage(int id, float x, float y, float
     this->targetY = targetY;
 }
 
-BasicNpcPositionPackage::BasicNpcPositionPackage() : BasePacket(ServerPackage::BasicNpcPosition) {}
+BasicNpcPositionPackage::BasicNpcPositionPackage() {
+    packageId = ServerPackage::BasicNpcPosition;
+}

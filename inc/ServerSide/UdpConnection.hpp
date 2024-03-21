@@ -25,7 +25,7 @@ class UdpConnection
 public:
     UdpConnection(std::map<int, ServerPlayer *> &players, int &serverFd);
     ~UdpConnection();
-    void sendUdpMessage(const std::string &data);
+    void sendUdpMessage(const std::string &data, int size);
     void sendPlayerAllData(const Transform &playerTransform, const float &x, const float &y);
     void connect();
     void disconnect();

@@ -1,10 +1,12 @@
-#include "BasePacket.hpp"
+#pragma once
 
-class NewBasicNpcPackage : public BasePacket
+#include "Package.hpp"
+
+struct NewBasicNpcPackage
 {
-public:
     NewBasicNpcPackage();
     NewBasicNpcPackage(int id, float x, float y, float targetX, float targetY, float speed, float health, int type);
+    int packageId;
     int id;
     float x; 
     float y;
@@ -13,5 +15,5 @@ public:
     float targetY;
     float speed;
     float health;
-    MSGPACK_DEFINE(id, x, y, targetX, targetY, speed, health, type);
+    MSGPACK_DEFINE(packageId ,id , x, y, type, targetX, targetY, speed, health);
 };

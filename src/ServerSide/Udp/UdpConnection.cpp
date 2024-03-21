@@ -10,9 +10,9 @@ UdpConnection::UdpConnection(std::map<int, ServerPlayer *> &players, int &server
 
 UdpConnection::~UdpConnection() {}
 
-void UdpConnection::sendUdpMessage(const std::string &data)
+void UdpConnection::sendUdpMessage(const std::string &data, int size)
 {
-    sendto(_udpSocket, data.c_str(), data.size(), 0, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr));
+    sendto(_udpSocket, data.data(), size, 0, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr));
 }
 
 void UdpConnection::sendPlayerAllData(const Transform &playerTransform, const float &targetX, const float &targetY)
@@ -23,7 +23,7 @@ void UdpConnection::sendPlayerAllData(const Transform &playerTransform, const fl
     msgpack::sbuffer sbuf;
     msgpack::pack(sbuf, playerPositionPackage);
     std::string rawData(sbuf.data(), sbuf.size());
-    sendUdpMessage(rawData);
+    sendUdpMessage(rawData, sbuf.size());
 }
 
 void UdpConnection::_connectSocket()
@@ -83,7 +83,6 @@ void UdpConnection::_handleResponse(const std::string &rawData)
 {
     msgpack::object_handle oh = msgpack::unpack(rawData.data(), rawData.size());
     msgpack::object deserialized = oh.get();
-    BasePacket basePacket;
     deserialized.convert(basePacket);
     if (_udpPackageHandlers.find(basePacket.packetId) != _udpPackageHandlers.end())
     {

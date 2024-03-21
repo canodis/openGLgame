@@ -1,8 +1,10 @@
-#include "BasePacket.hpp"
+#pragma once
 
-class ServerShutdownPackage : public BasePacket
+#include "Package.hpp"
+
+struct ServerShutdownPackage
 {
-public:
+    int packageId;
     ServerShutdownPackage();
-private:
+    MSGPACK_DEFINE(packageId);
 };

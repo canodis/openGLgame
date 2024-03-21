@@ -91,7 +91,8 @@
         "unordered_set": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "__functional_base_03": "cpp"
     },
     "cmake.sourceDirectory": "/goinfre/rtosun/game/glm"
 }

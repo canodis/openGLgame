@@ -39,6 +39,7 @@ INCLUDE_DIR =   $(shell find ./inc/ -type d)
 CXXFLAGS    +=  -I/$(HOME)/goinfre/.brew/opt/freetype/include/freetype2 -I/$HOME/goinfre/.brew/opt/libpng/include/libpng16
 LDFLAGS += -framework OpenGL -L/$(HOME)/goinfre/.brew/opt/freetype/lib -lfreetype -lglfw
 INCLUDE_FLAGS = $(addprefix -I, $(INCLUDE_DIR))
+TESTSRC = $(wildcard test_src/TcpClientMsgPackTest.cpp)
 
 CG = \033[92m
 CY = \033[93m
@@ -62,6 +63,9 @@ clean:
 fclean:     clean
 	@ /bin/rm -f $(NAME)
 	@ echo "\n\033[1;33m---> Everything cleared\033[2;00m \033[92m✓\033[0m";
+
+test:
+	$(CC) $(TESTSRC) $(CFLAGS) $(CXXFLAGS) $(INCLUDE_FLAGS) $(DEPENDENCIES) $(LINKER) -o test $(LDFLAGS) -Wno-deprecated
 
 re : fclean all
 

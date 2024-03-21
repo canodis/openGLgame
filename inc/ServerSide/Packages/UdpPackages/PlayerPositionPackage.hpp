@@ -1,16 +1,16 @@
 #pragma once
 
-#include "BasePacket.hpp"
+#include "Package.hpp"
 
-class PlayerPositionPackage : public BasePacket
+struct PlayerPositionPackage 
 {
-public:
     PlayerPositionPackage();
     PlayerPositionPackage(int fd, float targetX, float targetY, float positionX, float positionY);
+    int packageId;
     int fd;
     float targetX;
     float targetY;
     float positionX;
     float positionY;
-    MSGPACK_DEFINE(fd, targetX, targetY, positionX, positionY);
+    MSGPACK_DEFINE(packageId, fd, targetX, targetY, positionX, positionY);
 };

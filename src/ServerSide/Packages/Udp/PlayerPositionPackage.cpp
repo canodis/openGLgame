@@ -9,4 +9,6 @@ PlayerPositionPackage::PlayerPositionPackage(int fd, float targetX, float target
     this->positionY = positionY;
 }
 
-PlayerPositionPackage::PlayerPositionPackage() : BasePacket(ServerPackage::PositionRequest) {}
+PlayerPositionPackage::PlayerPositionPackage() {
+    packageId = ServerPackage::PositionRequest;
+}
