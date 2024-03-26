@@ -18,7 +18,6 @@ class Scene;
 #define WIDTH 800
 #define HEIGHT 600
 
-
 GameObject *Instantiate(GameObject *gameObject);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);

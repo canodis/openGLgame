@@ -20,7 +20,7 @@ SRCS        +=  $(wildcard src/ServerSide/*.cpp)
 SRCS        +=  $(wildcard src/ServerSide/Npc/*.cpp)
 SRCS        +=  $(wildcard src/ServerSide/Udp/*.cpp)
 SRCS        +=  $(wildcard src/ServerSide/Tcp/*.cpp)
-# SRCS        +=  $(wildcard imgui/*.cpp)
+SRCS        +=  $(wildcard dependencies/imgui/*.cpp)
 
 OBJS        =   $(SRCS:src/%.cpp=obj/%.o)
 

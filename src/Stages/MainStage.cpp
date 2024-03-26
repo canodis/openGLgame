@@ -9,6 +9,8 @@ MainStage::MainStage()
 void MainStage::initStage()
 {
     player = new Player();
+    player->init(3.0f);
+    Scene::getInstance().textureManager->init();
     Client::getInstance();
     scene->player = player;
     mapController.loadMap();

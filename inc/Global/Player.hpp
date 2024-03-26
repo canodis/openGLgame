@@ -7,6 +7,8 @@ class Player
 public:
     Player();
     ~Player();
+
+    void init(float speed);
     void setGameObject(GameObject *gameObject);
     void processInput(GLFWwindow &window, float deltaTime);
     void update(const float &deltaTime);
@@ -26,11 +28,9 @@ public:
     void move(float deltaTime);
 private:
     GameObject *obj;
-    float speed;
-    float jumpSpeed;
-    bool canJump;
     glm::vec3 targetPosition;
+    glm::vec2 lastDirection;
+    float speed;
     bool lastMouseRightButtonState = true;
     const float EPSILON = 0.1f;
-    glm::vec2 lastDirection;
 };

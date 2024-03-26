@@ -7,7 +7,9 @@
 #include "Animator.hpp"
 #include "Client.hpp"
 
-Player::Player() : speed(3), jumpSpeed(5)
+Player::Player() {}
+
+void Player::init(float speed)
 {
     GameObject *object = Scene::getInstance().gameObjectManager->CreateRectangle();
     object->SetColor(glm::vec4(0, 1, 0, 1));
@@ -23,6 +25,7 @@ Player::Player() : speed(3), jumpSpeed(5)
     object->setPosition(glm::vec3(0, 0, 0));
     this->setGameObject(object);
     this->targetPosition = object->transform.position;
+    this->speed = speed;
 }
 
 Player::~Player() {}

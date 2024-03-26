@@ -9,6 +9,7 @@
 #include <sstream>
 #include <map>
 #include <functional>
+#include <msgpack.hpp>
 class UdpConnection;
 #include "BasePackage.hpp"
 #include "ServerPlayer.hpp"
@@ -25,7 +26,7 @@ class UdpConnection
 public:
     UdpConnection(std::map<int, ServerPlayer *> &players, int &serverFd);
     ~UdpConnection();
-    void sendUdpMessage(const std::string &data, int size);
+    void sendUdpMessage(msgpack::sbuffer &sbuf);
     void sendPlayerAllData(const Transform &playerTransform, const float &x, const float &y);
     void connect();
     void disconnect();

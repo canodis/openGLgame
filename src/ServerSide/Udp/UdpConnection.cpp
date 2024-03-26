@@ -10,20 +10,19 @@ UdpConnection::UdpConnection(std::map<int, ServerPlayer *> &players, int &server
 
 UdpConnection::~UdpConnection() {}
 
-void UdpConnection::sendUdpMessage(const std::string &data, int size)
+void UdpConnection::sendUdpMessage(msgpack::sbuffer &sbuf)
 {
-    sendto(_udpSocket, data.data(), size, 0, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr));
+    sendto(_udpSocket, sbuf.data(), sbuf.size(), 0, (struct sockaddr *)&_clientUdpAddr, sizeof(_clientUdpAddr));
 }
 
 void UdpConnection::sendPlayerAllData(const Transform &playerTransform, const float &targetX, const float &targetY)
 {
     if (_serverFd == -1)
         return;
-    PlayerPositionPackage playerPositionPackage(_serverFd, playerTransform.position.x, playerTransform.position.y, targetX, targetY);
+    PlayerPositionPackage playerPositionPackage(_serverFd, targetX, targetY, playerTransform.position.x, playerTransform.position.y);
     msgpack::sbuffer sbuf;
     msgpack::pack(sbuf, playerPositionPackage);
-    std::string rawData(sbuf.data(), sbuf.size());
-    sendUdpMessage(rawData, sbuf.size());
+    sendUdpMessage(sbuf);
 }
 
 void UdpConnection::_connectSocket()

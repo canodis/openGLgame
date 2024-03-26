@@ -49,8 +49,7 @@ void TcpConnection::_playerLoginHandle(std::istringstream &ss)
     }
     std::cout << "--------------------------------" << Color(Color::RESET) << std::endl;
     Player *player = Scene::getInstance().player;
-    Client::getInstance().udpConnection->sendPlayerAllData(player->GetTransform(), 
-        5, 31);
+    Client::getInstance().udpConnection->sendPlayerAllData(player->GetTransform(), 0, 0);
     Client::getInstance().tcpConnection->sendPlayerNew(*player);
 }
 

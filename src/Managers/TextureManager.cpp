@@ -8,6 +8,10 @@ namespace fs = std::filesystem;
 
 TextureManager::TextureManager()
 {
+}
+
+void TextureManager::init()
+{
     loadFromFolder("./animations");
     loadFromFolder("./textures");
 }
